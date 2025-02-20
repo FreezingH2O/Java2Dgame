@@ -3,24 +3,26 @@ package entitiy;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import main.KeyboardController;
+import main.main;
 
 public class Player {
-	private int posX = 96, posY = 96;
-	private int speed = 3;
+	private  double posX = 10*48;
+	private  double posY = 7*48;
+	private int speed = 1;
 	private Image pic ;
 	private static Image up,down1,down2,left1,left2,right1,right2,still;
 	private boolean  xCheck ,yCheck;
 	private KeyboardController keyboard;
 	
 	public Player() {
-		up = new Image("up.png");
-		down1 = new Image("down1.png");
-		down2 = new Image("down2.png");
-		left1 = new Image("left1.png");
-		left2 = new Image("left2.png");
-		right1 = new Image("right1.png");
-		right2 = new  Image("right2.png");
-		still = new Image("still.png");
+		up = new Image("player/up.png");
+		down1 = new Image("player/down1.png");
+		down2 = new Image("player/down2.png");
+		left1 = new Image("player/left1.png");
+		left2 = new Image("player/left2.png");
+		right1 = new Image("player/right1.png");
+		right2 = new  Image("player/right2.png");
+		still = new Image("player/still.png");
 		
 		
 		xCheck = true;
@@ -32,24 +34,27 @@ public class Player {
 	
 
 	 public void update(GraphicsContext gc) {
-		xCheck = (posX%48==0)? !xCheck: xCheck;
-		yCheck = (posY%48==0)? !yCheck: yCheck;
+		xCheck = (posX%72==0)? !xCheck: xCheck;
+		yCheck = (posY%72==0)? !yCheck: yCheck;
 		// System.out.println(posY);
 	        if (keyboard.isUpPressed()) { 
-	        	posY -= speed;
+	        	
+	        	setPosY(getPosY()-speed);
 	        	this.pic =up;
 	        }
 	        else if (keyboard.isDownPressed()) {
-	        	posY += speed;
+	        
+	        	setPosY(getPosY()+speed);
 	        	this.pic = (yCheck)?down1:down2;
 	        }
 	        else if (keyboard.isLeftPressed()) {
-	        	posX -=speed;
+	  
+	        	setPosX(getPosX()-speed);
 	        	this.pic = (xCheck)? left1:left2;
 	        
 	        }
 	        else if (keyboard.isRightPressed()) {
-	        	posX += speed;
+	        	setPosX(getPosX()+speed);
 	        	this.pic = (xCheck)? right1:right2;
 	        
 	        }
@@ -70,20 +75,34 @@ public class Player {
 	
 	
 	
-	public int getPosX() {
+	public  double getPosX() {
 		return posX;
 	}
 
-	public void setPosX(int posX) {
-		this.posX = posX;
+	public void setPosX(double d) {
+		if(d<0)posX=0;
+		else if(d>30*48) {
+			posX = 30*48;
+		}
+		else
+		this.posX = d;
 	}
 
-	public int getPosY() {
+	public  double getPosY() {
 		return posY;
 	}
 
-	public void setPosY(int posY) {
-		this.posY = posY;
+	public void setPosY(double d) {
+		if(d<0) {
+			posY = 0;
+		}
+		else if(d>30*48) {
+			posY = 30*48;
+		}
+		else {
+			posY = d;
+		}
+		
 	}
 	
 	
