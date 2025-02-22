@@ -1,4 +1,4 @@
-package compoents;
+package components;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
