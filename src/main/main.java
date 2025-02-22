@@ -1,20 +1,23 @@
 package main;
 
+import compoents.gameCanvas;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import logic.KeyboardController;
 
 public class main extends Application {
 	public static Scene scene;
 	private static final int tileSize = 48;
 	private static final int col = 21, row = 15;
+	private static StackPane root;
 	
 	public  static final int width = col*tileSize, height = row *tileSize;
 	public void start(Stage stage) {
 
 		gameCanvas canvas = new gameCanvas();
-		StackPane root = new StackPane(canvas);
+		root = new StackPane(canvas);
 		scene = new Scene(root);
 		
 		KeyboardController keyboard = new KeyboardController();
@@ -22,6 +25,8 @@ public class main extends Application {
 		scene.setOnKeyReleased(e -> keyboard.handleKeyPress(e.getCode(), false));
 		
 		stage.setScene(scene);
+		stage.setWidth(width);
+		stage.setHeight(height);
 		stage.setResizable(false);
 		stage.setTitle("THE DESTINED ONE");
 		stage.show();
@@ -44,6 +49,9 @@ public class main extends Application {
 		return tileSize;
 	}
 	
-	
+	public static StackPane getRoot() {
+		return root;
+		
+	}
 
 }
