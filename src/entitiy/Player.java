@@ -1,24 +1,26 @@
 package entitiy;
 
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import logic.KeyboardController;
 import main.main;
+import world.camera;
+import world.collision;
 import world.map;
 
 public class Player {
 	private double posX = map.getMapWidth() / 2;
 	private double posY = map.getMapHeight() / 2;
-	private int speed = 3;
+	private int speed = 4;
 	private Image pic;
 	private static Image up, down1, down2, left1, left2, right1, right2, still;
 	private boolean xCheck, yCheck;
 	private KeyboardController keyboard;
-	private boolean collide;
+	private collision collide;
+	private camera camera;
 
-	public Player() {
+	public Player(map map) {
 		up = new Image("player/up.png");
 		down1 = new Image("player/down1.png");
 		down2 = new Image("player/down2.png");
@@ -30,8 +32,9 @@ public class Player {
 
 		xCheck = true;
 		yCheck = true;
-		this.pic = still;
-
+		pic = still;
+		collide = new collision(map);
+		camera = new camera();
 		keyboard = new KeyboardController();
 	}
 
@@ -65,18 +68,14 @@ public class Player {
 		}
 		// System.out.println(x);
 
-		setCollide(x, y);
-		if (!isCollide()) { 
+		if (!collide.isCollide(x, y)) {
 			setPosX(x);
 			setPosY(y);
 		}
 
 		gc.drawImage(pic, posX, posY);
 
-		StackPane root = main.getRoot();
-
-		root.setTranslateX(map.getMapWidth() / 2 - posX);
-		root.setTranslateY(map.getMapHeight() / 2 - posY);
+		camera.cameraMove(posX, posY);
 
 	}
 
@@ -113,28 +112,5 @@ public class Player {
 		}
 
 	}
-
-	public boolean isCollide() {
-		return collide;
-	}
-
-	public void setCollide(double x, double y) {
-	    int indX1 = (int) Math.floor(x / 48);
-	    int indY1 = (int) Math.floor(y / 48);
-	    
-	    int indX2 = (int) Math.ceil(x / 48);
-	    int indY2 = (int) Math.ceil(y / 48);
-
-	   // System.out.println("Checking: (" + indX1 + ", " + indY1 + ") and (" + indX2 + ", " + indY2 + ")");
-
-	
-	
-	    if (map.arr[indY1][indX1] != 0 || map.arr[indY2][indX2] != 0||map.arr[indY1][indX2] != 0|| map.arr[indY2][indX1] != 0) {
-	        collide = true;
-	    } else {
-	        collide = false;
-	    }
-	}
-
 
 }

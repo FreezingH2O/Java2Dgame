@@ -11,7 +11,7 @@ package logic;
 
 	    public GameManager() {
 	        map1 = new map();
-	        player = new Player();
+	        player = new Player(map1);
 	    }
 
 	    public void update(GraphicsContext gc) {
