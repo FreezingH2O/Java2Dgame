@@ -1,5 +1,7 @@
 package world;
 
+import java.util.HashSet;
+import java.util.Set;
 
 import main.main;
 
@@ -8,7 +10,7 @@ public class collision {
 	private map map;
 
 	private int tile = main.getTilesize();
-
+	private final static Set<Integer> forbid = new HashSet<>(Set.of( 0,16, 12));
 
 	public collision(map m) {
 		map = m;
@@ -26,8 +28,8 @@ public class collision {
 		// System.out.println("Checking: (" + indX1 + ", " + indY1 + ") and (" + indX2 +
 		// ", " + indY2 + ")");
 
-		if (map.arr[indY1][indX1] % 8 != 0 || map.arr[indY2][indX2] % 8 != 0 || map.arr[indY1][indX2] % 8 != 0
-				|| map.arr[indY2][indX1] % 8 != 0) {
+		if (forbid.contains(map.arr[indY1][indX1])  || forbid.contains(map.arr[indY2][indX2]) || forbid.contains(map.arr[indY1][indX2])
+				|| forbid.contains(map.arr[indY2][indX1])) {
 			return true;
 		} else {
 			return false;
