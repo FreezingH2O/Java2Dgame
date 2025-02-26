@@ -6,7 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import logic.GameManager;
 import main.main;
 
-public class gameCanvas extends Canvas{
+public class GameCanvas extends Canvas{
 	
 
 	
@@ -14,7 +14,7 @@ public class gameCanvas extends Canvas{
     private GraphicsContext gc;
     private GameManager gameManager;
 
-    public gameCanvas() {
+    public GameCanvas() {
         super(width, height);
       //  System.out.println(width + " " + height);
         gc = getGraphicsContext2D();

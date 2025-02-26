@@ -1,9 +1,9 @@
 package logic;
 
 
-	import entitiy.Player;
 	import world.map;
-	import javafx.scene.canvas.GraphicsContext;
+import entity.character.Player;
+import javafx.scene.canvas.GraphicsContext;
 
 	public class  GameManager {
 	    private Player player;

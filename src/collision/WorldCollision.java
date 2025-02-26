@@ -1,18 +1,19 @@
-package world;
+package collision;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import main.main;
+import world.map;
 
-public class collision {
+public class WorldCollision {
 
 	private map map;
 
 	private int tile = main.getTilesize();
 	private final static Set<Integer> forbid = new HashSet<>(Set.of( 0,2,3,4));
 
-	public collision(map m) {
+	public WorldCollision(map m) {
 		map = m;
 
 

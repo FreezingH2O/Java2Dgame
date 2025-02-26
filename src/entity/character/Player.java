@@ -1,18 +1,18 @@
-package entitiy;
+package entity.character;
 
+import collision.WorldCollision;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import logic.KeyboardController;
 import world.camera;
-import world.collision;
 import world.map;
 
-public class Player extends entity {
+public class Player extends BaseCharacter {
 	private Image pic;
 	private static Image up, down1, down2, left1, left2, right1, right2, still;
 	private boolean xCheck, yCheck;
 	private KeyboardController keyboard;
-	private collision collide;
+	private WorldCollision collide;
 	private camera camera;
 
 	public Player(map map) {
@@ -29,7 +29,7 @@ public class Player extends entity {
 		xCheck = true;
 		yCheck = true;
 		pic = still;
-		collide = new collision(map);
+		collide = new WorldCollision(map);
 		camera = new camera();
 		keyboard = new KeyboardController();
 	}

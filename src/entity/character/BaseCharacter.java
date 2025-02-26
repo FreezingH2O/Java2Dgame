@@ -1,8 +1,8 @@
-package entitiy;
+package entity.character;
 
 import world.map;
 
-public class entity {
+public abstract class BaseCharacter {
 	private double posX ,posY;
 	private int health;
 	private int maxHealth;
@@ -10,7 +10,7 @@ public class entity {
 	private boolean death;
 	private int attack;
 
-	public entity(double posX, double posY, int health, int speed, int attack) {
+	public BaseCharacter(double posX, double posY, int health, int speed, int attack) {
 		setPosX(posX);
 		setPosY(posY);
 		maxHealth = health;

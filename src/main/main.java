@@ -1,6 +1,6 @@
 package main;
 
-import components.gameCanvas;
+import components.GameCanvas;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -16,7 +16,7 @@ public class main extends Application {
 	public  static final int width = col*tileSize, height = row *tileSize;
 	public void start(Stage stage) {
 
-		gameCanvas canvas = new gameCanvas();
+		GameCanvas canvas = new GameCanvas();
 		root = new StackPane(canvas);
 		scene = new Scene(root);
 		
