@@ -10,7 +10,7 @@ public class collision {
 	private map map;
 
 	private int tile = main.getTilesize();
-	private final static Set<Integer> forbid = new HashSet<>(Set.of( 0,16, 12));
+	private final static Set<Integer> forbid = new HashSet<>(Set.of( 0,2,3,4));
 
 	public collision(map m) {
 		map = m;
