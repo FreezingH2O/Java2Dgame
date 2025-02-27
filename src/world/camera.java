@@ -13,7 +13,7 @@ public class camera {
 	private double maxX;
 	private double maxY;
 
-	public camera() {
+	public camera(map map) {
 		// root = main.getRoot();
 		mapWidth = map.getMapWidth();
 		mapHeight = map.getMapHeight();
