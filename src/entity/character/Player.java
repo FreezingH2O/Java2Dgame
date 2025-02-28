@@ -12,11 +12,11 @@ public class Player extends BaseCharacter {
 	private static Image up, down1, down2, left1, left2, right1, right2, still;
 	private boolean xCheck, yCheck;
 	private KeyboardController keyboard;
-	private WorldCollision collide;
 	private camera camera;
 
-	public Player(map map) {
-		super(world.map.getMapWidth() / 2 -2*48, world.map.getMapWidth() / 2 -5*48, 100, 4, 10);
+	public Player(double posX, double posY, int speed, int health, int attack, int size, map map) {
+		   super(posX, posY, health, speed, attack, size,map);
+
 		up = new Image("player/up.png");
 		down1 = new Image("player/down1.png");
 		down2 = new Image("player/down2.png");
@@ -29,8 +29,9 @@ public class Player extends BaseCharacter {
 		xCheck = true;
 		yCheck = true;
 		pic = still;
-		collide = new WorldCollision(map);
-		camera = new camera();
+		
+		wCollide = new WorldCollision(map);
+		camera = new camera(map);
 		keyboard = new KeyboardController();
 	}
 
@@ -39,16 +40,17 @@ public class Player extends BaseCharacter {
 		xCheck = (getPosX() % 72 == 0) ? !xCheck : xCheck;
 		yCheck = (getPosY() % 72 == 0) ? !yCheck : yCheck;
 		// System.out.println(posY);
+
 		double y = getPosY(), x = getPosX();
 
 		if (keyboard.isUpPressed()) {
 			y = getPosY() - speed;
 			this.pic = up;
-			
+
 		} else if (keyboard.isDownPressed()) {
 			y = getPosY() + speed;
 			this.pic = (yCheck) ? down1 : down2;
-			
+
 		} else if (keyboard.isLeftPressed()) {
 			x = getPosX() - speed;
 			this.pic = (xCheck) ? left1 : left2;
@@ -62,9 +64,18 @@ public class Player extends BaseCharacter {
 		}
 		// System.out.println(x);
 
-		if (!collide.isCollide(x, y)) {
+		if (!wCollide.isCollide(x, y,48)&& !eCollide.isColliding(this, x, y)) {
 			setPosX(x);
 			setPosY(y);
+		}
+		
+		if(eCollide.isColliding(this, x, y)) {
+
+			if(eCollide.getTarget() instanceof BaseMonster) {
+				if(keyboard.isSpacePressed()) {
+					attackTarget(eCollide.getTarget());
+				}
+			}
 		}
 
 		gc.drawImage(pic, getPosX(), getPosY());
@@ -72,7 +83,12 @@ public class Player extends BaseCharacter {
 		camera.cameraMove(getPosX(), getPosY());
 
 	}
-
+	public void attackTarget(BaseCharacter target) {
+	       target.takeDamage(getAttack());
+	       System.out.println("player attack "+ target.getClass());
+	         
+	    }
+	
 	public void setPic(Image pic) {
 		this.pic = pic;
 

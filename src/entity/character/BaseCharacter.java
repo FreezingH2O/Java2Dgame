@@ -1,25 +1,40 @@
 package entity.character;
 
+import collision.EntityCollision;
+import collision.WorldCollision;
+import javafx.scene.canvas.GraphicsContext;
 import world.map;
 
 public abstract class BaseCharacter {
-	private double posX ,posY;
+	private double posX, posY;
+	private int size;
 	private int health;
 	private int maxHealth;
 	private int speed;
 	private boolean death;
 	private int attack;
+	protected WorldCollision wCollide;
+	protected static EntityCollision eCollide;
+	protected map map;
 
-	public BaseCharacter(double posX, double posY, int health, int speed, int attack) {
+	public BaseCharacter(double posX, double posY, int health, int speed, int attack, int size, map map) {
+		this.map = map;
+		eCollide = new EntityCollision(map.getEntities());
+		
+		maxHealth = health;
 		setPosX(posX);
 		setPosY(posY);
-		maxHealth = health;
 		setHealth(maxHealth);
 		setAttack(attack);
 		this.speed = speed;
-
+		this.size = size;
 		setDeath(false);
+		
 	}
+
+	public abstract void update(GraphicsContext gc);
+	
+    public abstract void attackTarget(BaseCharacter target);
 
 	public int getHealth() {
 		return health;
@@ -36,7 +51,11 @@ public abstract class BaseCharacter {
 		}
 
 	}
-	
+
+	public int getSize() {
+		return size;
+	}
+
 	public double getPosX() {
 		return posX;
 	}
@@ -64,6 +83,10 @@ public abstract class BaseCharacter {
 			posY = d;
 		}
 
+	}
+
+	public void takeDamage(int damage) {
+		setHealth(getHealth() - damage);
 	}
 
 	public int getSpeed() {
