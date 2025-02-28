@@ -7,7 +7,8 @@ public class KeyboardController {
 	static boolean downPressed = false;
 	static boolean leftPressed = false;
 	static boolean rightPressed = false;
-	static boolean spacePressed = false; // To track space bar press state
+	static boolean spacePressed = false; 
+	static boolean actionPressed = false;
 	private static KeyboardController keyboard;
 
 	public KeyboardController() {
@@ -20,7 +21,7 @@ public class KeyboardController {
 		case S -> downPressed = pressed;
 		case A -> leftPressed = pressed;
 		case D -> rightPressed = pressed;
-
+		case E -> actionPressed = pressed;
 		case SPACE -> {
 			if (pressed && !spacePressed) {
 				spacePressed = true;
@@ -47,8 +48,14 @@ public class KeyboardController {
 	public boolean isRightPressed() {
 		return rightPressed;
 	}
+	
+	
 
-	public static boolean isSpacePressed() {
+	public boolean isActionPressed() {
+		return actionPressed;
+	}
+
+	public boolean isSpacePressed() {
 		if (spacePressed) {
 			spacePressed = false;
 

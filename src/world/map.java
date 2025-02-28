@@ -24,14 +24,15 @@ public class map {
 	private Image bigStone = new Image("background/Bigstone.png");
 	private Image smallStone = new Image("background/smallstone.png");
 
+	
 	public int[][] arr;
 	private int tileSize = 48;
 	private int mapWidth, mapHeight;
 	private ArrayList<BaseCharacter> entities;
 
-	public map() {
+	public map(mapType type) {
 		entities = new ArrayList<BaseCharacter>();
-		String filename = "map/map.txt";
+		String filename = "map/"+type+".txt";
 		arr = new int[main.getMapSize()][main.getMapSize()];
 
 		try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filename)) {
@@ -59,7 +60,6 @@ public class map {
 	}
 
 	public void update(GraphicsContext gc) {
-
 		for (int y = 0; y < arr.length; y++) {
 			for (int x = 0; x < arr[0].length; x++) {
 
@@ -77,6 +77,9 @@ public class map {
 				} else if (arr[y][x] == 5) {
 					gc.drawImage(floor, x * tileSize, y * tileSize);
 				}
+			 else if (arr[y][x] == 88) {
+				gc.drawImage(brick, x * tileSize, y * tileSize);
+			}
 
 				else {
 					gc.drawImage(grass, x * tileSize, y * tileSize);

@@ -9,7 +9,7 @@ import world.map;
 public class WorldCollision {
 	private int tile = main.getTilesize();
 	private map map;
-
+	private boolean movingArea;
 	private final static Set<Integer> forbid = new HashSet<>(Set.of(0, 2, 3, 4));
 
 	public WorldCollision(map m) {
@@ -35,6 +35,8 @@ public class WorldCollision {
 		if (isOutOfBounds(indX1, indY1) || isOutOfBounds(indX2, indY2)) {
 			return true; // Consider out-of-bounds as a collision
 		}
+		movingArea = (map.arr[indY1][indX1] == 88 || map.arr[indY2][indX2] == 88 || map.arr[indY1][indX2] == 88
+				|| map.arr[indY2][indX1] == 88);
 
 		if (forbid.contains(map.arr[indY1][indX1]) || forbid.contains(map.arr[indY2][indX2])
 				|| forbid.contains(map.arr[indY1][indX2]) || forbid.contains(map.arr[indY2][indX1])) {
@@ -42,6 +44,10 @@ public class WorldCollision {
 		} else {
 			return false;
 		}
+	}
+
+	public boolean isMovingArea() {
+		return movingArea;
 	}
 
 }

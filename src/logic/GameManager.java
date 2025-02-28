@@ -2,24 +2,25 @@ package logic;
 
 
 	import world.map;
+import world.mapType;
 import entity.character.BaseCharacter;
 
 import javafx.scene.canvas.GraphicsContext;
 
 	public class  GameManager {
 
-	    private map map1;
+	    private map map;
 	
 
 	    public GameManager() {
-	        map1 = new map();
+	        map = new map(mapType.ISLAND);
 	
 	    }
 
 	    public void update(GraphicsContext gc) {
-	        gc.clearRect(0, 0, map1.getMapWidth(), map1.getMapHeight());
-	        map1.update(gc);
-	        for(BaseCharacter e: map1.getEntities()) {
+	        gc.clearRect(0, 0, map.getMapWidth(), map.getMapHeight());
+	        map.update(gc);
+	        for(BaseCharacter e: map.getEntities()) {
 	        	e.update(gc);
 	        }
 

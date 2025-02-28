@@ -77,6 +77,10 @@ public class Player extends BaseCharacter {
 				}
 			}
 		}
+		
+		if(wCollide.isMovingArea()&& keyboard.isActionPressed()) {
+			System.out.println("move");
+		}
 
 		gc.drawImage(pic, getPosX(), getPosY());
 
