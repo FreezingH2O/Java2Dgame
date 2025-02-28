@@ -16,11 +16,13 @@ public abstract class BaseCharacter {
 	protected WorldCollision wCollide;
 	protected static EntityCollision eCollide;
 	protected map map;
+	private String name;
 
-	public BaseCharacter(double posX, double posY, int health, int speed, int attack, int size, map map) {
+	public BaseCharacter(String name, double posX, double posY, int health, int speed, int attack, int size, map map) {
 		this.map = map;
 		eCollide = new EntityCollision(map.getEntities());
 		
+		setName(name);
 		maxHealth = health;
 		setPosX(posX);
 		setPosY(posY);
@@ -34,7 +36,11 @@ public abstract class BaseCharacter {
 
 	public abstract void update(GraphicsContext gc);
 	
-    public abstract void attackTarget(BaseCharacter target);
+	public void attackTarget(BaseCharacter target) {
+	       target.takeDamage(getAttack());
+	       System.out.println(getName()+" attack "+ target.getName());
+	         
+	    }
 
 	public int getHealth() {
 		return health;
@@ -115,6 +121,14 @@ public abstract class BaseCharacter {
 
 	public void setAttack(int attack) {
 		this.attack = attack;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

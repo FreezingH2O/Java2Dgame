@@ -20,8 +20,8 @@ public abstract class BaseWeapon {
     public abstract void attack(Player player, BaseMonster monster);  
     
     private double calculateDistance(Player player, BaseMonster monster) {  
-        double deltaX = monster.getX() - player.getX();  
-        double deltaY = monster.getY() - player.getY();  
+        double deltaX = monster.getPosX() - player.getPosX();  
+        double deltaY = monster.getPosY() - player.getPosY();  
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);  
     } 
 	

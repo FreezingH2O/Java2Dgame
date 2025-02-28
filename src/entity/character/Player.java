@@ -1,11 +1,18 @@
 package entity.character;
 
+import java.util.ArrayList;
+
 import collision.WorldCollision;
+import entity.ElementType;
+import entity.item.KeyItem;
+import entity.weapon.BaseWeapon;
+import entity.weapon.Sword;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import logic.KeyboardController;
 import world.camera;
 import world.map;
+import world.mapType;
 
 public class Player extends BaseCharacter {
 	private Image pic;
@@ -13,10 +20,20 @@ public class Player extends BaseCharacter {
 	private boolean xCheck, yCheck;
 	private KeyboardController keyboard;
 	private camera camera;
+	private int mana, maxMana;
+	private ArrayList<KeyItem> keyItemList;
+	private ArrayList<BaseWeapon> weaponList;
+	private BaseWeapon heldWeapon;
+	
+	public Player(double posX, double posY, int speed, int health, int mana, int attack, int size, map map) {
+		super("Player", posX, posY, health, speed, attack, size, map);
 
-	public Player(double posX, double posY, int speed, int health, int attack, int size, map map) {
-		   super(posX, posY, health, speed, attack, size,map);
-
+		setMana(mana);
+		setMaxMana(mana);
+		keyItemList = new ArrayList<KeyItem>();
+		weaponList = new ArrayList<BaseWeapon>();
+	setHeldWeapon(new Sword("normal sword", 10, 10, 10,ElementType.FIRE));
+		
 		up = new Image("player/up.png");
 		down1 = new Image("player/down1.png");
 		down2 = new Image("player/down2.png");
@@ -29,7 +46,7 @@ public class Player extends BaseCharacter {
 		xCheck = true;
 		yCheck = true;
 		pic = still;
-		
+
 		wCollide = new WorldCollision(map);
 		camera = new camera(map);
 		keyboard = new KeyboardController();
@@ -64,22 +81,27 @@ public class Player extends BaseCharacter {
 		}
 		// System.out.println(x);
 
-		if (!wCollide.isCollide(x, y,48)&& !eCollide.isColliding(this, x, y)) {
+		if (!wCollide.isCollide(x, y, 48) && !eCollide.isColliding(this, x, y)) {
 			setPosX(x);
 			setPosY(y);
 		}
-		
-		if(eCollide.isColliding(this, x, y)) {
 
-			if(eCollide.getTarget() instanceof BaseMonster) {
-				if(keyboard.isSpacePressed()) {
+		if (eCollide.isColliding(this, x, y)) {
+
+			if (eCollide.getTarget() instanceof BaseMonster) {
+				if (keyboard.isSpacePressed()) {
 					attackTarget(eCollide.getTarget());
 				}
 			}
 		}
-		
-		if(wCollide.isMovingArea()&& keyboard.isActionPressed()) {
+
+		if (wCollide.isMovingArea() && keyboard.isActionPressed()) {
 			System.out.println("move");
+			if(map.getMapType()==mapType.ISLAND) {
+				map.changeMap(mapType.DUNGEON);
+			}
+			else {
+			map.changeMap(mapType.ISLAND);}
 		}
 
 		gc.drawImage(pic, getPosX(), getPosY());
@@ -87,15 +109,61 @@ public class Player extends BaseCharacter {
 		camera.cameraMove(getPosX(), getPosY());
 
 	}
-	public void attackTarget(BaseCharacter target) {
-	       target.takeDamage(getAttack());
-	       System.out.println("player attack "+ target.getClass());
-	         
-	    }
+
 	
+
+	public void addKeyItem(KeyItem item) {
+		keyItemList.add(item);
+	}
+	
+	
+	
+	
+	public ArrayList<BaseWeapon> getWeaponList() {
+		return weaponList;
+	}
+
+	public void setWeaponList(ArrayList<BaseWeapon> weaponList) {
+		this.weaponList = weaponList;
+	}
+
+	public BaseWeapon getHeldWeapon() {
+		return heldWeapon;
+	}
+
+	public void setHeldWeapon(BaseWeapon heldWeapon) {
+		this.heldWeapon = heldWeapon;
+	}
+
+	public ArrayList<KeyItem> getKeyItemList() {
+		return keyItemList;
+	}
+
+	public void setKeyItemList(ArrayList<KeyItem> keyItemList) {
+		this.keyItemList = keyItemList;
+	}
+
 	public void setPic(Image pic) {
 		this.pic = pic;
 
 	}
+
+	public int getMana() {
+		return mana;
+	}
+
+	public void setMana(int mana) {
+		this.mana = mana;
+	}
+
+	public int getMaxMana() {
+		return maxMana;
+	}
+
+	public void setMaxMana(int maxMana) {
+		this.maxMana = maxMana;
+	}
+	
+	
 
 }

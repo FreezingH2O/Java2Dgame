@@ -21,7 +21,7 @@ public class Sword extends BaseWeapon {
 			damage *= 2; 
 		}
 		monster.setHealth(monster.getHealth() - damage);
-		System.out.println(player.getName() + " slashes " + monster.getName() + " for " + damageDealt + " damage.");
+		System.out.println(player.getName() + " slashes " + monster.getName() + " for " + damage + " damage.");
 
 	}
 

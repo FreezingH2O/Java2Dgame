@@ -9,10 +9,6 @@ public class FinalBoss extends HighMonster {
         super(MonsterType.FINAL_BOSS,posX, posY, health, speed, attack,96,map);
     }
 
-	public void attackTarget(BaseCharacter target) {
-	       target.takeDamage(getAttack());
-	         
-	    }
 
 
     public void ultimateAbility() {
