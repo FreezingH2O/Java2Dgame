@@ -3,7 +3,7 @@ package entity.character;
 import collision.EntityCollision;
 import collision.WorldCollision;
 import javafx.scene.canvas.GraphicsContext;
-import world.map;
+import world.Map;
 
 public abstract class BaseCharacter {
 	private double posX, posY;
@@ -15,10 +15,10 @@ public abstract class BaseCharacter {
 	private int attack;
 	protected WorldCollision wCollide;
 	protected static EntityCollision eCollide;
-	protected map map;
+	protected Map map;
 	private String name;
 
-	public BaseCharacter(String name, double posX, double posY, int health, int speed, int attack, int size, map map) {
+	public BaseCharacter(String name, double posX, double posY, int health, int speed, int attack, int size, Map map) {
 		this.map = map;
 		eCollide = new EntityCollision(map.getEntities());
 		

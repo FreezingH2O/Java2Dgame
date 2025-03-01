@@ -14,9 +14,9 @@ import entity.character.Player;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import main.main;
+import main.Main;
 
-public class map {
+public class Map {
 	private Image grass = new Image("background/grass.png");
 	private Image brick = new Image("background/Brick.png");
 	private Image water = new Image("background/water.png");
@@ -26,17 +26,17 @@ public class map {
 	private Image smallStone = new Image("background/smallstone.png");
 	private Image dungeonBg = new Image("background/dungeonBg.png");
 	private Image grayBrick = new Image("background/grayBrick.png");
-	private mapType mapType;
+	private MapType mapType;
 
 	public int[][] arr;
 	private int tileSize = 48;
 	private int mapWidth, mapHeight;
 	private ArrayList<BaseCharacter> entities;
 
-	public map(mapType type) {
+	public Map(MapType type) {
 		mapType = type;
 		entities = new ArrayList<BaseCharacter>();
-		arr = new int[main.getMapSize()][main.getMapSize()];
+		arr = new int[Main.getMapSize()][Main.getMapSize()];
 		setArr(type);
 
 		this.mapHeight = arr.length * tileSize;
@@ -83,7 +83,7 @@ else if(mapType== mapType.DUNGEON) {
 				
 				
 				if (arr[y][x] == 99) {
-					entities.add(new Player(x * tileSize, y * tileSize, 3, 50, 100, 20, 48, this));
+					entities.add(new Player(x * tileSize, y * tileSize, 3, 200, 100, 20, 48, this));
 					arr[y][x] = 1;
 
 				} else if (arr[y][x] == 91) {
@@ -100,7 +100,7 @@ else if(mapType== mapType.DUNGEON) {
 
 	}
 
-	public void changeMap(mapType mapType) {
+	public void changeMap(MapType mapType) {
 		setMapType(mapType);
 		setArr(mapType);
 		entitiesClear();
@@ -114,11 +114,11 @@ else if(mapType== mapType.DUNGEON) {
 		return entities;
 	}
 
-	public mapType getMapType() {
+	public MapType getMapType() {
 		return mapType;
 	}
 
-	public void setMapType(mapType mapType) {
+	public void setMapType(MapType mapType) {
 		this.mapType = mapType;
 	}
 
@@ -135,10 +135,10 @@ else if(mapType== mapType.DUNGEON) {
 		return arr;
 	}
 
-	public void setArr(mapType type) {
+	public void setArr(MapType type) {
 
 		String filename = "map/" + type + ".txt";
-		int[][] newArr = new int[main.getMapSize()][main.getMapSize()];
+		int[][] newArr = new int[Main.getMapSize()][Main.getMapSize()];
 
 		try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filename)) {
 			if (inputStream == null) {
@@ -148,9 +148,9 @@ else if(mapType== mapType.DUNGEON) {
 			String line;
 			int row = 0;
 
-			while ((line = br.readLine()) != null && row < main.getMapSize()) {
+			while ((line = br.readLine()) != null && row < Main.getMapSize()) {
 				String[] values = line.split(" ");
-				for (int col = 0; col < main.getMapSize(); col++) {
+				for (int col = 0; col < Main.getMapSize(); col++) {
 					newArr[row][col] = Integer.parseInt(values[col]);
 				}
 				row++;

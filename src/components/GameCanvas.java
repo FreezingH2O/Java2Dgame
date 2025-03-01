@@ -4,19 +4,18 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import logic.GameManager;
-import main.main;
+import main.Main;
 
 public class GameCanvas extends Canvas{
 	
 
 	
-	public static final int width = main.getMapSize() * 48, height = main.getMapSize() * 48;
+	public static final int width = Main.getMapSize() * 48, height = Main.getMapSize() * 48;
     private GraphicsContext gc;
     private GameManager gameManager;
 
     public GameCanvas() {
         super(width, height);
-      //  System.out.println(width + " " + height);
         gc = getGraphicsContext2D();
         gameManager = new GameManager();
         startGameLoop();

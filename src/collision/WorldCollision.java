@@ -3,16 +3,16 @@ package collision;
 import java.util.HashSet;
 import java.util.Set;
 
-import main.main;
-import world.map;
+import main.Main;
+import world.Map;
 
 public class WorldCollision {
-	private int tile = main.getTilesize();
-	private map map;
+	private int tile = Main.getTilesize();
+	private Map map;
 	private boolean movingArea;
 	private final static Set<Integer> forbid = new HashSet<>(Set.of(0, 2, 3, 4));
 
-	public WorldCollision(map m) {
+	public WorldCollision(Map m) {
 		map = m;
 
 	}

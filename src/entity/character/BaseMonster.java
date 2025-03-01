@@ -8,7 +8,7 @@ import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
-import world.map;
+import world.Map;
 
 public abstract class BaseMonster extends BaseCharacter {
 	private Random random = new Random();
@@ -21,7 +21,7 @@ public abstract class BaseMonster extends BaseCharacter {
 	private boolean frozen;
 
 	public BaseMonster(MonsterType type, double posX, double posY, int health, int speed, int attack, int size,
-			map map) {
+			Map map) {
 		super(type + " monster", posX, posY, health, speed, attack, size, map);
 		this.monsterType = type;
 		wCollide = new WorldCollision(map);

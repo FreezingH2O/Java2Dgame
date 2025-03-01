@@ -1,19 +1,19 @@
 package logic;
 
 
-	import world.map;
-import world.mapType;
+	import world.Map;
+import world.MapType;
 import entity.character.BaseCharacter;
 
 import javafx.scene.canvas.GraphicsContext;
 
 	public class  GameManager {
 
-	    private map map;
+	    private Map map;
 	
 
 	    public GameManager() {
-	        map = new map(mapType.ISLAND);
+	        map = new Map(MapType.ISLAND);
 	
 	    }
 

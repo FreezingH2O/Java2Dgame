@@ -3,6 +3,8 @@ package entity.character;
 import java.util.ArrayList;
 
 import collision.WorldCollision;
+import components.Instruction;
+import components.StatusDisplay;
 import entity.ElementType;
 import entity.item.KeyItem;
 import entity.weapon.BaseWeapon;
@@ -10,30 +12,32 @@ import entity.weapon.Sword;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import logic.KeyboardController;
-import world.camera;
-import world.map;
-import world.mapType;
+import world.Camera;
+import world.Map;
+import world.MapType;
 
 public class Player extends BaseCharacter {
 	private Image pic;
 	private static Image up, down1, down2, left1, left2, right1, right2, still;
 	private boolean xCheck, yCheck;
 	private KeyboardController keyboard;
-	private camera camera;
+	private Camera camera;
 	private int mana, maxMana;
 	private ArrayList<KeyItem> keyItemList;
 	private ArrayList<BaseWeapon> weaponList;
 	private BaseWeapon heldWeapon;
-	
-	public Player(double posX, double posY, int speed, int health, int mana, int attack, int size, map map) {
-		super("Player", posX, posY, health, speed, attack, size, map);
+	//private static Player instant;
 
+	public Player(double posX, double posY, int speed, int health, int mana, int attack, int size, Map map) {
+		super("Player", posX, posY, health, speed, attack, size, map);
+		//instant = new Player(posX, posY, speed, health, mana, attack, size, map);
 		setMana(mana);
 		setMaxMana(mana);
 		keyItemList = new ArrayList<KeyItem>();
 		weaponList = new ArrayList<BaseWeapon>();
-	setHeldWeapon(new Sword("normal sword", 10, 10, 10,ElementType.FIRE));
-		
+
+		setHeldWeapon(new Sword("normal sword", 10, 10, 10, ElementType.FIRE));
+
 		up = new Image("player/up.png");
 		down1 = new Image("player/down1.png");
 		down2 = new Image("player/down2.png");
@@ -48,7 +52,7 @@ public class Player extends BaseCharacter {
 		pic = still;
 
 		wCollide = new WorldCollision(map);
-		camera = new camera(map);
+		camera = new Camera(map);
 		keyboard = new KeyboardController();
 	}
 
@@ -95,30 +99,37 @@ public class Player extends BaseCharacter {
 			}
 		}
 
-		if (wCollide.isMovingArea() && keyboard.isActionPressed()) {
-			System.out.println("move");
-			if(map.getMapType()==mapType.ISLAND) {
-				map.changeMap(mapType.DUNGEON);
-			}
-			else {
-			map.changeMap(mapType.ISLAND);}
-		}
+		if (wCollide.isMovingArea()) {
+			Instruction.getInstant().updateText("Press E to enter");
+			if (keyboard.isActionPressed()) {
 
+				if (map.getMapType() == MapType.ISLAND) {
+					map.changeMap(MapType.DUNGEON);
+				} else {
+					map.changeMap(MapType.ISLAND);
+				}
+			}
+		} else {
+			Instruction.getInstant().updateText("");
+		}
 		gc.drawImage(pic, getPosX(), getPosY());
 
 		camera.cameraMove(getPosX(), getPosY());
 
 	}
-
 	
+	
+	public void takeDamage(int damage) {
+		System.out.println(getHealth());
+		StatusDisplay.takeDamage(damage);
+		super.takeDamage(damage);
+		
+	}
 
 	public void addKeyItem(KeyItem item) {
 		keyItemList.add(item);
 	}
-	
-	
-	
-	
+
 	public ArrayList<BaseWeapon> getWeaponList() {
 		return weaponList;
 	}
@@ -163,7 +174,5 @@ public class Player extends BaseCharacter {
 	public void setMaxMana(int maxMana) {
 		this.maxMana = maxMana;
 	}
-	
-	
 
 }
