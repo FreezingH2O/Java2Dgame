@@ -2,11 +2,13 @@ package entity.character;
 
 import java.util.Random;
 import collision.WorldCollision;
+import components.Bar;
 import entity.ElementType;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import world.Map;
 
@@ -19,6 +21,7 @@ public abstract class BaseMonster extends BaseCharacter {
 	protected MonsterType monsterType;
 	private ElementType elementType;
 	private boolean frozen;
+	private Bar healthBar;
 
 	public BaseMonster(MonsterType type, double posX, double posY, int health, int speed, int attack, int size,
 			Map map) {
@@ -27,14 +30,20 @@ public abstract class BaseMonster extends BaseCharacter {
 		wCollide = new WorldCollision(map);
 		startMoving();
 		setFrozen(false);
+
+		healthBar = new Bar(health, size, 8, Color.RED);
+
 		elementType = (type == MonsterType.FINAL_BOSS || type == MonsterType.LOW_CLASS) ? entity.ElementType.NONE
 				: entity.ElementType.valueOf(type.name());
 	}
 
-
-
 	public void update(GraphicsContext gc) {
-		gc.drawImage(pic, getPosX(), getPosY());
+		if (isDeath()) {
+			System.out.println(getName() + " is death");
+		} else {
+			gc.drawImage(pic, getPosX(), getPosY());
+			healthBar.render(gc, getPosX(), getPosY() - 10, getHealth());
+		}
 	}
 
 	private void moveRandomly(WorldCollision worldCollision) {

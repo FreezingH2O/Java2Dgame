@@ -101,8 +101,9 @@ public class Player extends BaseCharacter {
 
 		if (wCollide.isMovingArea()) {
 			Instruction.getInstant().updateText("Press E to enter");
+			
 			if (keyboard.isActionPressed()) {
-
+ 
 				if (map.getMapType() == MapType.ISLAND) {
 					map.changeMap(MapType.DUNGEON);
 				} else {

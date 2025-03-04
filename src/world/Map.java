@@ -26,6 +26,8 @@ public class Map {
 	private Image smallStone = new Image("background/smallstone.png");
 	private Image dungeonBg = new Image("background/dungeonBg.png");
 	private Image grayBrick = new Image("background/grayBrick.png");
+	private Image dgfloor = new Image("background/dgfloor.png");
+	
 	private MapType mapType;
 
 	public int[][] arr;
@@ -72,7 +74,7 @@ else if(mapType== mapType.DUNGEON) {
 	if (arr[y][x] == 0) {
 		gc.drawImage(dungeonBg, x * tileSize, y * tileSize);
 	} else if (arr[y][x] == 1) {
-		gc.drawImage(floor, x * tileSize, y * tileSize);
+		gc.drawImage(dgfloor, x * tileSize, y * tileSize);
 	} else if (arr[y][x] == 2) {
 		gc.drawImage(grayBrick, x * tileSize, y * tileSize);
 	}
@@ -87,10 +89,10 @@ else if(mapType== mapType.DUNGEON) {
 					arr[y][x] = 1;
 
 				} else if (arr[y][x] == 91) {
-					entities.add(new HighMonster(MonsterType.FIRE, x * tileSize, y * tileSize, 3, 100, 20, 96, this));
+					entities.add(new HighMonster(MonsterType.FIRE, x * tileSize, y * tileSize, 6, 100, 20, 96, this));
 					arr[y][x] = 1;
 				} else if (arr[y][x] == 92) {
-					entities.add(new HighMonster(MonsterType.WATER, x * tileSize, y * tileSize, 3, 100, 20, 96, this));
+					entities.add(new HighMonster(MonsterType.WATER, x * tileSize, y * tileSize, 6, 100, 20, 96, this));
 					arr[y][x] = 1;
 
 				}

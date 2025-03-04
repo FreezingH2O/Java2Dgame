@@ -21,6 +21,7 @@ import javafx.scene.canvas.GraphicsContext;
 	        gc.clearRect(0, 0, map.getMapWidth(), map.getMapHeight());
 	        map.update(gc);
 	        for(BaseCharacter e: map.getEntities()) {
+	        	
 	        	e.update(gc);
 	        }
 
