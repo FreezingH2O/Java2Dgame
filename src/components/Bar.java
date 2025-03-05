@@ -85,7 +85,6 @@ public class Bar extends Pane {
 
 	public void setbgWidth(double width) {
 		background.setWidth(width);
-		System.out.println("change widht");
 		this.width = width;
 	}
 

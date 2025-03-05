@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,100 +19,88 @@ import javafx.scene.image.Image;
 import main.Main;
 
 public class Map {
-    private HashMap<Integer, Image> islandImages = new HashMap<>();
-    private MapType mapType;
-    public int[][] arr;
-    private int tileSize = 48;
-    private int mapWidth, mapHeight;
-	private ArrayList<BaseCharacter> entities;
-    
-    public Map(MapType type) {
-        mapType = type;
-    	entities = new ArrayList<BaseCharacter>();
-        arr = new int[Main.getMapSize()][Main.getMapSize()];
-        setArr(type);
+	private HashMap<Integer, Image> islandImages = new HashMap<>();
+	private MapType mapType;
+	public int[][] arr;
+	private int tileSize = 48;
+	private int mapWidth, mapHeight;
+	private static ArrayList<BaseCharacter> entities;
+	private Image house = new Image("house.png");
+	private Image door = new Image("background/door.png");
 
-        this.mapHeight = arr.length * tileSize;
-        this.mapWidth = arr[0].length * tileSize;
+	public Map(MapType type) {
+		mapType = type;
+		entities = new ArrayList<BaseCharacter>();
+		arr = new int[Main.getMapSize()][Main.getMapSize()];
+		setArr(type);
 
-        // Load images into the HashMap
-        islandImages.put(0, new Image("island_bg/0.png"));
-        islandImages.put(1, new Image("island_bg/1.png"));
-        islandImages.put(2, new Image("island_bg/2.png"));
-        islandImages.put(3, new Image("island_bg/3.png"));
-        islandImages.put(4, new Image("island_bg/4.png"));
-        islandImages.put(5, new Image("island_bg/5.png"));
-        
-        islandImages.put(5252, new Image("island_bg/5252.png"));
-        islandImages.put(5253, new Image("island_bg/5253.png"));
-        islandImages.put(5254, new Image("island_bg/5254.png"));
-        islandImages.put(5255, new Image("island_bg/5255.png"));
-        islandImages.put(5256, new Image("island_bg/5256.png"));
-        islandImages.put(5257, new Image("island_bg/5257.png"));
-        islandImages.put(5258, new Image("island_bg/5258.png"));
-        islandImages.put(5259, new Image("island_bg/5259.png"));
-        islandImages.put(5260, new Image("island_bg/5260.png"));
-        islandImages.put(5261, new Image("island_bg/5261.png"));
-    }
+		this.mapHeight = arr.length * tileSize;
+		this.mapWidth = arr[0].length * tileSize;
 
+		// Load images into the HashMap
+		setImage();
+
+	}
 
 	public void update(GraphicsContext gc) {
 		for (int y = 0; y < arr.length; y++) {
 			for (int x = 0; x < arr[0].length; x++) {
-if(mapType== mapType.ISLAND) {
-	Image tileImage = islandImages.get(arr[y][x]);
-	   gc.drawImage(tileImage, x * tileSize, y * tileSize);
 				
-}
-//else if(mapType== mapType.DUNGEON) {
-//	if (arr[y][x] == 0) {
-//		gc.drawImage(dungeonBg, x * tileSize, y * tileSize);
-//	} else if (arr[y][x] == 1) {
-//		gc.drawImage(dgfloor, x * tileSize, y * tileSize);
-//	} else if (arr[y][x] == 2) {
-//		gc.drawImage(grayBrick, x * tileSize, y * tileSize);
-//	}
-//	else {
-//		gc.drawImage(grass, x * tileSize, y * tileSize);
-//	}
-//}
-				
-				
+					Image tileImage = islandImages.get(arr[y][x]);
+					if (tileImage == null)
+						gc.drawImage(islandImages.get(1), x * tileSize, y * tileSize);
+					else
+						gc.drawImage(tileImage, x * tileSize, y * tileSize);
+
+
 				if (arr[y][x] == 99) {
-					entities.add(new Player(x * tileSize, y * tileSize, 3, 200, 100, 20, 48, this));
+					Player.setInstant(new Player(x * tileSize, y * tileSize, 3, 200, 100, 20, 48, this));
+					entities.add(Player.getInstant());
 					arr[y][x] = 1;
 
-				} else if (arr[y][x] == 91) {
-					entities.add(new HighMonster(MonsterType.FIRE, x * tileSize, y * tileSize, 6, 100, 20, 96, this));
+				} else if (arr[y][x] == 91 && HighMonster.getHighBossLi().contains(MonsterType.FIRE + "")) {
+					entities.add(new HighMonster(MonsterType.FIRE, x * tileSize, y * tileSize, 6, 100, 10, 96, this));
 					arr[y][x] = 1;
-				} else if (arr[y][x] == 92) {
-					entities.add(new HighMonster(MonsterType.WATER, x * tileSize, y * tileSize, 6, 100, 20, 96, this));
-					arr[y][x] = 1;}
+				} else if (arr[y][x] == 92 && HighMonster.getHighBossLi().contains(MonsterType.WATER + "")) {
+					entities.add(new HighMonster(MonsterType.WATER, x * tileSize, y * tileSize, 6, 100, 10, 96, this));
+					arr[y][x] = 1;
+				} else if (arr[y][x] == 93 && HighMonster.getHighBossLi().contains(MonsterType.WIND + "")) {
+					entities.add(new HighMonster(MonsterType.WIND, x * tileSize, y * tileSize, 6, 100, 10, 96, this));
+					arr[y][x] = 1;
+				} else if (arr[y][x] == 94 && HighMonster.getHighBossLi().contains(MonsterType.DARK + "")) {
+					entities.add(new HighMonster(MonsterType.DARK, x * tileSize, y * tileSize, 6, 100, 10, 96, this));
+					arr[y][x] = 1;
+				}
 
-//				 else if (arr[y][x] == 55) {
-//					gc.drawImage(house, (x + 1) * tileSize - 160, (y + 1) * tileSize - 224);
-//
-//				}
+				else if (arr[y][x] == 55) {
+					gc.drawImage(house, (x + 1) * tileSize - 160, (y + 1) * tileSize - 224);
 
+				} else if (arr[y][x] == 89) {
+					gc.drawImage(door, (x + 1) * tileSize - 96, (y + 1) * tileSize - 96);
+
+				}
 
 			}
-		
 
-
-	}
+		}
 	}
 
 	public void changeMap(MapType mapType) {
 		setMapType(mapType);
 		setArr(mapType);
 		entitiesClear();
-		//Platform.runLater(()->{getEntities().clear();}) ;
-		
+		 //Platform.runLater(()->{getEntities().clear();}) ;
+
 	}
+
 	public void entitiesClear() {
-		Platform.runLater(()->{entities.clear();}) ;
+		Platform.runLater(() -> {
+			entities.clear();
+		});
+		System.out.println(entities.size());
 	}
-	public ArrayList<BaseCharacter> getEntities() {
+
+	public static ArrayList<BaseCharacter> getEntities() {
 		return entities;
 	}
 
@@ -123,7 +112,6 @@ if(mapType== mapType.ISLAND) {
 		this.mapType = mapType;
 	}
 
-	
 	public int getMapWidth() {
 		return mapWidth;
 	}
@@ -161,6 +149,37 @@ if(mapType== mapType.ISLAND) {
 		}
 
 		this.arr = newArr;
+		
+		setImage();
 	}
+
+	public void setImage() {
+	    islandImages.clear();
+	    tryLoadImage(getMapType() + "/0.png", 0);
+	    tryLoadImage(getMapType() + "/1.png", 1);
+	    tryLoadImage(getMapType() + "/2.png", 2);
+	    tryLoadImage(getMapType() + "/3.png", 3);
+	    tryLoadImage(getMapType() + "/4.png", 4);
+	    tryLoadImage(getMapType() + "/5.png", 5);
+	    tryLoadImage(getMapType() + "/5252.png", 5252);
+	    tryLoadImage(getMapType() + "/5253.png", 5253);
+	    tryLoadImage(getMapType() + "/5254.png", 5254);
+	    tryLoadImage(getMapType() + "/5255.png", 5255);
+	    tryLoadImage(getMapType() + "/5256.png", 5256);
+	    tryLoadImage(getMapType() + "/5257.png", 5257);
+	    tryLoadImage(getMapType() + "/5258.png", 5258);
+	    tryLoadImage(getMapType() + "/5259.png", 5259);
+	    tryLoadImage(getMapType() + "/5260.png", 5260);
+	    tryLoadImage(getMapType() + "/5261.png", 5261);
+	}
+
+	private void tryLoadImage(String path, int key) {
+	    try {
+	        islandImages.put(key, new Image(path));
+	    } catch (IllegalArgumentException e) {
+	        System.err.println("Could not load image: " + path);
+	    }
+	}
+
 
 }

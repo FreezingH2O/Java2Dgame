@@ -5,10 +5,11 @@ import entity.character.Player;
 public class ManaPotion extends BaseItem {
 
 	private int manaIncrease;
-
+	private int quntity;
 	public ManaPotion(int manaIncrease) {
-		super("Mana Potion");
+		super("manaPotion");
 		this.setManaIncrease(manaIncrease);
+		
 	}
 
 	public void use(Player player) {

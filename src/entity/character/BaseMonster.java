@@ -21,12 +21,11 @@ public abstract class BaseMonster extends BaseCharacter {
 	private int dx, dy;
 	private int moveDelay = 2000;
 	private Timeline movementTimer;
-	private static List<String> highBossLi = Arrays.asList("FIRE", "WIND", "WATER", "DARK");
 	protected MonsterType monsterType;
 	private ElementType elementType;
 	private boolean frozen;
 	private Bar healthBar;
-
+	private boolean canAttack = true;
 	public BaseMonster(MonsterType type, double posX, double posY, int health, int speed, int attack, int size,
 			Map map) {
 		super(type + " monster", posX, posY, health, speed, attack, size, map);
@@ -63,9 +62,22 @@ public abstract class BaseMonster extends BaseCharacter {
 			setPosY(newY);
 		}
 
-		if (eCollide.isColliding(this, newX, newY) && eCollide.isPlayerCollide()) {
-			attackTarget(eCollide.getTarget());
+	
+
+		if (eCollide.isPlayerCollide() && canAttack && map.getEntities().contains(this)) {
+		    canAttack = false; 
+		    attackTarget(eCollide.getTarget()); 
+
+		    
+		    Timeline delay = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+		        canAttack = true;
+		      //  System.out.println("Attack cooldown finished! You can attack again.");
+		    }));
+		    delay.setCycleCount(1);
+		    delay.play();
 		}
+
+
 	}
 
 	private void startMoving() {
@@ -118,13 +130,6 @@ public abstract class BaseMonster extends BaseCharacter {
 		this.frozen = frozen;
 	}
 
-	public static List<String> getHighBossLi() {
-		return highBossLi;
-	}
-
-	public static void setHighBossLi(List<String> highBossLi) {
-		BaseMonster.highBossLi = highBossLi;
-	}
 
 	
 	

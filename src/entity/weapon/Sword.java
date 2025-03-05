@@ -9,7 +9,7 @@ public class Sword extends BaseWeapon {
 	private ElementType elementType;
 
 	public Sword(String name, int attackRange, int damage, int durability, ElementType elementType) {
-		super(elementType + " Sword", 48, 10, 8);
+		super("sword", 110, 10, 8);
 		this.setElementType(elementType);
 	}
 

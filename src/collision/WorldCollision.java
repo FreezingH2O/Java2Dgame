@@ -11,7 +11,7 @@ public class WorldCollision {
 	private int tile = Main.getTilesize();
 	private Map map;
 	private boolean movingArea;
-	private final static Set<Integer> forbid = new HashSet<>(Set.of(0, 2, 4,5));
+	private final static Set<Integer> forbid = new HashSet<>(Set.of(0, 2, 4,5,8,55,89));
 
 	public WorldCollision(Map m) {
 		map = m;

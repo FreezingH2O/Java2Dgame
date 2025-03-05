@@ -1,5 +1,14 @@
 package components;
 
+import java.util.ArrayList;
+
+import entity.character.Player;
+import entity.item.BaseItem;
+import entity.weapon.BaseWeapon;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,50 +18,80 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Hotbar extends HBox {
-	private Button[] hotbarSlots;
+	private static Button[] hotbarSlots;
 
 	public Hotbar() {
 
 		this.setFocusTraversable(false);
+		this.setAlignment(Pos.BOTTOM_CENTER);
+		this.setPadding(new Insets(15));
+		this.setSpacing(0);
 
 		hotbarSlots = new Button[10];
 		for (int i = 0; i < hotbarSlots.length; i++) {
-			
+
 			Rectangle bg = new Rectangle(48, 48);
-			bg.setFill(Color.WHITE);
+			bg.setFill(Color.WHEAT);
 			bg.setArcWidth(10);
 			bg.setArcHeight(10);
-			
-			ImageView itemImage = new ImageView(new Image("Swordcute.png")); // Change this to your item image
+
+			ImageView itemImage = new ImageView();
+			itemImage.setImage(null); 
 			itemImage.setFitWidth(38);
 			itemImage.setFitHeight(38);
-			
+
 			ImageView borderImage = new ImageView(new Image("itemBorder.png"));
 
 			StackPane slotContent = new StackPane();
+			slotContent.setPadding(Insets.EMPTY);
+			slotContent.setAlignment(Pos.CENTER);
 			slotContent.getChildren().addAll(borderImage, bg, itemImage);
 
 			hotbarSlots[i] = new Button();
 			hotbarSlots[i].setGraphic(slotContent);
 			hotbarSlots[i].setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
 			hotbarSlots[i].setFocusTraversable(false);
+			hotbarSlots[i].setPadding(Insets.EMPTY);
 
 			final int index = i;
 			hotbarSlots[i].setOnMouseClicked(e -> {
 				System.out.println("Slot " + (index + 1) + " clicked");
+				if(Player.getInstant().getWeaponList().size()<=index) {
+					Player.getInstant().setHeldWeapon(null);
+				
+				}
+				else Player.getInstant().setHeldWeapon(Player.getInstant().getWeaponList().get(index));
+
 			});
 
 			this.getChildren().add(hotbarSlots[i]);
 		}
-		this.setTranslateX(100);
-		this.setTranslateY(main.Main.getHeight()-120);
 
 	}
 
-	public void updateSlot(int slotIndex, String itemName) {
+	public static void updateSlot(int slotIndex, BaseItem item) {
+		Platform.runLater(()->{
 		if (slotIndex >= 0 && slotIndex < hotbarSlots.length) {
-			hotbarSlots[slotIndex].setText(itemName);
+			
+			Rectangle bg = new Rectangle(48, 48);
+			bg.setFill(Color.WHEAT);
+			bg.setArcWidth(10);
+			bg.setArcHeight(10);
+			
+			ImageView itemImage = new ImageView(item.getPic());
+			itemImage.setFitWidth(38);
+			itemImage.setFitHeight(38);
+
+			ImageView borderImage = new ImageView(new Image("itemBorder.png"));
+
+			StackPane slotContent = new StackPane();
+			slotContent.setPadding(Insets.EMPTY);
+			slotContent.setAlignment(Pos.CENTER);
+			slotContent.getChildren().addAll(borderImage, bg, itemImage);
+			
+			hotbarSlots[slotIndex].setGraphic(slotContent);
 		}
+		});
 	}
 
 	public Button getSlotButton(int index) {

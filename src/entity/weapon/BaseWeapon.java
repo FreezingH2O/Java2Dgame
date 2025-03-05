@@ -1,17 +1,21 @@
 package entity.weapon;
 
+
+
 import entity.character.BaseMonster;
 import entity.character.Player;
+import entity.item.BaseItem;
+import javafx.scene.image.Image;
 
-public abstract class BaseWeapon {
+public abstract class BaseWeapon extends BaseItem{
 	protected String name;  
 	protected int attackRange;  
 	protected int damage;  
 	protected int durability;
 	
 	public BaseWeapon(String name, int attackRange, int damage, int durability) {
-		super();
-		this.setName(name);
+		super(name);
+		System.out.println(name);
 		this.setAttackRange(attackRange);
 		this.setDamage(damage);
 		this.setDurability(durability);
@@ -27,12 +31,6 @@ public abstract class BaseWeapon {
         if (durability > 0) { durability--; }  
     }  
 	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public int getAttackRange() {
 		return attackRange;
 	}

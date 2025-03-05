@@ -4,6 +4,7 @@ import java.io.ObjectInputFilter.Status;
 import java.util.ArrayList;
 
 import collision.WorldCollision;
+import components.Hotbar;
 import components.Instruction;
 import components.StatusDisplay;
 import entity.ElementType;
@@ -28,17 +29,20 @@ public class Player extends BaseCharacter {
 	private ArrayList<KeyItem> keyItemList;
 	private ArrayList<BaseWeapon> weaponList;
 	private BaseWeapon heldWeapon;
-	// private static Player instant;
+	 private static Player instant ;
 
 	public Player(double posX, double posY, int speed, int health, int mana, int attack, int size, Map map) {
 		super("Player", posX, posY, health, speed, attack, size, map);
 		// instant = new Player(posX, posY, speed, health, mana, attack, size, map);
 		setMana(mana);
 		setMaxMana(mana);
+		setMaxHealth(health);
 		keyItemList = new ArrayList<KeyItem>();
 		weaponList = new ArrayList<BaseWeapon>();
 
-		setHeldWeapon(new Sword("normal sword", 10, 10, 10, ElementType.FIRE));
+	   setHeldWeapon(null);
+		weaponList.add(new Sword("sword", 10, 10, 10, ElementType.FIRE));
+		Hotbar.updateSlot(0,weaponList.get(0));
 
 		up = new Image("player/up.png");
 		down1 = new Image("player/down1.png");
@@ -107,7 +111,7 @@ public class Player extends BaseCharacter {
 				if (keyboard.isSpacePressed()) {
 					attackTarget(eCollide.getTarget());
 					if(eCollide.getTarget().isDeath()) {
-						StatusDisplay.getInstant().gainExperience(30);
+						StatusDisplay.getInstant().gainExperience(20);
 					}
 				}
 			}
@@ -146,9 +150,10 @@ public class Player extends BaseCharacter {
 	    }
 	
 	public void takeDamage(int damage) {
-		System.out.println(getHealth());
+		int tmp = getHealth();
 		StatusDisplay.takeDamage(damage);
 		super.takeDamage(damage);
+		System.out.println(tmp +"->"+getHealth());
 
 	}
 
@@ -170,6 +175,8 @@ public class Player extends BaseCharacter {
 
 	public void setHeldWeapon(BaseWeapon heldWeapon) {
 		this.heldWeapon = heldWeapon;
+		if(heldWeapon ==null)StatusDisplay.updateEquipment(new Image("player/still.png"));
+		else StatusDisplay.updateEquipment(heldWeapon.getPic());
 	}
 
 	public ArrayList<KeyItem> getKeyItemList() {
@@ -200,5 +207,15 @@ public class Player extends BaseCharacter {
 	public void setMaxMana(int maxMana) {
 		this.maxMana = maxMana;
 	}
+
+	public static Player getInstant() {
+		return instant;
+	}
+
+	public static void setInstant(Player instant) {
+		Player.instant = instant;
+	}
+	
+	
 
 }

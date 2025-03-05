@@ -20,12 +20,11 @@ import javafx.scene.canvas.GraphicsContext;
 	    public void update(GraphicsContext gc) {
 	        gc.clearRect(0, 0, map.getMapWidth(), map.getMapHeight());
 	        map.update(gc);
-	        for(BaseCharacter e: map.getEntities()) {
-	        	
+	        for(BaseCharacter e: map.getEntities()) { 
 	        	e.update(gc);
 	        }
 
-	    
+	   // System.out.println(map.getEntities());
 	        
 	    }
 	}

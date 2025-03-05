@@ -1,5 +1,5 @@
 package world;
 
 public enum MapType {
-	ISLAND,DUNGEON, BOSSROOM
+	ISLAND,DUNGEON, BOSSROOM, HOUSE
 }
