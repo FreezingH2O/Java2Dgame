@@ -2,21 +2,24 @@ package entity.item;
 
 import entity.ElementType;
 import entity.character.Player;
+import entity.weapon.BaseWeapon;
 
 public class KeyItem extends BaseItem {
 
 	private ElementType elementType;
+	private int effectValue;
 	
-	public KeyItem(String name, ElementType elementType) {
+	public KeyItem(String name, ElementType elementType, int effectValue) {
 		super(elementType + " KeyItem"); 
 		this.setElementType(elementType);
+		this.setEffectValue(effectValue);
 	}
 
-	@Override
-	public void use(Player player) {
-		// TODO Auto-generated method stub
+	public void equip(Player player) {
 		player.addKeyItem(this);
-        System.out.println(player.getName() + " collected " + getName());  
+		BaseWeapon weapon = player.getHeldWeapon();
+		weapon.setDamage(weapon.getDamage()*(1+effectValue/100));
+		System.out.println(player.getName() + " equipped " + getName() + " and increased weapon damage by "+effectValue+"%");
 	}
 	
 	public ElementType getElementType() {
@@ -25,6 +28,14 @@ public class KeyItem extends BaseItem {
 
 	public void setElementType(ElementType elementType) {
 		this.elementType = elementType;
+	}
+	
+	public int getEffectValue() {
+		return effectValue;
+	}
+
+	public void setEffectValue(int effectValue) {
+		this.effectValue = Math.max(0, effectValue);
 	}
 
 }

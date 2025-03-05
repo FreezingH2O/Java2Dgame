@@ -11,9 +11,7 @@ public class ManaPotion extends BaseItem {
 		this.setManaIncrease(manaIncrease);
 	}
 
-	@Override
 	public void use(Player player) {
-		// TODO Auto-generated method stub
 		player.setMana(player.getMana() + manaIncrease);
 		System.out.println(player.getName() + " used " + getName() + " and increased mana by " + manaIncrease);
 	}

@@ -11,9 +11,7 @@ public class HealthPotion extends BaseItem {
 		this.setHealthIncrease(healthIncrease);
 	}
 
-	@Override
 	public void use(Player player) {
-		// TODO Auto-generated method stub
 		player.setHealth(player.getHealth() + healthIncrease);
 		System.out.println(player.getName() + " used " + getName() + " and increased health by " + healthIncrease);
 	}
