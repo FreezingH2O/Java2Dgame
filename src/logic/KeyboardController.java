@@ -7,7 +7,7 @@ public class KeyboardController {
 	static boolean downPressed = false;
 	static boolean leftPressed = false;
 	static boolean rightPressed = false;
-	static boolean spacePressed = false; 
+	static boolean spacePressed = false;
 	static boolean actionPressed = false;
 	private static KeyboardController keyboard;
 
@@ -27,7 +27,6 @@ public class KeyboardController {
 				spacePressed = true;
 			}
 		}
-
 		default -> {
 		}
 		}
@@ -48,8 +47,6 @@ public class KeyboardController {
 	public boolean isRightPressed() {
 		return rightPressed;
 	}
-	
-	
 
 	public boolean isActionPressed() {
 		return actionPressed;
