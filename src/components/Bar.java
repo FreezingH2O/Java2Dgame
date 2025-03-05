@@ -24,7 +24,7 @@ public class Bar extends Pane {
 
 		background = new Rectangle(width, height);
 		background.setFill(Color.GRAY);  
-		background.setStroke(Color.rgb(220,117,22)); 
+		background.setStroke(Color.rgb(101, 67, 33)); 
 		background.setStrokeWidth(2); 
 		background.setArcWidth(8);  
 		background.setArcHeight(10);
@@ -40,7 +40,7 @@ public class Bar extends Pane {
 
 		bar = new Rectangle(width, height);
 		bar.setFill(color); 
-		bar.setStroke(Color.rgb(220,117,22)); 
+		bar.setStroke(Color.rgb(101, 67, 33)); 
 		bar.setStrokeWidth(1.2); 
 		bar.setArcWidth(8);  
 		bar.setArcHeight(20);

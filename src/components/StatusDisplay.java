@@ -4,6 +4,8 @@ import javafx.geometry.Pos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -30,11 +32,11 @@ public class StatusDisplay extends Pane {
 		experience = 0;
 		expBar = new Bar(experienceToNextLevel[level], 200, 10, Color.GREEN);
 		expBar.setCurrentStat(0);
+		
+	    Image circleImage = new Image("circle.png"); 
 
-		Circle outerBorder = new Circle(65);
-		outerBorder.setFill(Color.rgb(220, 117, 22)); // Outer border color
-		outerBorder.setStroke(Color.rgb(150, 70, 15)); // Darker stroke
-		outerBorder.setStrokeWidth(5);
+        ImageView cir = new ImageView(circleImage);
+
 
 		DropShadow shadow = new DropShadow();
 		shadow.setColor(Color.rgb(100, 50, 10, 0.7)); // Dark brown shadow with some transparency
@@ -43,15 +45,11 @@ public class StatusDisplay extends Pane {
 		shadow.setOffsetY(5); // Vertical shadow offset
 
 		// Apply the shadow to the circle
-		outerBorder.setEffect(shadow);
-		outerBorder.setTranslateX(-25);
-		outerBorder.setTranslateY(35);
+		cir.setEffect(shadow);
+		cir.setTranslateX(-80);
+		cir.setTranslateY(-20);
 
-		Circle innerCircle = new Circle(60);
-		innerCircle.setFill(Color.rgb(255, 208, 126));
 
-		innerCircle.setTranslateX(-25);
-		innerCircle.setTranslateY(35);
 
 		levelUI = new Label("Level " + level);
 		levelUI.setFont(Font.font("tahoma", FontWeight.BOLD, 15));
@@ -73,7 +71,7 @@ public class StatusDisplay extends Pane {
 		manaBar.setTranslateX(30);
 		manaBar.setTranslateY(50);
 
-		this.getChildren().addAll(healthBar, manaBar, expBar, outerBorder, innerCircle, levelUI);
+		this.getChildren().addAll(healthBar, manaBar, expBar, cir, levelUI);
 
 		this.setTranslateX(120);
 		this.setTranslateY(50);

@@ -1,6 +1,7 @@
 package collision;
 
 import entity.character.BaseCharacter;
+import entity.character.BaseMonster;
 import entity.character.Player;
 
 import java.awt.Rectangle;
@@ -29,21 +30,27 @@ public class EntityCollision {
 						other.getSize());
 
 				if (entityBounds.intersects(otherBounds)) {
-					target = other;
-					if (other instanceof Player) {
-						this.playerCollide = true;
-					} else {
-						playerCollide = false;
-					}
 					return true;
 				}
 				
 				float distance = (float) Math.sqrt(
 					    Math.pow(entity.getPosX() - other.getPosX(), 2) + Math.pow(entity.getPosY() - other.getPosY(), 2)
 						);
-			    if (distance < minDistance) {
-			        minDistance = distance;
-			        closestEnemy = other;
+			    	
+			    	if(entity instanceof BaseMonster && other instanceof Player) {
+			    	    if (distance < minDistance && distance<=250) {
+			    		playerCollide = true;
+			    		   minDistance = distance;
+					        closestEnemy = other;
+			    	}
+			    	}
+			    	if(entity instanceof Player) {
+			    	    if (distance < minDistance && distance<=((Player) entity).getHeldWeapon().getAttackRange()) {
+			    		playerCollide = false;
+			    		   minDistance = distance;
+					        closestEnemy = other;
+			    	}
+			       
 			    }
 			}
 		}

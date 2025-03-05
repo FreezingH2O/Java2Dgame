@@ -1,5 +1,7 @@
 package entity.character;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import collision.WorldCollision;
 import components.Bar;
@@ -19,6 +21,7 @@ public abstract class BaseMonster extends BaseCharacter {
 	private int dx, dy;
 	private int moveDelay = 2000;
 	private Timeline movementTimer;
+	private static List<String> highBossLi = Arrays.asList("FIRE", "WIND", "WATER", "DARK");
 	protected MonsterType monsterType;
 	private ElementType elementType;
 	private boolean frozen;
@@ -115,4 +118,14 @@ public abstract class BaseMonster extends BaseCharacter {
 		this.frozen = frozen;
 	}
 
+	public static List<String> getHighBossLi() {
+		return highBossLi;
+	}
+
+	public static void setHighBossLi(List<String> highBossLi) {
+		BaseMonster.highBossLi = highBossLi;
+	}
+
+	
+	
 }

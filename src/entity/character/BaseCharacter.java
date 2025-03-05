@@ -7,14 +7,14 @@ import javafx.scene.shape.Rectangle;
 import world.Map;
 
 public abstract class BaseCharacter {
-	private double posX, posY;
-	private int size;
 	private int health;
 	private int maxHealth;
+	private double posX, posY;
 	private int speed;
+	private int size;
 	private boolean death;
 	private int attack;
-	protected Rectangle solidArea ;
+	protected Rectangle solidArea;
 	protected WorldCollision wCollide;
 	protected static EntityCollision eCollide;
 	protected Map map;
@@ -23,7 +23,7 @@ public abstract class BaseCharacter {
 	public BaseCharacter(String name, double posX, double posY, int health, int speed, int attack, int size, Map map) {
 		this.map = map;
 		eCollide = new EntityCollision(map.getEntities());
-		
+
 		setName(name);
 		maxHealth = health;
 		setPosX(posX);
@@ -33,16 +33,18 @@ public abstract class BaseCharacter {
 		this.speed = speed;
 		this.size = size;
 		setDeath(false);
-		
+
 	}
 
 	public abstract void update(GraphicsContext gc);
-	
+
 	public void attackTarget(BaseCharacter target) {
-	       target.takeDamage(getAttack());
-	       System.out.println(getName()+" attack "+ target.getName());
-	         
-	    }
+		if (target == null) return;
+
+		target.takeDamage(getAttack());
+		System.out.println(getName() + " attack " + target.getName());
+
+	}
 
 	public int getHealth() {
 		return health;
@@ -95,7 +97,7 @@ public abstract class BaseCharacter {
 
 	public void takeDamage(int damage) {
 		setHealth(getHealth() - damage);
-		
+
 	}
 
 	public int getSpeed() {

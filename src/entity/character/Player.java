@@ -61,6 +61,12 @@ public class Player extends BaseCharacter {
 		camera = new Camera(map);
 		keyboard = new KeyboardController();
 	}
+	
+	public void attackTarget(BaseCharacter target) {
+	       target.takeDamage(getAttack());
+	       System.out.println(getName()+" attack "+ target.getName());
+	         
+	    }
 
 	public void update(GraphicsContext gc) {
 		int speed = this.getSpeed();
@@ -89,7 +95,6 @@ public class Player extends BaseCharacter {
 		} else {
 			this.pic = still;
 		}
-		// System.out.println(x);
 
 		if (!wCollide.isCollide(x, y, solidArea) && !eCollide.isColliding(this, x, y)) {
 			setPosX(x);
@@ -128,6 +133,18 @@ public class Player extends BaseCharacter {
 
 	}
 
+	
+	public void attackTarget(BaseMonster target) {
+		if(heldWeapon!=null) {
+			target.takeDamage(heldWeapon.getDamage());
+		}
+		else {
+	       target.takeDamage(getAttack());
+	       }
+	       System.out.println(getName()+" attack "+ target.getName());
+	         
+	    }
+	
 	public void takeDamage(int damage) {
 		System.out.println(getHealth());
 		StatusDisplay.takeDamage(damage);

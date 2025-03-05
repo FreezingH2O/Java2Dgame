@@ -12,9 +12,6 @@ public class HighMonster extends BaseMonster{
         
     }
 
-	public MonsterType getMonsterType() {
-		return monsterType;
-	}
 
 	
 		
