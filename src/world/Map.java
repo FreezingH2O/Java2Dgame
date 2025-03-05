@@ -1,3 +1,4 @@
+// Map.java  
 package world;
 
 import java.io.BufferedReader;
@@ -27,6 +28,7 @@ public class Map {
 	private static ArrayList<BaseCharacter> entities;
 	private Image house = new Image("house.png");
 	private Image door = new Image("background/door.png");
+	private Player player;
 
 	public Map(MapType type) {
 		mapType = type;
@@ -36,6 +38,9 @@ public class Map {
 
 		this.mapHeight = arr.length * tileSize;
 		this.mapWidth = arr[0].length * tileSize;
+		// Now find and create the player and monsters *immediately* after loading the
+		// array.
+		createEntitiesFromMapData();
 
 		// Load images into the HashMap
 		setImage();
@@ -45,17 +50,30 @@ public class Map {
 	public void update(GraphicsContext gc) {
 		for (int y = 0; y < arr.length; y++) {
 			for (int x = 0; x < arr[0].length; x++) {
-				
-					Image tileImage = islandImages.get(arr[y][x]);
-					if (tileImage == null)
-						gc.drawImage(islandImages.get(1), x * tileSize, y * tileSize);
-					else
-						gc.drawImage(tileImage, x * tileSize, y * tileSize);
 
+				Image tileImage = islandImages.get(arr[y][x]);
+				if (tileImage == null)
+					gc.drawImage(islandImages.get(1), x * tileSize, y * tileSize);
+				else
+					gc.drawImage(tileImage, x * tileSize, y * tileSize);
 
+				if (arr[y][x] == 55) {
+					gc.drawImage(house, (x + 1) * tileSize - 160, (y + 1) * tileSize - 224);
+				}else if(arr[y][x] == 89) {
+					gc.drawImage(door, (x + 1) * tileSize - 96, (y + 1) * tileSize - 96);
+
+			}
+		}
+	}
+	}
+
+	private void createEntitiesFromMapData() {
+		for (int y = 0; y < arr.length; y++) {
+			for (int x = 0; x < arr[0].length; x++) {
 				if (arr[y][x] == 99) {
 					Player.setInstant(new Player(x * tileSize, y * tileSize, 3, 200, 100, 20, 48, this));
 					entities.add(Player.getInstant());
+					setPlayer(Player.getInstant());
 					arr[y][x] = 1;
 
 				} else if (arr[y][x] == 91 && HighMonster.getHighBossLi().contains(MonsterType.FIRE + "")) {
@@ -71,34 +89,28 @@ public class Map {
 					entities.add(new HighMonster(MonsterType.DARK, x * tileSize, y * tileSize, 6, 100, 10, 96, this));
 					arr[y][x] = 1;
 				}
-
-				else if (arr[y][x] == 55) {
-					gc.drawImage(house, (x + 1) * tileSize - 160, (y + 1) * tileSize - 224);
-
-				} else if (arr[y][x] == 89) {
-					gc.drawImage(door, (x + 1) * tileSize - 96, (y + 1) * tileSize - 96);
-
-				}
-
 			}
-
 		}
 	}
+
+
+	public void entitiesClear() {
+		Platform.runLater(() -> {
+			entities.clear();
+			
+		});
+	}
+
+	
 
 	public void changeMap(MapType mapType) {
 		setMapType(mapType);
 		setArr(mapType);
 		entitiesClear();
-		 //Platform.runLater(()->{getEntities().clear();}) ;
+		
 
 	}
 
-	public void entitiesClear() {
-		Platform.runLater(() -> {
-			entities.clear();
-		});
-		System.out.println(entities.size());
-	}
 
 	public static ArrayList<BaseCharacter> getEntities() {
 		return entities;
@@ -149,37 +161,46 @@ public class Map {
 		}
 
 		this.arr = newArr;
-		
+
 		setImage();
 	}
 
 	public void setImage() {
-	    islandImages.clear();
-	    tryLoadImage(getMapType() + "/0.png", 0);
-	    tryLoadImage(getMapType() + "/1.png", 1);
-	    tryLoadImage(getMapType() + "/2.png", 2);
-	    tryLoadImage(getMapType() + "/3.png", 3);
-	    tryLoadImage(getMapType() + "/4.png", 4);
-	    tryLoadImage(getMapType() + "/5.png", 5);
-	    tryLoadImage(getMapType() + "/5252.png", 5252);
-	    tryLoadImage(getMapType() + "/5253.png", 5253);
-	    tryLoadImage(getMapType() + "/5254.png", 5254);
-	    tryLoadImage(getMapType() + "/5255.png", 5255);
-	    tryLoadImage(getMapType() + "/5256.png", 5256);
-	    tryLoadImage(getMapType() + "/5257.png", 5257);
-	    tryLoadImage(getMapType() + "/5258.png", 5258);
-	    tryLoadImage(getMapType() + "/5259.png", 5259);
-	    tryLoadImage(getMapType() + "/5260.png", 5260);
-	    tryLoadImage(getMapType() + "/5261.png", 5261);
+		islandImages.clear();
+		tryLoadImage(getMapType() + "/0.png", 0);
+		tryLoadImage(getMapType() + "/1.png", 1);
+		tryLoadImage(getMapType() + "/2.png", 2);
+		tryLoadImage(getMapType() + "/3.png", 3);
+		tryLoadImage(getMapType() + "/4.png", 4);
+		tryLoadImage(getMapType() + "/5.png", 5);
+		tryLoadImage(getMapType() + "/5252.png", 5252);
+		tryLoadImage(getMapType() + "/5253.png", 5253);
+		tryLoadImage(getMapType() + "/5254.png", 5254);
+		tryLoadImage(getMapType() + "/5255.png", 5255);
+		tryLoadImage(getMapType() + "/5256.png", 5256);
+		tryLoadImage(getMapType() + "/5257.png", 5257);
+		tryLoadImage(getMapType() + "/5258.png", 5258);
+		tryLoadImage(getMapType() + "/5259.png", 5259);
+		tryLoadImage(getMapType() + "/5260.png", 5260);
+		tryLoadImage(getMapType() + "/5261.png", 5261);
 	}
 
 	private void tryLoadImage(String path, int key) {
-	    try {
-	        islandImages.put(key, new Image(path));
-	    } catch (IllegalArgumentException e) {
-	        System.err.println("Could not load image: " + path);
-	    }
+		try {
+			islandImages.put(key, new Image(path));
+		} catch (IllegalArgumentException e) {
+			System.err.println("Could not load image: " + path);
+		}
 	}
 
 
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {  
+        this.player = player;  
+    }
 }
+
