@@ -9,7 +9,7 @@ public class Sword extends BaseWeapon {
 	private ElementType elementType;
 
 	public Sword(String name, int attackRange, int damage, int durability, ElementType elementType) {
-		super(elementType + " Sword", 2, 5, 8);
+		super(elementType + " Sword", 48, 10, 8);
 		this.setElementType(elementType);
 	}
 
@@ -20,9 +20,8 @@ public class Sword extends BaseWeapon {
 		if (monster.getElementType() == elementType) {
 			damage *= 2; 
 		}
-		monster.setHealth(monster.getHealth() - damage);
+		monster.takeDamage(damage);
 		System.out.println(player.getName() + " slashes " + monster.getName() + " for " + damage + " damage.");
-
 	}
 
 	public ElementType getElementType() {

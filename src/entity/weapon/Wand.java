@@ -3,14 +3,32 @@ package entity.weapon;
 import entity.ElementType;
 import entity.character.BaseMonster;
 import entity.character.Player;
+import entity.effect.EffectManager;
+import entity.effect.Fireball;
 
 public class Wand extends BaseWeapon {
     private int manaCost;  
 
     public Wand(int manaCost) {  
-        super("Wand", 5, 10, 10);  
+        super("Wand", 4*48, 10, 5);  
         this.setManaCost(manaCost); 
     }  
+    
+    private void launchFireball(Player player, BaseMonster monster) {
+        double startX = player.getPosX();
+        double startY = player.getPosY();
+        double targetX = monster.getPosX();
+        double targetY = monster.getPosY();
+
+        double speed = 200; // pixels per second
+        double angle = Math.atan2(targetY - startY, targetX - startX);
+        double speedX = speed * Math.cos(angle);
+        double speedY = speed * Math.sin(angle);
+
+        Fireball fireball = new Fireball(startX, startY, speedX, speedY);
+        EffectManager.getInstance().addEffect(fireball);
+    }
+    
 	@Override
 	public void attack(Player player, BaseMonster monster) {
 		// TODO Auto-generated method stub
@@ -29,6 +47,8 @@ public class Wand extends BaseWeapon {
         } else {  
             System.out.println(monster.getName() + " is immune to the wand's effect!");  
         }  
+		
+		launchFireball(player, monster);
     
 	}
 	public int getManaCost() {

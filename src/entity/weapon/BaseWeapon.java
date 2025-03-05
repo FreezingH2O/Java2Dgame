@@ -19,15 +19,8 @@ public abstract class BaseWeapon {
 	
     public abstract void attack(Player player, BaseMonster monster);  
     
-    private double calculateDistance(Player player, BaseMonster monster) {  
-        double deltaX = monster.getPosX() - player.getPosX();  
-        double deltaY = monster.getPosY() - player.getPosY();  
-        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);  
-    } 
-	
 	public boolean isUsable(Player player, BaseMonster monster) {  
-        double distance = calculateDistance(player, monster);  
-        return durability > 0 && distance <= attackRange;  
+        return durability > 0;  
     }  
 	
 	protected void reduceDurability() {  
