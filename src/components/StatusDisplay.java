@@ -17,7 +17,7 @@ public class StatusDisplay extends Pane {
 	private static Bar expBar;
 	private static int level;
 	private static int experience;
-	private static int[] experienceToNextLevel = { 50, 75, 100, 150, 200, 300, 500 };
+	private static int[] experienceToNextLevel = { 30, 60, 100, 150, 210, 280, 360,450 ,550 };
 	private static Label levelUI;
 	public static StatusDisplay instant = new StatusDisplay();
 
@@ -101,6 +101,7 @@ public class StatusDisplay extends Pane {
 		System.out.println("exp: " + experience);
 		System.out.println("exp width: " + expBar.getWidth());
 		expBar.setCurrentStat(experience);
+		if(level>=8)return;
 		while (experience >= experienceToNextLevel[level]) {
 			levelUp();
 		}

@@ -45,7 +45,7 @@ public class Hotbar extends HBox {
 			this.getChildren().add(hotbarSlots[i]);
 		}
 		this.setTranslateX(100);
-		this.setTranslateY(600);
+		this.setTranslateY(main.Main.getHeight()-120);
 
 	}
 

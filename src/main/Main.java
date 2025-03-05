@@ -15,7 +15,7 @@ import logic.KeyboardController;
 public class Main extends Application {
 	public static Scene scene;
 	private static final int tileSize = 48;
-	private static final int col = 21, row = 15;
+	private static final int col = 21, row = 13;
 	private static StackPane root;
 	public static final int MAP_SIZE = 50;
 	public static final int width = col * tileSize, height = row * tileSize;

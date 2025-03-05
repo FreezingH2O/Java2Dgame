@@ -96,7 +96,7 @@ public class Player extends BaseCharacter {
 			setPosY(y);
 		}
 
-		if (eCollide.isColliding(this, x, y)) {
+		//if (eCollide.isColliding(this, x, y)) {
 
 			if (eCollide.getTarget() instanceof BaseMonster) {
 				if (keyboard.isSpacePressed()) {
@@ -106,7 +106,7 @@ public class Player extends BaseCharacter {
 					}
 				}
 			}
-		}
+		//}
 
 		if (wCollide.isMovingArea()) {
 			Instruction.getInstant().updateText("Press E to enter");
