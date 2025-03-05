@@ -3,6 +3,7 @@ package entity.character;
 import collision.EntityCollision;
 import collision.WorldCollision;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.Rectangle;
 import world.Map;
 
 public abstract class BaseCharacter {
@@ -13,6 +14,7 @@ public abstract class BaseCharacter {
 	private int speed;
 	private boolean death;
 	private int attack;
+	protected Rectangle solidArea ;
 	protected WorldCollision wCollide;
 	protected static EntityCollision eCollide;
 	protected Map map;
@@ -93,6 +95,7 @@ public abstract class BaseCharacter {
 
 	public void takeDamage(int damage) {
 		setHealth(getHealth() - damage);
+		
 	}
 
 	public int getSpeed() {

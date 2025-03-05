@@ -19,11 +19,11 @@ public class EntityCollision {
 	}
 
 	public boolean isColliding(BaseCharacter entity, double newX, double newY) {
-		Rectangle entityBounds = new Rectangle((int) newX, (int) newY, entity.getSize(), entity.getSize());
+		Rectangle entityBounds = new Rectangle((int) newX+8, (int) newY, entity.getSize()-20, entity.getSize());
 
 		for (BaseCharacter other : entities) {
 			if (other != entity) {
-				Rectangle otherBounds = new Rectangle((int) other.getPosX(), (int) other.getPosY(), other.getSize(),
+				Rectangle otherBounds = new Rectangle((int) other.getPosX()+8, (int) other.getPosY(), other.getSize()-20,
 						other.getSize());
 
 				if (entityBounds.intersects(otherBounds)) {

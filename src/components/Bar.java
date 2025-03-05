@@ -1,6 +1,7 @@
 package components;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -12,6 +13,7 @@ public class Bar extends Pane {
 	private double width;
 	private double height;
 	private Color color;
+	private Rectangle background;
 
 	public Bar(int maxStat, double width, double height, Color color) {
 		this.maxStat = maxStat;
@@ -20,20 +22,30 @@ public class Bar extends Pane {
 		this.height = height;
 		this.color = color;
 
-		Rectangle background = new Rectangle(width, height);
+		background = new Rectangle(width, height);
 		background.setFill(Color.GRAY);  
 		background.setStroke(Color.rgb(220,117,22)); 
-		background.setStrokeWidth(5); 
-		background.setArcWidth(20);  
-		background.setArcHeight(20);
+		background.setStrokeWidth(2); 
+		background.setArcWidth(8);  
+		background.setArcHeight(10);
+		
+		DropShadow shadow = new DropShadow();
+		shadow.setOffsetX(4); 
+		shadow.setOffsetY(4); 
+		shadow.setRadius(5);   
+		shadow.setColor(Color.rgb(50, 50, 50, 0.7));
+
+		background.setEffect(shadow);
 
 
 		bar = new Rectangle(width, height);
 		bar.setFill(color); 
 		bar.setStroke(Color.rgb(220,117,22)); 
 		bar.setStrokeWidth(1.2); 
-		bar.setArcWidth(20);  
+		bar.setArcWidth(8);  
 		bar.setArcHeight(20);
+		
+		bar.setTranslateX(5);
 
 
 		this.getChildren().addAll(background, bar);
@@ -69,4 +81,15 @@ public class Bar extends Pane {
 		this.currentStat = currentStat;
 		bar.setWidth(currentStat * width / maxStat);
 	}
+
+
+	public void setbgWidth(double width) {
+		background.setWidth(width);
+		System.out.println("change widht");
+		this.width = width;
+	}
+
+
+	
+	
 }

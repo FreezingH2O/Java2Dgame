@@ -9,6 +9,7 @@ import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import world.Map;
 
@@ -35,11 +36,15 @@ public abstract class BaseMonster extends BaseCharacter {
 
 		elementType = (type == MonsterType.FINAL_BOSS || type == MonsterType.LOW_CLASS) ? entity.ElementType.NONE
 				: entity.ElementType.valueOf(type.name());
+		
+		 solidArea = new Rectangle(45, 75);
+			solidArea.setX(8);
+			solidArea.setY(16);
 	}
 
 	public void update(GraphicsContext gc) {
 		if (isDeath()) {
-			System.out.println(getName() + " is death");
+			//System.out.println(getName() + " is death");
 		} else {
 			gc.drawImage(pic, getPosX(), getPosY());
 			healthBar.render(gc, getPosX(), getPosY() - 10, getHealth());
@@ -50,7 +55,7 @@ public abstract class BaseMonster extends BaseCharacter {
 		double newX = getPosX() + dx;
 		double newY = getPosY() + dy;
 
-		if (!worldCollision.isCollide(newX, newY, getSize()) && !eCollide.isColliding(this, newX, newY)) {
+		if (!worldCollision.isCollide(newX, newY, solidArea) && !eCollide.isColliding(this, newX, newY)) {
 			setPosX(newX);
 			setPosY(newY);
 		}

@@ -27,6 +27,7 @@ public class Map {
 	private Image dungeonBg = new Image("background/dungeonBg.png");
 	private Image grayBrick = new Image("background/grayBrick.png");
 	private Image dgfloor = new Image("background/dgfloor.png");
+	private Image house = new Image("house.png");
 	
 	private MapType mapType;
 
@@ -95,7 +96,11 @@ else if(mapType== mapType.DUNGEON) {
 					entities.add(new HighMonster(MonsterType.WATER, x * tileSize, y * tileSize, 6, 100, 20, 96, this));
 					arr[y][x] = 1;
 
+				} else if (arr[y][x] == 55) {
+					gc.drawImage(house, (x + 1) * tileSize - 160, (y + 1) * tileSize - 224);
+
 				}
+
 
 			}
 		}

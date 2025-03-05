@@ -1,5 +1,6 @@
 package entity.character;
 
+import java.io.ObjectInputFilter.Status;
 import java.util.ArrayList;
 
 import collision.WorldCollision;
@@ -11,6 +12,7 @@ import entity.weapon.BaseWeapon;
 import entity.weapon.Sword;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 import logic.KeyboardController;
 import world.Camera;
 import world.Map;
@@ -26,11 +28,11 @@ public class Player extends BaseCharacter {
 	private ArrayList<KeyItem> keyItemList;
 	private ArrayList<BaseWeapon> weaponList;
 	private BaseWeapon heldWeapon;
-	//private static Player instant;
+	// private static Player instant;
 
 	public Player(double posX, double posY, int speed, int health, int mana, int attack, int size, Map map) {
 		super("Player", posX, posY, health, speed, attack, size, map);
-		//instant = new Player(posX, posY, speed, health, mana, attack, size, map);
+		// instant = new Player(posX, posY, speed, health, mana, attack, size, map);
 		setMana(mana);
 		setMaxMana(mana);
 		keyItemList = new ArrayList<KeyItem>();
@@ -50,6 +52,10 @@ public class Player extends BaseCharacter {
 		xCheck = true;
 		yCheck = true;
 		pic = still;
+
+	 solidArea = new Rectangle(28, 28);
+		solidArea.setX(8);
+		solidArea.setY(16);
 
 		wCollide = new WorldCollision(map);
 		camera = new Camera(map);
@@ -85,7 +91,7 @@ public class Player extends BaseCharacter {
 		}
 		// System.out.println(x);
 
-		if (!wCollide.isCollide(x, y, 48) && !eCollide.isColliding(this, x, y)) {
+		if (!wCollide.isCollide(x, y, solidArea) && !eCollide.isColliding(this, x, y)) {
 			setPosX(x);
 			setPosY(y);
 		}
@@ -95,15 +101,18 @@ public class Player extends BaseCharacter {
 			if (eCollide.getTarget() instanceof BaseMonster) {
 				if (keyboard.isSpacePressed()) {
 					attackTarget(eCollide.getTarget());
+					if(eCollide.getTarget().isDeath()) {
+						StatusDisplay.getInstant().gainExperience(30);
+					}
 				}
 			}
 		}
 
 		if (wCollide.isMovingArea()) {
 			Instruction.getInstant().updateText("Press E to enter");
-			
+
 			if (keyboard.isActionPressed()) {
- 
+
 				if (map.getMapType() == MapType.ISLAND) {
 					map.changeMap(MapType.DUNGEON);
 				} else {
@@ -118,13 +127,12 @@ public class Player extends BaseCharacter {
 		camera.cameraMove(getPosX(), getPosY());
 
 	}
-	
-	
+
 	public void takeDamage(int damage) {
 		System.out.println(getHealth());
 		StatusDisplay.takeDamage(damage);
 		super.takeDamage(damage);
-		
+
 	}
 
 	public void addKeyItem(KeyItem item) {

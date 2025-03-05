@@ -23,7 +23,7 @@ public class Main extends Application {
 	public void start(Stage stage) {
 
 		GameCanvas canvas = new GameCanvas();
-		StatusDisplay statusDisplay = new StatusDisplay(200, 100);
+		StatusDisplay statusDisplay = StatusDisplay.getInstant();
 		Instruction instructions = Instruction.getInstant();
 		Hotbar hotbar = new Hotbar();
 
