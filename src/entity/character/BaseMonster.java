@@ -63,13 +63,15 @@ public abstract class BaseMonster extends BaseCharacter {
 		this.newX = getPosX() + dx;
 		this.newY = getPosY() + dy;
 
-		if (!worldCollision.isCollide(newX, newY, solidArea) && !eCollide.isColliding(this, newX, newY)) {
+		if (!worldCollision.isCollide(newX, newY, solidArea) && !eCollide.isColliding(this,newX, newY)) {
 			setPosX(newX);
 			setPosY(newY);
 		}
 
 		if (eCollide.isPlayerCollide() && canAttack && map.getEntities().contains(this)) {
 			canAttack = false;
+			//System.out.println(getName()+ " target "+this.eCollide.getTarget());
+			System.out.println(eCollide.getTarget());
 			attackTarget(eCollide.getTarget());
 
 			Timeline delay = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> {

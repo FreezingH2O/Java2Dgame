@@ -5,6 +5,7 @@ import java.util.List;
 
 import collision.EntityCollision;
 import collision.WorldCollision;
+import entity.effect.Fireball;
 import entity.effect.GameEffect;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,7 +24,7 @@ public abstract class BaseCharacter {
 	private List<GameEffect> effectsList = new ArrayList<>(); 
 	protected Rectangle solidArea;
 	protected WorldCollision wCollide;
-	protected static EntityCollision eCollide;
+	protected EntityCollision eCollide;
 	protected Map map;
 	private String name;
 
@@ -51,12 +52,12 @@ public abstract class BaseCharacter {
 	        return;
 	    System.out.println(getName()+" is shoot " +eCollide.getTarget().getName());
 	    for (GameEffect effect : effectsList) {
-	        effect.update();  
+	       // effect.update();  
 	        effect.render(gc);
 	        		
-	        if (effect.collidesWith(eCollide.getTarget().getSolidArea())) {
+	        if (effect.checkCollision(eCollide.getTarget())) {
 	        	eCollide.getTarget().takeDamage(getAttack());  
-	            effect.deactivate(); 
+	            //effect.deactivate(); 
 	        }
 	    }
 
@@ -68,7 +69,7 @@ public abstract class BaseCharacter {
 	    if (target == null)
 	        return;
 	 
-	    GameEffect fireball = new GameEffect(getPosX(), getPosY(), target.getPosX(),target.getPosX(),3);
+	    GameEffect fireball = new Fireball(getPosX(), getPosY(), target.getPosX(),target.getPosX(),2,target);
 	    
 
 	    effectsList.add(fireball);
@@ -76,9 +77,9 @@ public abstract class BaseCharacter {
 	    System.out.println(getName() + " attacks " + target.getName() + " with a fireball!");
 
 
-	    if (fireball.collidesWith(target.getSolidArea())) {
+	    if (fireball.checkCollision(target)) {
 	        target.takeDamage(this.getAttack());
-	        fireball.deactivate(); 
+	        //fireball.deactivate(); 
 	    }
 	}
 
@@ -93,9 +94,7 @@ public abstract class BaseCharacter {
 			this.health = 0;
 			setDeath(true);
 			if (this instanceof HighMonster) {
-				System.out.println(((HighMonster) this).getMonsterType() + "");
-				System.out.println("Class of HighBossLi: " + HighMonster.getHighBossLi().getClass());
-
+			
 				List<String> tmp = new ArrayList<>(HighMonster.getHighBossLi());
 				tmp.remove(((HighMonster) this).getMonsterType() + "");
 				System.out.println(tmp);

@@ -1,91 +1,55 @@
 package entity.effect;
 
+import entity.character.BaseCharacter;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
-public class GameEffect {
-    protected String name;
-    private Rectangle effectBound;
-    private Image effectImg;
-    private double speedX;
-    private double speedY;
-    private boolean isActive;
+public abstract class GameEffect {
 
+    protected double x, y;
+    protected boolean isActive;
+    protected double timeElapsed;
+    protected double duration;
+    protected Image effectImage;
 
-    // Constructor to specify the target position (x, y) and the speed of the fireball
-    public GameEffect(double x, double y, double targetX, double targetY, double speed) {
-        this.effectBound = new Rectangle(x, y, 20, 10);  
-        this.effectBound.setFill(Color.RED);  // Placeholder for effect shape, will be replaced by image
+    public GameEffect(double startX, double startY, double duration) {
+        this.x = startX;
+        this.y = startY;
+        this.duration = duration;
         this.isActive = true;
-      //  this.damage = damage;  // Set the damage of the effect (could be based on character's attack)
-
-        // Calculate the direction towards the target
-        double deltaX = targetX - x;
-        double deltaY = targetY - y;
-
-        // Calculate the length (distance) of the vector
-        double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-        // Normalize the direction (ensure the fireball moves at a constant speed)
-        this.speedX = (deltaX / distance) * speed;
-        this.speedY = (deltaY / distance) * speed;
-
-        // Set the effect image (use any image for the fire effect here)
-        setEffectImg(new Image("item/star.png"));  // Replace with fire image path
+        this.timeElapsed = 0;
     }
 
-    // Getters and Setters
-    public String getName() {
-        return name;
+    // Abstract method for subclasses to implement their specific update logic
+    public abstract void update(double deltaTime);
+
+    public abstract void render(GraphicsContext gc);
+
+    // Collision detection method
+    public boolean checkCollision(BaseCharacter target) {
+        Rectangle2D effectBound = new Rectangle2D(x - 16, y - 16, 32, 32);
+        Rectangle2D targetBound = new Rectangle2D(target.getPosX() - 24, target.getPosY() - 24,
+                target.getSolidArea().getWidth(), target.getSolidArea().getHeight());
+
+        return effectBound.intersects(targetBound);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public Rectangle getEffectBound() {
-        return effectBound;
+    public double getX() {
+        return x;
     }
 
-    public void setEffectBound(Rectangle effectBound) {
-        this.effectBound = effectBound;
+    public double getY() {
+        return y;
     }
 
-    public Image getEffectImg() {
-        return effectImg;
+    // Debugging method
+    public void debugTargetPosition(BaseCharacter target) {
+        System.out.println("Effect Position: (" + x + ", " + y + ")");
+        System.out.println("Target Position: (" + target.getPosX() + ", " + target.getPosY() + ")");
     }
-
-    public void setEffectImg(Image effectImg) {
-        this.effectImg = effectImg;
-    }
-
-
-    // Update the position of the effect
-    public void update() {
-        if (isActive) {
-            effectBound.setX(effectBound.getX() + speedX);  // Move the effect horizontally
-            effectBound.setY(effectBound.getY() + speedY);  // Move the effect vertically
-        }
-    }
-
-    // Collision check with target (Rectangle)
-    public boolean collidesWith(Rectangle target) {
-        return effectBound.getBoundsInParent().intersects(target.getBoundsInParent()); 
-    }
-
-    // Deactivate the effect
-    public void deactivate() {
-        isActive = false;
-    }
-
-    // Render the effect (draw the effect image on the GraphicsContext)
-    public void render(GraphicsContext gc) {
-        if (isActive) {
-            gc.drawImage(effectImg, effectBound.getX(), effectBound.getY());  // Draw the image at the current position
-        }
-    }
-
-
 }

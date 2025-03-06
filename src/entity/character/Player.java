@@ -101,8 +101,8 @@ public class Player extends BaseCharacter {
 		} else {
 			this.pic = still;
 		}
-
-		if (!wCollide.isCollide(x, y, solidArea) && !eCollide.isColliding(this, x, y)) {
+System.out.println(eCollide.isColliding(this,x, y));
+		if (!wCollide.isCollide(x, y, solidArea) && !eCollide.isColliding(this,x, y)) {
 			setPosX(x);
 			setPosY(y);
 		}
