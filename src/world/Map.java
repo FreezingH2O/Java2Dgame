@@ -20,14 +20,14 @@ import javafx.scene.image.Image;
 import main.Main;
 
 public class Map {
-	private HashMap<Integer, Image> islandImages = new HashMap<>();
+	private static HashMap<Integer, Image> islandImages = new HashMap<>();
 	private MapType mapType;
-	public int[][] arr;
+	public static int[][] arr;
 	private int tileSize = 48;
 	private int mapWidth, mapHeight;
 	private static ArrayList<BaseCharacter> entities;
-	private Image house = new Image("house.png");
-	private Image door = new Image("background/door.png");
+	private final static Image house = new Image("house.png");
+	private final static Image door = new Image("background/door.png");
 	private Player player;
 
 	public Map(MapType type) {
@@ -38,11 +38,8 @@ public class Map {
 
 		this.mapHeight = arr.length * tileSize;
 		this.mapWidth = arr[0].length * tileSize;
-		// Now find and create the player and monsters *immediately* after loading the
-		// array.
-		createEntitiesFromMapData();
 
-		// Load images into the HashMap
+		createEntitiesFromMapData();
 		setImage();
 
 	}
@@ -59,12 +56,13 @@ public class Map {
 
 				if (arr[y][x] == 55) {
 					gc.drawImage(house, (x + 1) * tileSize - 160, (y + 1) * tileSize - 224);
-				}else if(arr[y][x] == 89) {
+				} else if (arr[y][x] == 89) {
 					gc.drawImage(door, (x + 1) * tileSize - 96, (y + 1) * tileSize - 96);
 
+				}
 			}
 		}
-	}
+	
 	}
 
 	private void createEntitiesFromMapData() {
@@ -90,27 +88,26 @@ public class Map {
 					arr[y][x] = 1;
 				}
 			}
-		}
-	}
 
+		}
+		
+		System.out.println(Map.getEntities().size());
+	}
 
 	public void entitiesClear() {
 		Platform.runLater(() -> {
 			entities.clear();
-			
-		});
+		}) ;
 	}
-
-	
 
 	public void changeMap(MapType mapType) {
 		setMapType(mapType);
 		setArr(mapType);
 		entitiesClear();
-		
-
+		Platform.runLater(() -> {
+			createEntitiesFromMapData();
+		});
 	}
-
 
 	public static ArrayList<BaseCharacter> getEntities() {
 		return entities;
@@ -132,7 +129,7 @@ public class Map {
 		return mapHeight;
 	}
 
-	public int[][] getArr() {
+	public static int[][] getArr() {
 		return arr;
 	}
 
@@ -167,12 +164,14 @@ public class Map {
 
 	public void setImage() {
 		islandImages.clear();
+		
 		tryLoadImage(getMapType() + "/0.png", 0);
 		tryLoadImage(getMapType() + "/1.png", 1);
 		tryLoadImage(getMapType() + "/2.png", 2);
 		tryLoadImage(getMapType() + "/3.png", 3);
 		tryLoadImage(getMapType() + "/4.png", 4);
 		tryLoadImage(getMapType() + "/5.png", 5);
+		
 		tryLoadImage(getMapType() + "/5252.png", 5252);
 		tryLoadImage(getMapType() + "/5253.png", 5253);
 		tryLoadImage(getMapType() + "/5254.png", 5254);
@@ -208,14 +207,14 @@ public class Map {
 		}
 	}
 
-
-
 	public Player getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(Player player) {  
-        this.player = player;  
-    }
-}
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
 
+	
+
+}

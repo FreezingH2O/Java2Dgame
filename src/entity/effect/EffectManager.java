@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import entity.character.Player;
+
 public class EffectManager extends Thread {
     private static EffectManager instance;
     private CopyOnWriteArrayList<GameEffect> effects = new CopyOnWriteArrayList<>();
@@ -43,18 +45,26 @@ public class EffectManager extends Thread {
             if (!effect.isActive()) {
                 effects.remove(effect);
             }
+            
+         // if (effects.checkCollision(effects, target)) {
+            
+           
         }
     }
 
     public void render(GraphicsContext gc) {
         for (GameEffect effect : effects) {
             effect.render(gc);
+//            System.out.println(effect.getX()+" "+ effect.getY());
+//            System.out.println(Player.getInstant().getPosX()+" vv"+ Player.getInstant().getPosY());
         }
     }
 
     public void stopManager() {
         running = false;
     }
+    
+    
 }
 
 

@@ -1,6 +1,5 @@
 package entity.item;
 
-import entity.character.Player;
 import javafx.scene.image.Image;
 
 public class BaseItem {
@@ -10,7 +9,6 @@ public class BaseItem {
 	public BaseItem(String name) {
 		super();
 		this.name = name;
-		System.out.println("item/"+getName()+".png");
 		this.pic = new Image("item/"+getName()+".png");
 	}
 	

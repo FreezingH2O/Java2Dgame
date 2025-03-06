@@ -94,7 +94,7 @@ public class GameManager {
 
     public void setGameState(GameState gameState) {  
         this.gameState = gameState;  
-        Main.updateVisibility();
+        main.updateVisibility();
     }  
 
 

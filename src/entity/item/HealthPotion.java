@@ -1,5 +1,6 @@
 package entity.item;
 
+import components.StatusDisplay;
 import entity.character.Player;
 
 public class HealthPotion extends BaseItem {
@@ -15,6 +16,7 @@ public class HealthPotion extends BaseItem {
 
 	public void use(Player player) {
 		player.setHealth(player.getHealth() + healthIncrease);
+		StatusDisplay.heal(healthIncrease);
 		System.out.println(player.getName() + " used " + getName() + " and increased health by " + healthIncrease);
 	}
 
