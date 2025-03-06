@@ -98,6 +98,7 @@ public class StartScreen {
             adjustedY >= buttonY && adjustedY <= buttonY + BUTTON_HEIGHT) {  
         	gameManager.startGame();
             gameManager.setGameState(GameState.PLAYING);  
+            System.out.println("The start button is clicked");
         } else {  
             System.out.println("Click outside the button"); //Added this line  
             System.out.println("AdjustedX: " + adjustedX + ", adjustedY: " + adjustedY);  //Added this line  

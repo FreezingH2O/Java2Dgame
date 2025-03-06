@@ -184,20 +184,19 @@ public class Map {
 		tryLoadImage(getMapType() + "/5261.png", 5261);
 		
 		tryLoadImage(getMapType() + "/5270.png", 5270);
-		tryLoadImage(getMapType() + "/5271.png", 5271);
-		tryLoadImage(getMapType() + "/5272.png", 5272);
-		tryLoadImage(getMapType() + "/5273.png", 5273);
-		tryLoadImage(getMapType() + "/5274.png", 5274);
-		tryLoadImage(getMapType() + "/5275.png", 5275);
-		tryLoadImage(getMapType() + "/5276.png", 5276);
-		tryLoadImage(getMapType() + "/5277.png", 5277);
-		tryLoadImage(getMapType() + "/5278.png", 5278);
-		tryLoadImage(getMapType() + "/5279.png", 5279);
-		tryLoadImage(getMapType() + "/5280.png", 5280);
-		tryLoadImage(getMapType() + "/5281.png", 5281);
-		tryLoadImage(getMapType() + "/5282.png", 5282);
-		tryLoadImage(getMapType() + "/5283.png", 5283);
-
+        tryLoadImage(getMapType() + "/5271.png", 5271);
+        tryLoadImage(getMapType() + "/5272.png", 5272);
+        tryLoadImage(getMapType() + "/5273.png", 5273);
+        tryLoadImage(getMapType() + "/5274.png", 5274);
+        tryLoadImage(getMapType() + "/5275.png", 5275);
+        tryLoadImage(getMapType() + "/5276.png", 5276);
+        tryLoadImage(getMapType() + "/5277.png", 5277);
+        tryLoadImage(getMapType() + "/5278.png", 5278);
+        tryLoadImage(getMapType() + "/5279.png", 5279);
+        tryLoadImage(getMapType() + "/5280.png", 5280);
+        tryLoadImage(getMapType() + "/5281.png", 5281);
+        tryLoadImage(getMapType() + "/5282.png", 5282);
+        tryLoadImage(getMapType() + "/5283.png", 5283);
 	}
 
 	private void tryLoadImage(String path, int key) {

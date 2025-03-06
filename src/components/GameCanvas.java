@@ -3,6 +3,7 @@ package components;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import logic.GameManager;
 import logic.GameState;
 import main.Main;
@@ -19,8 +20,13 @@ public class GameCanvas extends Canvas {
 		gc = getGraphicsContext2D();
 		gameManager = new GameManager();
 		gameManager.setCanvas(this);
+		this.setOnMouseClicked(this::handleMouseClicked);  
 		startGameLoop();
 	}
+	
+	private void handleMouseClicked(MouseEvent event) {  
+        gameManager.handleMouseClicked(event);  
+    }  
 	
 	private void startGameLoop() {
 	new AnimationTimer() {
