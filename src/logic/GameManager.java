@@ -47,7 +47,7 @@ public class GameManager {
 	}
 
 	public void update(GraphicsContext gc) {
-		System.out.println("GameState: " + gameState);
+	//	System.out.println("GameState: " + gameState);
 		switch (gameState) {
 		case START_SCREEN:
 			startScreen.draw(gc);

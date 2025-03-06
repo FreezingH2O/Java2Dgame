@@ -1,55 +1,106 @@
 package entity.effect;
 
+import entity.ElementType;
 import entity.character.BaseCharacter;
-import javafx.geometry.Rectangle2D;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public abstract class GameEffect {
 
-    protected double x, y;
-    protected boolean isActive;
-    protected double timeElapsed;
-    protected double duration;
-    protected Image effectImage;
-
-    public GameEffect(double startX, double startY, double duration) {
+public class GameEffect {
+    private double x, y; 
+    private double speedX, speedY; 
+    private boolean isActive; 
+    private double speed; 
+    private Image pic;
+    private ElementType type;
+private BaseCharacter target;
+    public GameEffect(ElementType type ,double startX, double startY, double targetX, double targetY, double speed,BaseCharacter target) {
         this.x = startX;
         this.y = startY;
-        this.duration = duration;
+        this.speed = 2; speed = 2;
         this.isActive = true;
-        this.timeElapsed = 0;
+        this.target = target;
+       // System.out.println("skill/"+type+".gif");
+        this.type =type;
+        this.pic = new Image("skill/"+type+".gif");
+        
+
+        double dx = targetX - startX;
+        double dy = targetY - startY;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+
+
+        if (distance != 0) {
+            this.speedX = (dx / distance) * speed;
+            this.speedY = (dy / distance) * speed;
+        } else {
+            this.speedX = 0;
+            this.speedY = 0;
+        }
     }
 
-    // Abstract method for subclasses to implement their specific update logic
-    public abstract void update(double deltaTime);
+    public void update() {
+        if (!isActive) return;
 
-    public abstract void render(GraphicsContext gc);
+        x += speedX;
+        y += speedY;
 
-    // Collision detection method
-    public boolean checkCollision(BaseCharacter target) {
-        Rectangle2D effectBound = new Rectangle2D(x - 16, y - 16, 32, 32);
-        Rectangle2D targetBound = new Rectangle2D(target.getPosX() - 24, target.getPosY() - 24,
-                target.getSolidArea().getWidth(), target.getSolidArea().getHeight());
 
-        return effectBound.intersects(targetBound);
+        if (isTargetFarAway()) {
+            isActive = false; 
+        }
+    }
+
+    private boolean isTargetFarAway() {
+
+        int targetX = (int) target.getPosX();
+        int targetY = (int) target.getPosY();
+
+
+        double distance = Math.sqrt(Math.pow(x - targetX, 2) + Math.pow(y - targetY, 2));
+
+
+        final double MAX_DISTANCE = 500.0;
+
+        return distance > MAX_DISTANCE; 
+    }
+    
+    public void render(GraphicsContext gc) {
+        if (!isActive) return;
+
+        double scaleFactor = 0.8; 
+
+  
+        double resizedWidth = pic.getWidth() * scaleFactor;
+        double resizedHeight = pic.getHeight() * scaleFactor;
+
+        gc.save();
+        gc.translate(x, y);
+        if(type!=ElementType.WIND &&type!=ElementType.DARK ) {
+            double angle = Math.atan2(speedY, speedX); 
+            gc.rotate(Math.toDegrees(angle));}
+        
+        
+        
+        
+        gc.drawImage(pic, -resizedWidth / 1.5, -resizedHeight / 1.5, resizedWidth, resizedHeight);
+        gc.restore();
+    }
+
+    public boolean checkCollision(BaseCharacter player) {
+    	if (player == null)return false;
+//    	System.out.println(player.getPosX()+ " "+player.getPosY());
+//    	System.out.println(x+" "+y);
+        double distance = Math.sqrt(Math.pow(player.getPosX() - x, 2) + Math.pow(player.getPosY() - y, 2));
+        return distance < 20; 
+    }
+
+    public void deactivate() {
+        isActive = false;
     }
 
     public boolean isActive() {
         return isActive;
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    // Debugging method
-    public void debugTargetPosition(BaseCharacter target) {
-        System.out.println("Effect Position: (" + x + ", " + y + ")");
-        System.out.println("Target Position: (" + target.getPosX() + ", " + target.getPosY() + ")");
     }
 }

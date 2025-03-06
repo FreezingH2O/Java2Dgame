@@ -5,11 +5,9 @@ import java.util.List;
 
 import collision.EntityCollision;
 import collision.WorldCollision;
-import entity.effect.Fireball;
 import entity.effect.GameEffect;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import world.Map;
 
@@ -21,7 +19,7 @@ public abstract class BaseCharacter {
 	private int size;
 	private boolean death;
 	private int attack;
-	private List<GameEffect> effectsList = new ArrayList<>(); 
+	protected List<GameEffect> effectsList = new ArrayList<>();
 	protected Rectangle solidArea;
 	protected WorldCollision wCollide;
 	protected EntityCollision eCollide;
@@ -44,44 +42,27 @@ public abstract class BaseCharacter {
 	}
 
 	public void update(GraphicsContext gc) {
-	    if (isDeath()) {
-	        return;
-	    }
+		if (isDeath()) {
+			return;
+		}
+		
+		for (GameEffect effect : effectsList) {
+			if (effect.isActive()) {
+				effect.update();
+				effect.render(gc);
 
-	    if (eCollide.getTarget() == null)
-	        return;
-	    System.out.println(getName()+" is shoot " +eCollide.getTarget().getName());
-	    for (GameEffect effect : effectsList) {
-	       // effect.update();  
-	        effect.render(gc);
-	        		
-	        if (effect.checkCollision(eCollide.getTarget())) {
-	        	eCollide.getTarget().takeDamage(getAttack());  
-	            //effect.deactivate(); 
-	        }
-	    }
+				if (effect.checkCollision(eCollide.getTarget())) {
+					
+					eCollide.getTarget().takeDamage(this.getAttack());
+					effect.deactivate();
+				
+				}
+			}
+		}
 
-	    
 	}
 
-
-	public void attackTarget(BaseCharacter target) {
-	    if (target == null)
-	        return;
-	 
-	    GameEffect fireball = new Fireball(getPosX(), getPosY(), target.getPosX(),target.getPosX(),2,target);
-	    
-
-	    effectsList.add(fireball);
-
-	    System.out.println(getName() + " attacks " + target.getName() + " with a fireball!");
-
-
-	    if (fireball.checkCollision(target)) {
-	        target.takeDamage(this.getAttack());
-	        //fireball.deactivate(); 
-	    }
-	}
+	public abstract void attackTarget(BaseCharacter target) ;
 
 	public int getHealth() {
 		return health;
@@ -94,7 +75,7 @@ public abstract class BaseCharacter {
 			this.health = 0;
 			setDeath(true);
 			if (this instanceof HighMonster) {
-			
+
 				List<String> tmp = new ArrayList<>(HighMonster.getHighBossLi());
 				tmp.remove(((HighMonster) this).getMonsterType() + "");
 				System.out.println(tmp);
@@ -147,6 +128,7 @@ public abstract class BaseCharacter {
 
 	public void takeDamage(int damage) {
 		setHealth(getHealth() - damage);
+		
 
 	}
 

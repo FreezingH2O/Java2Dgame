@@ -98,11 +98,11 @@ public class StatusDisplay extends Pane {
 	}
 
 	public static void useMana(int amount) {
-		healthBar.updateBar(manaBar.getCurrentStat() - amount);
+		manaBar.updateBar(manaBar.getCurrentStat() - amount);
 	}
 
 	public static void regainMana(int amount) {
-		healthBar.updateBar(Math.min(manaBar.getCurrentStat() + amount,manaBar.getMaxStat()));
+		manaBar.updateBar(Math.min(manaBar.getCurrentStat() + amount,manaBar.getMaxStat()));
 	}
 
 	public static void gainExperience(int amount) {

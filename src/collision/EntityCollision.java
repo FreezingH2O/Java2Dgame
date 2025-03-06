@@ -13,7 +13,6 @@ public class EntityCollision {
 
 	private boolean playerCollide;
 	private BaseCharacter target;
-private BaseCharacter enitity;
 	public EntityCollision() {
 		this.playerCollide = false;
 		target = null;
@@ -38,8 +37,6 @@ private BaseCharacter enitity;
 						+ Math.pow(entity.getPosY() - other.getPosY(), 2));
 
 				if (entity instanceof BaseMonster && other instanceof Player) {
-//					System.out.println(entity.getName() + " " + distance);
-//					System.out.println(minDistance);
 					if (distance < minDistance) {
 						if (distance <= 200) {
 						
@@ -60,6 +57,10 @@ private BaseCharacter enitity;
 							closestEnemy = other;
 							
 						}
+					}else if(distance <=100){
+						playerCollide = false;
+						minDistance = distance;
+						closestEnemy = other;
 					}
 				}
 			}
