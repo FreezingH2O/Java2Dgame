@@ -8,11 +8,13 @@ import javafx.scene.image.Image;
 
 
 public class GameEffect {
-    private double x, y; 
-    private double speedX, speedY; 
-    private boolean isActive; 
+    protected double x;
+	protected double y; 
+    protected double speedX;
+	protected double speedY; 
+    protected boolean isActive; 
     private double speed; 
-    private Image pic;
+    protected Image pic;
     private ElementType type;
 private BaseCharacter target;
     public GameEffect(ElementType type ,double startX, double startY, double targetX, double targetY, double speed,BaseCharacter target) {
@@ -23,7 +25,8 @@ private BaseCharacter target;
         this.target = target;
        // System.out.println("skill/"+type+".gif");
         this.type =type;
-        this.pic = new Image("skill/"+type+".gif");
+        if(!(this instanceof arrow)) {
+        this.pic = new Image("skill/"+type+".gif");}
         
 
         double dx = targetX - startX;
@@ -93,7 +96,7 @@ private BaseCharacter target;
 //    	System.out.println(player.getPosX()+ " "+player.getPosY());
 //    	System.out.println(x+" "+y);
         double distance = Math.sqrt(Math.pow(player.getPosX() - x, 2) + Math.pow(player.getPosY() - y, 2));
-        return distance < 20; 
+        return distance < 10; 
     }
 
     public void deactivate() {

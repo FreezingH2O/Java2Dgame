@@ -10,10 +10,12 @@ import components.Instruction;
 import components.StatusDisplay;
 import entity.ElementType;
 import entity.effect.GameEffect;
+import entity.effect.arrow;
 import entity.item.BaseItem;
 import entity.item.HealthPotion;
 import entity.item.KeyItem;
 import entity.item.ManaPotion;
+import entity.weapon.Bow;
 import entity.weapon.BaseWeapon;
 import entity.weapon.Sword;
 import entity.weapon.Wand;
@@ -48,6 +50,7 @@ public class Player extends BaseCharacter {
 		setHeldWeapon(null);
 		weaponList.add(new Sword("sword", 10, 10, 10, ElementType.FIRE));
 		weaponList.add(new Wand(5));
+		weaponList.add(new Bow());
 		Hotbar.updateSlot(0, weaponList.get(0));
 
 		up = new Image("player/up.png");
@@ -76,11 +79,14 @@ public class Player extends BaseCharacter {
 	public void attackTarget(BaseCharacter target) {
 		if (heldWeapon != null) {
 			if(heldWeapon instanceof Wand) {
-				GameEffect fireball = new GameEffect(ElementType.MAGIC,getPosX(), getPosY(), target.getPosX(), target.getPosY(), 1, target);
-				effectsList.add(fireball);
+				GameEffect effect = new GameEffect(ElementType.MAGIC,getPosX(), getPosY(), target.getPosX(), target.getPosY(), 1, target);
+				effectsList.add(effect);
 				
 				setMana(mana-((Wand) heldWeapon).getManaCost());
 				StatusDisplay.getInstant().useMana(((Wand) heldWeapon).getManaCost());
+			}else if(heldWeapon instanceof Bow) {
+				GameEffect effect = new arrow(ElementType.NONE,getPosX(), getPosY(), target.getPosX(), target.getPosY(), 1, target);
+				effectsList.add(effect);
 			}
 			
 			target.takeDamage(heldWeapon.getDamage());
