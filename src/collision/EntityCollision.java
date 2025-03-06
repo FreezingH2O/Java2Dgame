@@ -11,7 +11,6 @@ import java.util.List;
 
 public class EntityCollision {
 
-
 	private boolean playerCollide;
 	private BaseCharacter target;
 
@@ -39,31 +38,33 @@ public class EntityCollision {
 						+ Math.pow(entity.getPosY() - other.getPosY(), 2));
 
 				if (entity instanceof BaseMonster && other instanceof Player) {
-					System.out.println(entity.getName()+ " "+ distance);
-					System.out.println("min: "+ minDistance);
-					if (distance < minDistance && distance <= 200) {
-						playerCollide = true;
-						minDistance = distance;
-						closestEnemy = other;
+					System.out.println(entity.getName() + " " + distance);
+					System.out.println(minDistance);
+					if (distance < minDistance) {
+						if (distance <=200) {
+							System.out.println(entity.getName() + "target the player");
+							playerCollide = true;
+							minDistance = distance;
+							closestEnemy = other;
+							setTarget(closestEnemy);
+						}
 					}
 				}
-				
-				else if (entity instanceof Player) {
-			if(((Player) entity).getHeldWeapon()!=null)//System.out.println("punch");
-			 if (distance <= ((Player) entity).getHeldWeapon().getAttackRange()) {
 
-						playerCollide = false;
-						minDistance = distance;
-						closestEnemy = other;
-					}
+				else if (entity instanceof Player) {
+					if (((Player) entity).getHeldWeapon() != null)// System.out.println("punch");
+						if (distance <= ((Player) entity).getHeldWeapon().getAttackRange()) {
+
+							playerCollide = false;
+							minDistance = distance;
+							closestEnemy = other;
+							setTarget(closestEnemy);
+						}
 
 				}
 			}
 
 		}
-		setTarget(closestEnemy);
-		if (playerCollide)
-		setTarget(Player.getInstant());
 
 		return false;
 	}

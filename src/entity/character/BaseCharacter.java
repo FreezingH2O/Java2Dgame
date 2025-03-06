@@ -5,10 +5,10 @@ import java.util.List;
 
 import collision.EntityCollision;
 import collision.WorldCollision;
-import entity.effect.EffectManager;
-import entity.effect.Fireball;
+import entity.effect.GameEffect;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import world.Map;
 
@@ -20,6 +20,7 @@ public abstract class BaseCharacter {
 	private int size;
 	private boolean death;
 	private int attack;
+	private List<GameEffect> effectsList = new ArrayList<>(); 
 	protected Rectangle solidArea;
 	protected WorldCollision wCollide;
 	protected static EntityCollision eCollide;
@@ -29,7 +30,6 @@ public abstract class BaseCharacter {
 	public BaseCharacter(String name, double posX, double posY, int health, int speed, int attack, int size, Map map) {
 		this.map = map;
 		eCollide = new EntityCollision();
-
 		setName(name);
 		maxHealth = health;
 		setPosX(posX);
@@ -42,15 +42,44 @@ public abstract class BaseCharacter {
 
 	}
 
-	public abstract void update(GraphicsContext gc);
+	public void update(GraphicsContext gc) {
+	    if (isDeath()) {
+	        return;
+	    }
+
+	    if (eCollide.getTarget() == null)
+	        return;
+	    System.out.println(getName()+" is shoot " +eCollide.getTarget().getName());
+	    for (GameEffect effect : effectsList) {
+	        effect.update();  
+	        effect.render(gc);
+	        		
+	        if (effect.collidesWith(eCollide.getTarget().getSolidArea())) {
+	        	eCollide.getTarget().takeDamage(getAttack());  
+	            effect.deactivate(); 
+	        }
+	    }
+
+	    
+	}
+
 
 	public void attackTarget(BaseCharacter target) {
-		if (target == null)
-			return;
+	    if (target == null)
+	        return;
+	 
+	    GameEffect fireball = new GameEffect(getPosX(), getPosY(), target.getPosX(),target.getPosX(),3);
+	    
 
-			target.takeDamage(getAttack());
-			System.out.println(getName() + " attack " + target.getName());
-		
+	    effectsList.add(fireball);
+
+	    System.out.println(getName() + " attacks " + target.getName() + " with a fireball!");
+
+
+	    if (fireball.collidesWith(target.getSolidArea())) {
+	        target.takeDamage(this.getAttack());
+	        fireball.deactivate(); 
+	    }
 	}
 
 	public int getHealth() {
