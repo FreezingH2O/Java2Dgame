@@ -43,8 +43,8 @@ public class GameManager {
         if (map.getPlayer() == null) {  
             throw new IllegalStateException("Map failed to initialize with a Player.");  
         }  
-
-        gameState = GameState.PLAYING;  
+        this.setGameState(gameState.PLAYING);
+//        gameState = GameState.PLAYING;  
     }  
 
 
@@ -55,10 +55,11 @@ public class GameManager {
                 startScreen.draw(gc);  
                 break;  
             case PLAYING:  
-                Player player = map.getPlayer();  
+                Player player = Player.getInstant();  
 
                 if (player.getHealth() <= 0) {  
-                    gameState = GameState.END_SCREEN;  
+//                    gameState = GameState.END_SCREEN;
+                	this.setGameState(gameState.END_SCREEN);
                 } else {  
                     gc.clearRect(0, 0, map.getMapWidth(), map.getMapHeight());  
                     map.update(gc);  
@@ -68,7 +69,7 @@ public class GameManager {
                             entity.update(gc);  
                         }  
                     }
-                    EffectManager.getInstance().render(gc);
+//                    EffectManager.getInstance().render(gc);
                 } 
                 
                 break;  
@@ -76,12 +77,13 @@ public class GameManager {
                 pauseScreen.draw(gc);  
                 break;  
             case END_SCREEN:  
-                endScreen.draw(gc);  
+//                endScreen.draw(gc);  
+            	endScreen.show();   
                 break;  
         }  
     }  
 
-    public void reset() {  
+    public void restartGame() {  
         Player player = map.getPlayer();  
         player.setHealth(player.getMaxHealth());  
         // reset other game variables (e.g., create a new map, reset entity positions)  
@@ -89,7 +91,10 @@ public class GameManager {
         if (map.getPlayer() == null) {  
             throw new IllegalStateException("Map failed to initialize with a Player.");  
         }  
-    }  
+//        gameState = GameState.PLAYING;
+        this.setGameState(gameState.PLAYING);
+        
+    }   
 
     public GameState getGameState() {  
         return gameState;  
@@ -97,10 +102,11 @@ public class GameManager {
 
     public void setGameState(GameState gameState) {  
         this.gameState = gameState;  
-        main.updateVisibility();
+        if (main != null) {  
+             Main.updateVisibility();  //THIS LINE IS IMPORTANT  
+        }  
     }  
-
-
+    
     public StartScreen getStartScreen() {  
         return startScreen;  
     }  

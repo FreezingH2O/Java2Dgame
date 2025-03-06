@@ -38,7 +38,7 @@ public class Main extends Application {
             if (currentState == GameState.START_SCREEN) {  
             	canvas.getGameManager().getStartScreen().handleInput(e.getX(), e.getY());  
             } else if (currentState == GameState.END_SCREEN) {  
-            	canvas.getGameManager().getEndScreen().handleInput(e.getX(), e.getY());  
+//            	canvas.getGameManager().getEndScreen().handleInput(e.getX(), e.getY());  
             } else if (currentState == GameState.PAUSED) {  
             	canvas.getGameManager().getPauseScreen().handleInput(e.getX(), e.getY());  
             }  
@@ -73,7 +73,9 @@ public class Main extends Application {
         if (currentState == GameState.PLAYING) {  
         	System.out.println("display game components");
             root.getChildren().addAll(statusDisplay, instructions, hotbar);  
-        }  
+        } else if (currentState == GameState.END_SCREEN) {  
+            root.getChildren().add(gameManager.getEndScreen().getEndScreenLayout());  
+        }   
     }  
 	public static void Main(String[] args) {
 
