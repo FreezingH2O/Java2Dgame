@@ -1,9 +1,12 @@
 package components;
 
 import java.util.ArrayList;
+import java.util.concurrent.ForkJoinPool.ManagedBlocker;
 
 import entity.character.Player;
 import entity.item.BaseItem;
+import entity.item.HealthPotion;
+import entity.item.ManaPotion;
 import entity.weapon.BaseWeapon;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -19,14 +22,19 @@ import javafx.scene.shape.Rectangle;
 
 public class Hotbar extends HBox {
 	private static Button[] hotbarSlots;
-
+	private static HealthPotion healthPotion;
+	private static ManaPotion manaPotion;
+	
 	public Hotbar() {
 
 		this.setFocusTraversable(false);
 		this.setAlignment(Pos.BOTTOM_CENTER);
 		this.setPadding(new Insets(15));
 		this.setSpacing(0);
-
+		
+		healthPotion = new  HealthPotion(20);
+		manaPotion= new ManaPotion(20);
+		
 		hotbarSlots = new Button[10];
 		for (int i = 0; i < hotbarSlots.length; i++) {
 
@@ -56,7 +64,13 @@ public class Hotbar extends HBox {
 			final int index = i;
 			hotbarSlots[i].setOnMouseClicked(e -> {
 				System.out.println("Slot " + (index + 1) + " clicked");
-				if(Player.getInstant().getWeaponList().size()<=index) {
+				if(index==8) {
+					healthPotion.use(Player.getInstant());
+					
+				}else if(index==9) {
+					manaPotion.use(Player.getInstant());
+				}
+				else if(Player.getInstant().getWeaponList().size()<=index) {
 					Player.getInstant().setHeldWeapon(null);
 				
 				}
@@ -66,6 +80,9 @@ public class Hotbar extends HBox {
 
 			this.getChildren().add(hotbarSlots[i]);
 		}
+		
+		updateSlot(8, healthPotion);
+		updateSlot(9, manaPotion);
 
 	}
 

@@ -1,124 +1,121 @@
 // GameManager.java  
-package logic;  
+package logic;
 
-import world.Map;  
-import world.MapType;  
-
-import java.util.ArrayList;  
-
-import components.GameCanvas;  
-import entity.character.BaseCharacter;  
-import entity.character.Player;  
-import javafx.scene.canvas.GraphicsContext;  
-
-public class GameManager {  
-
-    private Map map;  
-    private GameState gameState;  
-    private StartScreen startScreen;  
-    private PauseScreen pauseScreen;  
-    private EndScreen endScreen;  
-    private GameCanvas canvas;  
-
-    public GameManager() {  
-        gameState = GameState.START_SCREEN;  
-        startScreen = new StartScreen(this);  
-        pauseScreen = new PauseScreen(this);  
-        endScreen = new EndScreen(this);  
-    }  
-
-    public void startGame() {  
-        map = new Map(MapType.ISLAND); 
-
-        if (map.getPlayer() == null) {  
-            throw new IllegalStateException("Map failed to initialize with a Player.");  
-        }  
-
-        gameState = GameState.PLAYING;  
-    }  
+import world.Map;
+import world.MapType;
 
 
-    public void update(GraphicsContext gc) {  
-        switch (gameState) {  
-            case START_SCREEN:  
-                startScreen.draw(gc);  
-                break;  
-            case PLAYING:  
-                Player player = map.getPlayer();  
+import components.GameCanvas;
+import entity.character.BaseCharacter;
+import entity.character.Player;
+import entity.effect.EffectManager;
+import javafx.scene.canvas.GraphicsContext;
 
-                if (player.getHealth() <= 0) {  
-                    gameState = GameState.END_SCREEN;  
-                } else {  
-                    gc.clearRect(0, 0, map.getMapWidth(), map.getMapHeight());  
-                    map.update(gc); 
-                    player.update(gc); 
-                    for(BaseCharacter entity : map.getEntities()){  
-                        if(!(entity instanceof Player)){  
-                            entity.update(gc);  
-                        }  
-                    }  
-                }  
-                break;  
-            case PAUSED:  
-                pauseScreen.draw(gc);  
-                break;  
-            case END_SCREEN:  
-                endScreen.draw(gc);  
-                break;  
-        }  
-    }  
+public class GameManager {
 
-    public void reset() {  
-        Player player = map.getPlayer(); 
-        player.setHealth(player.getMaxHealth()); 
-        // reset other game variables (e.g., create a new map, reset entity positions)  
-        map = new Map(MapType.ISLAND); // Create a new map  
-        if (map.getPlayer() == null) {  
-            throw new IllegalStateException("Map failed to initialize with a Player.");  
-        }  
-    }  
+	private Map map;
+	private GameState gameState;
+	private StartScreen startScreen;
+	private PauseScreen pauseScreen;
+	private EndScreen endScreen;
+	private GameCanvas canvas;
 
-    public GameState getGameState() {  
-        return gameState;  
-    }  
+	public GameManager() {
+		gameState = GameState.START_SCREEN;
+		startScreen = new StartScreen(this);
+		pauseScreen = new PauseScreen(this);
+		endScreen = new EndScreen(this);
+	}
 
-    public void setGameState(GameState gameState) {  
-        this.gameState = gameState;  
-    }  
+	public void startGame() {
+		map = new Map(MapType.ISLAND);
 
+		if (Player.getInstant() == null) {
+			throw new IllegalStateException("Map failed to initialize with a Player.");
+		}
 
-    public StartScreen getStartScreen() {  
-        return startScreen;  
-    }  
+		gameState = GameState.PLAYING;
+	}
 
-    public void setStartScreen(StartScreen startScreen) {  
-        this.startScreen = startScreen;  
-    }  
+	public void update(GraphicsContext gc) {
+		switch (gameState) {
+		case START_SCREEN:
+			startScreen.draw(gc);
+			break;
+		case PLAYING:
+			Player player = Player.getInstant();
 
-    public PauseScreen getPauseScreen() {  
-        return pauseScreen;  
-    }  
+			if (player.getHealth() <= 0) {
+				gameState = GameState.END_SCREEN;
+			} else {
+				gc.clearRect(0, 0, map.getMapWidth(), map.getMapHeight());
+				map.update(gc);
+				player.update(gc);
+				for (BaseCharacter entity : map.getEntities()) {
+					if (!(entity instanceof Player)) {
+						entity.update(gc);
+					}
+				}
+				EffectManager.getInstance().render(gc);
+			}
+			break;
+		case PAUSED:
+			pauseScreen.draw(gc);
+			break;
+		case END_SCREEN:
+			endScreen.draw(gc);
+			break;
+		}
+	}
 
-    public void setPauseScreen(PauseScreen pauseScreen) {  
-        this.pauseScreen = pauseScreen;  
-    }  
+	public void reset() {
+		Player player = Player.getInstant();
+		player.setHealth(player.getMaxHealth());
 
-    public EndScreen getEndScreen() {  
-        return endScreen;  
-    }  
+		map = new Map(MapType.ISLAND);
+		if (Player.getInstant() == null) {
+			throw new IllegalStateException("Map failed to initialize with a Player.");
+		}
+	}
 
-    public void setEndScreen(EndScreen endScreen) {  
-        this.endScreen = endScreen;  
-    }  
+	public GameState getGameState() {
+		return gameState;
+	}
 
-    public GameCanvas getCanvas() {  
-        return canvas;  
-    }  
+	public void setGameState(GameState gameState) {
+		this.gameState = gameState;
+	}
 
-    public void setCanvas(GameCanvas canvas) {  
-        this.canvas = canvas;  
-    }  
+	public StartScreen getStartScreen() {
+		return startScreen;
+	}
 
+	public void setStartScreen(StartScreen startScreen) {
+		this.startScreen = startScreen;
+	}
 
-}  
+	public PauseScreen getPauseScreen() {
+		return pauseScreen;
+	}
 
+	public void setPauseScreen(PauseScreen pauseScreen) {
+		this.pauseScreen = pauseScreen;
+	}
+
+	public EndScreen getEndScreen() {
+		return endScreen;
+	}
+
+	public void setEndScreen(EndScreen endScreen) {
+		this.endScreen = endScreen;
+	}
+
+	public GameCanvas getCanvas() {
+		return canvas;
+	}
+
+	public void setCanvas(GameCanvas canvas) {
+		this.canvas = canvas;
+	}
+
+}

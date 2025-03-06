@@ -8,7 +8,10 @@ import components.Hotbar;
 import components.Instruction;
 import components.StatusDisplay;
 import entity.ElementType;
+import entity.item.BaseItem;
+import entity.item.HealthPotion;
 import entity.item.KeyItem;
+import entity.item.ManaPotion;
 import entity.weapon.BaseWeapon;
 import entity.weapon.Sword;
 import javafx.scene.canvas.GraphicsContext;
@@ -29,7 +32,7 @@ public class Player extends BaseCharacter {
 	private ArrayList<KeyItem> keyItemList;
 	private ArrayList<BaseWeapon> weaponList;
 	private BaseWeapon heldWeapon;
-	 private static Player instant ;
+	private static Player instant;
 
 	public Player(double posX, double posY, int speed, int health, int mana, int attack, int size, Map map) {
 		super("Player", posX, posY, health, speed, attack, size, map);
@@ -39,10 +42,9 @@ public class Player extends BaseCharacter {
 		setMaxHealth(health);
 		keyItemList = new ArrayList<KeyItem>();
 		weaponList = new ArrayList<BaseWeapon>();
-
-	   setHeldWeapon(null);
+		setHeldWeapon(null);
 		weaponList.add(new Sword("sword", 10, 10, 10, ElementType.FIRE));
-		Hotbar.updateSlot(0,weaponList.get(0));
+		Hotbar.updateSlot(0, weaponList.get(0));
 
 		up = new Image("player/up.png");
 		down1 = new Image("player/down1.png");
@@ -57,7 +59,7 @@ public class Player extends BaseCharacter {
 		yCheck = true;
 		pic = still;
 
-	 solidArea = new Rectangle(28, 28);
+		solidArea = new Rectangle(28, 28);
 		solidArea.setX(8);
 		solidArea.setY(16);
 
@@ -65,12 +67,12 @@ public class Player extends BaseCharacter {
 		camera = new Camera(map);
 		keyboard = new KeyboardController();
 	}
-	
+
 	public void attackTarget(BaseCharacter target) {
-	       target.takeDamage(getAttack());
-	       System.out.println(getName()+" attack "+ target.getName());
-	         
-	    }
+		target.takeDamage(getAttack());
+		System.out.println(getName() + " attack " + target.getName());
+
+	}
 
 	public void update(GraphicsContext gc) {
 		int speed = this.getSpeed();
@@ -105,17 +107,17 @@ public class Player extends BaseCharacter {
 			setPosY(y);
 		}
 
-		//if (eCollide.isColliding(this, x, y)) {
+		// if (eCollide.isColliding(this, x, y)) {
 
-			if (eCollide.getTarget() instanceof BaseMonster) {
-				if (keyboard.isSpacePressed()) {
-					attackTarget(eCollide.getTarget());
-					if(eCollide.getTarget().isDeath()) {
-						StatusDisplay.getInstant().gainExperience(20);
-					}
+		if (eCollide.getTarget() instanceof BaseMonster) {
+			if (keyboard.isSpacePressed()) {
+				attackTarget(eCollide.getTarget());
+				if (eCollide.getTarget().isDeath()) {
+					StatusDisplay.getInstant().gainExperience(20);
 				}
 			}
-		//}
+		}
+		// }
 
 		if (wCollide.isMovingArea()) {
 			Instruction.getInstant().updateText("Press E to enter");
@@ -137,23 +139,21 @@ public class Player extends BaseCharacter {
 
 	}
 
-	
 	public void attackTarget(BaseMonster target) {
-		if(heldWeapon!=null) {
+		if (heldWeapon != null) {
 			target.takeDamage(heldWeapon.getDamage());
+		} else {
+			target.takeDamage(getAttack());
 		}
-		else {
-	       target.takeDamage(getAttack());
-	       }
-	       System.out.println(getName()+" attack "+ target.getName());
-	         
-	    }
-	
+		System.out.println(getName() + " attack " + target.getName());
+
+	}
+
 	public void takeDamage(int damage) {
 		int tmp = getHealth();
 		StatusDisplay.takeDamage(damage);
 		super.takeDamage(damage);
-		System.out.println(tmp +"->"+getHealth());
+		System.out.println(tmp + "->" + getHealth());
 
 	}
 
@@ -175,8 +175,10 @@ public class Player extends BaseCharacter {
 
 	public void setHeldWeapon(BaseWeapon heldWeapon) {
 		this.heldWeapon = heldWeapon;
-		if(heldWeapon ==null)StatusDisplay.updateEquipment(new Image("player/still.png"));
-		else StatusDisplay.updateEquipment(heldWeapon.getPic());
+		if (heldWeapon == null)
+			StatusDisplay.updateEquipment(new Image("player/still.png"));
+		else
+			StatusDisplay.updateEquipment(heldWeapon.getPic());
 	}
 
 	public ArrayList<KeyItem> getKeyItemList() {
@@ -197,6 +199,9 @@ public class Player extends BaseCharacter {
 	}
 
 	public void setMana(int mana) {
+		if(mana>maxMana)this.mana = maxMana;
+		else if(mana<0)this.mana = 0;
+		else 
 		this.mana = mana;
 	}
 
@@ -215,7 +220,5 @@ public class Player extends BaseCharacter {
 	public static void setInstant(Player instant) {
 		Player.instant = instant;
 	}
-	
-	
 
 }

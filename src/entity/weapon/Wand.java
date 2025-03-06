@@ -25,8 +25,8 @@ public class Wand extends BaseWeapon {
         double speedX = speed * Math.cos(angle);
         double speedY = speed * Math.sin(angle);
 
-        Fireball fireball = new Fireball(startX, startY, speedX, speedY);
-        EffectManager.getInstance().addEffect(fireball);
+        //Fireball fireball = new Fireball(startX, startY, speedX, speedY);
+        //EffectManager.getInstance().addEffect(fireball);
     }
     
 	@Override

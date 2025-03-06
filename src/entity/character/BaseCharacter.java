@@ -5,6 +5,8 @@ import java.util.List;
 
 import collision.EntityCollision;
 import collision.WorldCollision;
+import entity.effect.EffectManager;
+import entity.effect.Fireball;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Rectangle;
@@ -43,11 +45,12 @@ public abstract class BaseCharacter {
 	public abstract void update(GraphicsContext gc);
 
 	public void attackTarget(BaseCharacter target) {
-		if (target == null) return;
+		if (target == null)
+			return;
 
-		target.takeDamage(getAttack());
-		System.out.println(getName() + " attack " + target.getName());
-
+			target.takeDamage(getAttack());
+			System.out.println(getName() + " attack " + target.getName());
+		
 	}
 
 	public int getHealth() {
@@ -60,20 +63,21 @@ public abstract class BaseCharacter {
 		} else if (health <= 0) {
 			this.health = 0;
 			setDeath(true);
-			if(this instanceof HighMonster) {
-				System.out.println(((HighMonster)this).getMonsterType()+"");
+			if (this instanceof HighMonster) {
+				System.out.println(((HighMonster) this).getMonsterType() + "");
 				System.out.println("Class of HighBossLi: " + HighMonster.getHighBossLi().getClass());
-				
+
 				List<String> tmp = new ArrayList<>(HighMonster.getHighBossLi());
 				tmp.remove(((HighMonster) this).getMonsterType() + "");
 				System.out.println(tmp);
 				HighMonster.setHighBossLi(tmp);
 
 			}
-			System.out.println(getName()+" is death");
-			Platform.runLater(() -> {map.getEntities().remove(this);});
-			
-			
+			System.out.println(getName() + " is death");
+			Platform.runLater(() -> {
+				map.getEntities().remove(this);
+			});
+
 		} else {
 			this.health = health;
 		}
@@ -136,7 +140,7 @@ public abstract class BaseCharacter {
 
 	public void setMaxHealth(int maxHealth) {
 		this.maxHealth = maxHealth;
-		System.out.println("max health:"+maxHealth);
+		System.out.println("max health:" + maxHealth);
 		setHealth(maxHealth);
 	}
 
@@ -154,6 +158,14 @@ public abstract class BaseCharacter {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Rectangle getSolidArea() {
+		return solidArea;
+	}
+
+	public void setSolidArea(Rectangle solidArea) {
+		this.solidArea = solidArea;
 	}
 
 }

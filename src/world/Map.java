@@ -20,15 +20,15 @@ import javafx.scene.image.Image;
 import main.Main;
 
 public class Map {
-	private HashMap<Integer, Image> islandImages = new HashMap<>();
+	private static HashMap<Integer, Image> islandImages = new HashMap<>();
 	private MapType mapType;
-	public int[][] arr;
+	public static int[][] arr;
 	private int tileSize = 48;
 	private int mapWidth, mapHeight;
 	private static ArrayList<BaseCharacter> entities;
-	private Image house = new Image("house.png");
-	private Image door = new Image("background/door.png");
-	private Player player;
+	private final static Image house = new Image("house.png");
+	private final static Image door = new Image("background/door.png");
+	//private Player player;
 
 	public Map(MapType type) {
 		mapType = type;
@@ -38,11 +38,8 @@ public class Map {
 
 		this.mapHeight = arr.length * tileSize;
 		this.mapWidth = arr[0].length * tileSize;
-		// Now find and create the player and monsters *immediately* after loading the
-		// array.
-		createEntitiesFromMapData();
 
-		// Load images into the HashMap
+		createEntitiesFromMapData();
 		setImage();
 
 	}
@@ -59,12 +56,13 @@ public class Map {
 
 				if (arr[y][x] == 55) {
 					gc.drawImage(house, (x + 1) * tileSize - 160, (y + 1) * tileSize - 224);
-				}else if(arr[y][x] == 89) {
+				} else if (arr[y][x] == 89) {
 					gc.drawImage(door, (x + 1) * tileSize - 96, (y + 1) * tileSize - 96);
 
+				}
 			}
 		}
-	}
+	
 	}
 
 	private void createEntitiesFromMapData() {
@@ -73,7 +71,7 @@ public class Map {
 				if (arr[y][x] == 99) {
 					Player.setInstant(new Player(x * tileSize, y * tileSize, 3, 200, 100, 20, 48, this));
 					entities.add(Player.getInstant());
-					setPlayer(Player.getInstant());
+					//setPlayer(Player.getInstant());
 					arr[y][x] = 1;
 
 				} else if (arr[y][x] == 91 && HighMonster.getHighBossLi().contains(MonsterType.FIRE + "")) {
@@ -90,27 +88,26 @@ public class Map {
 					arr[y][x] = 1;
 				}
 			}
-		}
-	}
 
+		}
+		
+		System.out.println(Map.getEntities().size());
+	}
 
 	public void entitiesClear() {
 		Platform.runLater(() -> {
 			entities.clear();
-			
-		});
+		}) ;
 	}
-
-	
 
 	public void changeMap(MapType mapType) {
 		setMapType(mapType);
 		setArr(mapType);
 		entitiesClear();
-		
-
+		Platform.runLater(() -> {
+			createEntitiesFromMapData();
+		});
 	}
-
 
 	public static ArrayList<BaseCharacter> getEntities() {
 		return entities;
@@ -132,7 +129,7 @@ public class Map {
 		return mapHeight;
 	}
 
-	public int[][] getArr() {
+	public static int[][] getArr() {
 		return arr;
 	}
 
@@ -167,12 +164,14 @@ public class Map {
 
 	public void setImage() {
 		islandImages.clear();
+		
 		tryLoadImage(getMapType() + "/0.png", 0);
 		tryLoadImage(getMapType() + "/1.png", 1);
 		tryLoadImage(getMapType() + "/2.png", 2);
 		tryLoadImage(getMapType() + "/3.png", 3);
 		tryLoadImage(getMapType() + "/4.png", 4);
 		tryLoadImage(getMapType() + "/5.png", 5);
+		
 		tryLoadImage(getMapType() + "/5252.png", 5252);
 		tryLoadImage(getMapType() + "/5253.png", 5253);
 		tryLoadImage(getMapType() + "/5254.png", 5254);
@@ -183,6 +182,22 @@ public class Map {
 		tryLoadImage(getMapType() + "/5259.png", 5259);
 		tryLoadImage(getMapType() + "/5260.png", 5260);
 		tryLoadImage(getMapType() + "/5261.png", 5261);
+		
+		tryLoadImage(getMapType() + "/5270.png", 5270);
+		tryLoadImage(getMapType() + "/5271.png", 5271);
+		tryLoadImage(getMapType() + "/5272.png", 5272);
+		tryLoadImage(getMapType() + "/5273.png", 5273);
+		tryLoadImage(getMapType() + "/5274.png", 5274);
+		tryLoadImage(getMapType() + "/5275.png", 5275);
+		tryLoadImage(getMapType() + "/5276.png", 5276);
+		tryLoadImage(getMapType() + "/5277.png", 5277);
+		tryLoadImage(getMapType() + "/5278.png", 5278);
+		tryLoadImage(getMapType() + "/5279.png", 5279);
+		tryLoadImage(getMapType() + "/5280.png", 5280);
+		tryLoadImage(getMapType() + "/5281.png", 5281);
+		tryLoadImage(getMapType() + "/5282.png", 5282);
+		tryLoadImage(getMapType() + "/5283.png", 5283);
+
 	}
 
 	private void tryLoadImage(String path, int key) {
@@ -194,13 +209,4 @@ public class Map {
 	}
 
 
-
-	public Player getPlayer() {
-		return player;
-	}
-
-	public void setPlayer(Player player) {  
-        this.player = player;  
-    }
 }
-
