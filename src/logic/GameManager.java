@@ -10,6 +10,10 @@ import components.GameCanvas;
 import entity.character.BaseCharacter;  
 import entity.character.Player;  
 import javafx.scene.canvas.GraphicsContext;  
+import javafx.scene.input.MouseEvent;  
+import javafx.scene.paint.Color;  
+import javafx.scene.text.Font;  
+import javafx.geometry.Point2D;  
 
 public class GameManager {  
 
@@ -19,6 +23,10 @@ public class GameManager {
     private PauseScreen pauseScreen;  
     private EndScreen endScreen;  
     private GameCanvas canvas;  
+    private static final double PAUSE_BUTTON_X = 750; // Adjust as needed  
+    private static final double PAUSE_BUTTON_Y = 20;  // Adjust as needed  
+    private static final double PAUSE_BUTTON_WIDTH = 40;  
+    private static final double PAUSE_BUTTON_HEIGHT = 30;  
 
     public GameManager() {  
         gameState = GameState.START_SCREEN;  
@@ -28,7 +36,7 @@ public class GameManager {
     }  
 
     public void startGame() {  
-        map = new Map(MapType.ISLAND); 
+        map = new Map(MapType.ISLAND);  
 
         if (map.getPlayer() == null) {  
             throw new IllegalStateException("Map failed to initialize with a Player.");  
@@ -39,6 +47,7 @@ public class GameManager {
 
 
     public void update(GraphicsContext gc) {  
+    	System.out.println("GameState: "+gameState);  
         switch (gameState) {  
             case START_SCREEN:  
                 startScreen.draw(gc);  
@@ -50,9 +59,9 @@ public class GameManager {
                     gameState = GameState.END_SCREEN;  
                 } else {  
                     gc.clearRect(0, 0, map.getMapWidth(), map.getMapHeight());  
-                    map.update(gc); 
-                    player.update(gc); 
-                    for(BaseCharacter entity : map.getEntities()){  
+                    map.update(gc);  
+                    player.update(gc);  
+                    for(BaseCharacter entity : Map.getEntities()){  
                         if(!(entity instanceof Player)){  
                             entity.update(gc);  
                         }  
@@ -69,8 +78,8 @@ public class GameManager {
     }  
 
     public void reset() {  
-        Player player = map.getPlayer(); 
-        player.setHealth(player.getMaxHealth()); 
+        Player player = map.getPlayer();  
+        player.setHealth(player.getMaxHealth());  
         // reset other game variables (e.g., create a new map, reset entity positions)  
         map = new Map(MapType.ISLAND); // Create a new map  
         if (map.getPlayer() == null) {  
@@ -121,4 +130,3 @@ public class GameManager {
 
 
 }  
-
