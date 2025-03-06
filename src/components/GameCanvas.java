@@ -20,13 +20,8 @@ public class GameCanvas extends Canvas {
 		gc = getGraphicsContext2D();
 		gameManager = new GameManager();
 		gameManager.setCanvas(this);
-		this.setOnMouseClicked(this::handleMouseClicked);  
 		startGameLoop();
 	}
-	
-	private void handleMouseClicked(MouseEvent event) {  
-        gameManager.handleMouseClicked(event);  
-    }  
 	
 	private void startGameLoop() {
 	new AnimationTimer() {

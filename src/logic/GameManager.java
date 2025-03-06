@@ -12,11 +12,12 @@ import entity.character.Player;
 import javafx.scene.canvas.GraphicsContext;  
 import javafx.scene.input.MouseEvent;  
 import javafx.scene.paint.Color;  
-import javafx.scene.text.Font;  
+import javafx.scene.text.Font;
+import main.Main;
 import javafx.geometry.Point2D;  
 
 public class GameManager {  
-
+	private Main main;
     private Map map;  
     private GameState gameState;  
     private StartScreen startScreen;  
@@ -93,6 +94,7 @@ public class GameManager {
 
     public void setGameState(GameState gameState) {  
         this.gameState = gameState;  
+        Main.updateVisibility();
     }  
 
 
