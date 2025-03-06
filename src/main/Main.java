@@ -5,6 +5,7 @@ import components.Hotbar;
 import components.Instruction;
 import components.StatusDisplay;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 
 import javafx.scene.layout.StackPane;
@@ -27,18 +28,17 @@ public class Main extends Application {
 	public void start(Stage stage) {
 
 		canvas = new GameCanvas();
-		gameManager = canvas.getGameManager();  
+		gameManager = canvas.getGameManager();
+		gameManager.setMain(this);
 
 		root = new StackPane(canvas);
 
 		scene = new Scene(root);
 		
 		scene.setOnMouseClicked(e -> {  
-            GameState currentState = canvas.getGameManager().getGameState();  
+            GameState currentState = gameManager.getGameState();  
             if (currentState == GameState.START_SCREEN) {  
-            	canvas.getGameManager().getStartScreen().handleInput(e.getX(), e.getY());  
-            } else if (currentState == GameState.END_SCREEN) {  
-//            	canvas.getGameManager().getEndScreen().handleInput(e.getX(), e.getY());  
+            	canvas.getGameManager().getStartScreen().handleInput(e.getX(), e.getY());   
             } else if (currentState == GameState.PAUSED) {  
             	canvas.getGameManager().getPauseScreen().handleInput(e.getX(), e.getY());  
             }  
@@ -71,12 +71,12 @@ public class Main extends Application {
         root.getChildren().add(canvas);  
 
         if (currentState == GameState.PLAYING) {  
-        	System.out.println("display game components");
             root.getChildren().addAll(statusDisplay, instructions, hotbar);  
         } else if (currentState == GameState.END_SCREEN) {  
             root.getChildren().add(gameManager.getEndScreen().getEndScreenLayout());  
-        }   
-    }  
+        } 
+    }
+        
 	public static void Main(String[] args) {
 
 		launch(args);

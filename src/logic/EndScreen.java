@@ -1,54 +1,75 @@
-// EndScreen.java  
-package logic;  
+package logic;
 
 import javafx.geometry.Pos;  
 import javafx.scene.control.Button;  
-import javafx.scene.control.Label;  
 import javafx.scene.layout.VBox;  
-import javafx.scene.text.Font;  
-import main.Main; // Import Main  
+import main.Main; // Assuming Main has width and height properties.  
+import logic.GameManager; // Assuming GameManager and GameState exist  
+import logic.GameState;  
+import javafx.scene.text.Font; // Import Font  
+import javafx.scene.text.Text; // Import Text  
 
 public class EndScreen {  
 
+    private VBox endScreenLayout;  
+    private Button restartButton;  
+    private Button exitButton;  
     private GameManager gameManager;  
-    private VBox endScreenLayout;  // Changed from Stage to VBox  
+
+    private final double BUTTON_WIDTH = 150; // or gp.tileSize * 3  
+    private final double BUTTON_HEIGHT = 40; // or gp.tileSize  
 
     public EndScreen(GameManager gameManager) {  
         this.gameManager = gameManager;  
 
-        Label gameOverLabel = new Label("Game Over!");  
-        gameOverLabel.setFont(Font.font("Arial", 48));  
-
-        Button restartButton = new Button("Restart");  
-        restartButton.setOnAction(e -> {  
-            gameManager.restartGame();  
-        });  
-
-        Button exitButton = new Button("Exit");  
-        exitButton.setOnAction(e -> {  
-            // Handle exit logic here (e.g., close the game)  
-            System.exit(0); // Or platform.exit()  
-        });  
-
-        endScreenLayout = new VBox(20, gameOverLabel, restartButton, exitButton);  
+        endScreenLayout = new VBox(10);  
         endScreenLayout.setAlignment(Pos.CENTER);  
-        endScreenLayout.setPrefWidth(Main.getWidth()); // Set width based on Main's width  
-        endScreenLayout.setPrefHeight(Main.getHeight()); // Set height based on Main's height  
-        endScreenLayout.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8);"); // Darkened background  
+        endScreenLayout.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"); // Semi-transparent black  
+
+        // Game Over Text  
+        Text gameOverText = new Text("Game Over");  
+        gameOverText.setFont(Font.font("Verdana", 50)); // Adjust font as needed  
+        gameOverText.setStyle("-fx-fill: white; -fx-stroke: black; -fx-stroke-width: 2;"); // White fill with black outline  
+
+        restartButton = new Button("Retry");  
+        restartButton.setPrefWidth(BUTTON_WIDTH);  
+        restartButton.setPrefHeight(BUTTON_HEIGHT);  
+
+        exitButton = new Button("Quit");  
+        exitButton.setPrefWidth(BUTTON_WIDTH);  
+        exitButton.setPrefHeight(BUTTON_HEIGHT);  
+
+        endScreenLayout.getChildren().addAll(gameOverText, restartButton, exitButton);  
     }  
 
-    public VBox getEndScreenLayout() {  // Return the layout  
+    public VBox getEndScreenLayout() {  
         return endScreenLayout;  
     }  
 
     public void handleInput(double x, double y) {  
-        // No need to handle input directly here since the buttons have their own actions  
-    }  
+        double windowWidth = Main.getWidth();  
+        double windowHeight = Main.getHeight();  
 
-    public void show() {  
-        // Set the game state to END_SCREEN, which will trigger the visibility update  
-        gameManager.setGameState(GameState.END_SCREEN);  
-        Main.updateVisibility(); //Manually call updateVisibility  
+        // Button positions - adjust these based on your layout and desired spacing  
+        double restartButtonX = (windowWidth - BUTTON_WIDTH) / 2;  
+        double restartButtonY = windowHeight * 0.4;  
 
+        double exitButtonX = (windowWidth - BUTTON_WIDTH) / 2;  
+        double exitButtonY = windowHeight * 0.6;  
+
+        if (x >= restartButtonX && x <= restartButtonX + BUTTON_WIDTH &&  
+            y >= restartButtonY && y <= restartButtonY + BUTTON_HEIGHT) {  
+            System.out.println("Restart button clicked (handleInput)");  
+            gameManager.restartGame();  
+            gameManager.setGameState(GameState.PLAYING);  // Make sure the game goes back to playing!  
+
+        } else if (x >= exitButtonX && x <= exitButtonX + BUTTON_WIDTH &&  
+                   y >= exitButtonY && y <= exitButtonY + BUTTON_HEIGHT) {  
+            System.out.println("Exit button clicked (handleInput)");  
+            System.exit(0);  
+        } else {  
+            System.out.println("Click outside buttons");  
+            System.out.println("X: " + x + ", Y: " + y);  
+        }  
     }  
 }  

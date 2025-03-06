@@ -74,24 +74,27 @@ public class GameManager {
                 
                 break;  
             case PAUSED:  
-                pauseScreen.draw(gc);  
+//                pauseScreen.draw(gc);  
                 break;  
             case END_SCREEN:  
 //                endScreen.draw(gc);  
-            	endScreen.show();   
+//            	endScreen.show();   
                 break;  
         }  
     }  
 
-    public void restartGame() {  
-        Player player = map.getPlayer();  
+    public Main getMain() {
+		return main;
+	}
+
+	public void setMain(Main main) {
+		this.main = main;
+	}
+
+	public void restartGame() {  
+        Player player = Player.getInstant();  
         player.setHealth(player.getMaxHealth());  
-        // reset other game variables (e.g., create a new map, reset entity positions)  
-        map = new Map(MapType.ISLAND); // Create a new map  
-        if (map.getPlayer() == null) {  
-            throw new IllegalStateException("Map failed to initialize with a Player.");  
-        }  
-//        gameState = GameState.PLAYING;
+        map = new Map(MapType.ISLAND); 
         this.setGameState(gameState.PLAYING);
         
     }   
