@@ -8,7 +8,8 @@ import java.util.ArrayList;
 
 import components.GameCanvas;  
 import entity.character.BaseCharacter;  
-import entity.character.Player;  
+import entity.character.Player;
+import entity.effect.EffectManager;
 import javafx.scene.canvas.GraphicsContext;  
 import javafx.scene.input.MouseEvent;  
 import javafx.scene.paint.Color;  
@@ -66,8 +67,10 @@ public class GameManager {
                         if(!(entity instanceof Player)){  
                             entity.update(gc);  
                         }  
-                    }  
-                }  
+                    }
+                    EffectManager.getInstance().render(gc);
+                } 
+                
                 break;  
             case PAUSED:  
                 pauseScreen.draw(gc);  
