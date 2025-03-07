@@ -228,6 +228,7 @@ public class Player extends BaseCharacter {
             	AudioClip island_sound = Sound.getIslandSound();
                 AudioClip dungeon_sound = Sound.getDungeon_sound();
                 AudioClip bossroom_sound = Sound.getBossroom_sound();
+                AudioClip door_sound = Sound.getdooropen_sound();
                 
                 if (tile == 88) {
                     map.changeMap(MapType.DUNGEON);
