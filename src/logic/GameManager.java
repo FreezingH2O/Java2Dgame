@@ -12,6 +12,7 @@ import entity.character.BaseCharacter;
 import entity.character.Player;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import main.Main;
@@ -39,11 +40,13 @@ public class GameManager {
 
 	public void startGame() {
 		map = new Map(MapType.ISLAND);
+//		AudioClip sound = new AudioClip(ClassLoader.getSystemResource("sound/dungeon.wav").toString());
 
 		if (map.getPlayer() == null) {
 			throw new IllegalStateException("Map failed to initialize with a Player.");
 		}
 		this.setGameState(gameState.PLAYING);
+//		sound.play();
 //        gameState = GameState.PLAYING;  
 	}
 

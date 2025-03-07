@@ -3,6 +3,7 @@ package main;
 import components.GameCanvas;
 import components.Hotbar;
 import components.Instruction;
+import components.PauseButton;
 import components.StatusDisplay;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -66,15 +67,26 @@ public class Main extends Application {
     	StatusDisplay statusDisplay = StatusDisplay.getInstant();  
     	Instruction instructions = Instruction.getInstant();  
     	Hotbar hotbar = new Hotbar(); 
+//    	PauseButton pauseButton = new PauseButton(48);
 
         root.getChildren().clear();  
         root.getChildren().add(canvas);  
 
         if (currentState == GameState.PLAYING) {  
             root.getChildren().addAll(statusDisplay, instructions, hotbar);  
+//            pauseButton.toFront();
         } else if (currentState == GameState.END_SCREEN) {  
             root.getChildren().add(gameManager.getEndScreen().getEndScreenLayout());  
         } 
+        
+//        pauseButton.setOnMouseClicked(e -> {  
+//            pauseButton.setPaused(!pauseButton.isPaused());  
+//            if (pauseButton.isPaused()) {  
+//                gameManager.pauseGame();  
+//            } else {  
+//                gameManager.resumeGame();  
+//            }  
+//        });  
     }
         
 	public static void Main(String[] args) {
