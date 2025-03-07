@@ -7,6 +7,7 @@ import main.Main; // Assuming Main has width and height properties.
 import logic.GameManager; // Assuming GameManager and GameState exist  
 import logic.GameState;  
 import javafx.scene.text.Font; // Import Font  
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text; // Import Text  
 
 public class EndScreen {  
@@ -28,10 +29,11 @@ public class EndScreen {
 
         // Game Over Text  
         Text gameOverText = new Text("Game Over");  
-        gameOverText.setFont(Font.font("Verdana", 50)); // Adjust font as needed  
+        gameOverText.setFont(Font.font("Cloister Black", FontWeight.BOLD, 60)); 
         gameOverText.setStyle("-fx-fill: white; -fx-stroke: black; -fx-stroke-width: 2;"); // White fill with black outline  
 
-        restartButton = new Button("Retry");  
+        restartButton = new Button("Respawn");  
+        restartButton.setFont(Font.font("Cloister Black")); 
         restartButton.setPrefWidth(BUTTON_WIDTH);  
         restartButton.setPrefHeight(BUTTON_HEIGHT);  
         restartButton.setOnAction(e -> { // Set action for restart button  
@@ -42,6 +44,7 @@ public class EndScreen {
         });  
 
         exitButton = new Button("Quit");  
+        exitButton.setFont(Font.font("Cloister Black")); 
         exitButton.setPrefWidth(BUTTON_WIDTH);  
         exitButton.setPrefHeight(BUTTON_HEIGHT);  
         exitButton.setOnAction(e -> { // Set action for exit button  

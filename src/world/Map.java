@@ -68,7 +68,7 @@ public class Map {
 		for (int y = 0; y < arr.length; y++) {
 			for (int x = 0; x < arr[0].length; x++) {
 				if (arr[y][x] == 99) {
-					Player.setInstant(new Player(x * tileSize, y * tileSize, 2, 200, 100, 20, 48, this));
+					Player.setInstant(new Player(x * tileSize, y * tileSize, 20, 200, 100, 20, 48, this));
 					entities.add(Player.getInstant());
 					setPlayer(Player.getInstant());
 					arr[y][x] = 1;
