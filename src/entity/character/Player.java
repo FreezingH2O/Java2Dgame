@@ -1,5 +1,6 @@
 package entity.character;
 
+import java.awt.DisplayMode;
 import java.io.ObjectInputFilter.Status;
 import java.util.ArrayList;
 
@@ -8,12 +9,16 @@ import components.Hotbar;
 import components.Instruction;
 import components.StatusDisplay;
 import entity.ElementType;
+import entity.effect.GameEffect;
+import entity.effect.arrow;
 import entity.item.BaseItem;
 import entity.item.HealthPotion;
 import entity.item.KeyItem;
 import entity.item.ManaPotion;
+import entity.weapon.Bow;
 import entity.weapon.BaseWeapon;
 import entity.weapon.Sword;
+import entity.weapon.Wand;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
@@ -44,6 +49,8 @@ public class Player extends BaseCharacter {
 		weaponList = new ArrayList<BaseWeapon>();
 		setHeldWeapon(null);
 		weaponList.add(new Sword("sword", 10, 10, 10, ElementType.FIRE));
+		weaponList.add(new Wand(5));
+		weaponList.add(new Bow());
 		Hotbar.updateSlot(0, weaponList.get(0));
 
 		up = new Image("player/up.png");
@@ -68,8 +75,24 @@ public class Player extends BaseCharacter {
 		keyboard = new KeyboardController();
 	}
 
+	
 	public void attackTarget(BaseCharacter target) {
-		target.takeDamage(getAttack());
+		if (heldWeapon != null) {
+			if(heldWeapon instanceof Wand) {
+				GameEffect effect = new GameEffect(ElementType.MAGIC,getPosX(), getPosY(), target.getPosX(), target.getPosY(), 1, target);
+				effectsList.add(effect);
+				
+				setMana(mana-((Wand) heldWeapon).getManaCost());
+				StatusDisplay.getInstant().useMana(((Wand) heldWeapon).getManaCost());
+			}else if(heldWeapon instanceof Bow) {
+				GameEffect effect = new arrow(ElementType.NONE,getPosX(), getPosY(), target.getPosX(), target.getPosY(), 1, target);
+				effectsList.add(effect);
+			}
+			
+			target.takeDamage(heldWeapon.getDamage());
+		} else {
+			target.takeDamage(getAttack());
+		}
 		System.out.println(getName() + " attack " + target.getName());
 
 	}
@@ -101,7 +124,7 @@ public class Player extends BaseCharacter {
 		} else {
 			this.pic = still;
 		}
-
+	//	System.out.println(eCollide.isColliding(this, x, y));
 		if (!wCollide.isCollide(x, y, solidArea) && !eCollide.isColliding(this, x, y)) {
 			setPosX(x);
 			setPosY(y);
@@ -111,10 +134,11 @@ public class Player extends BaseCharacter {
 
 		if (eCollide.getTarget() instanceof BaseMonster) {
 			if (keyboard.isSpacePressed()) {
+				
 				attackTarget(eCollide.getTarget());
-				if (eCollide.getTarget().isDeath()) {
-					StatusDisplay.getInstant().gainExperience(20);
-				}
+//				if (eCollide.getTarget().isDeath()) {
+//					StatusDisplay.getInstant().gainExperience(20);
+//				}
 			}
 		}
 		// }
@@ -137,16 +161,10 @@ public class Player extends BaseCharacter {
 
 		camera.cameraMove(getPosX(), getPosY());
 
-	}
-
-	public void attackTarget(BaseMonster target) {
-		if (heldWeapon != null) {
-			target.takeDamage(heldWeapon.getDamage());
-		} else {
-			target.takeDamage(getAttack());
+		for(int i=0;i< weaponList.size();++i) {
+			Hotbar.updateSlot(i, weaponList.get(i));
 		}
-		System.out.println(getName() + " attack " + target.getName());
-
+		super.update(gc);
 	}
 
 	public void takeDamage(int damage) {
@@ -199,10 +217,12 @@ public class Player extends BaseCharacter {
 	}
 
 	public void setMana(int mana) {
-		if(mana>maxMana)this.mana = maxMana;
-		else if(mana<0)this.mana = 0;
-		else 
-		this.mana = mana;
+		if (mana > maxMana)
+			this.mana = maxMana;
+		else if (mana < 0)
+			this.mana = 0;
+		else
+			this.mana = mana;
 	}
 
 	public int getMaxMana() {

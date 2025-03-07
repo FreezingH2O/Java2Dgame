@@ -1,17 +1,13 @@
 package components;
 
-import java.util.ArrayList;
-import java.util.concurrent.ForkJoinPool.ManagedBlocker;
 
 import entity.character.Player;
 import entity.item.BaseItem;
 import entity.item.HealthPotion;
 import entity.item.ManaPotion;
-import entity.weapon.BaseWeapon;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,8 +28,8 @@ public class Hotbar extends HBox {
 		this.setPadding(new Insets(15));
 		this.setSpacing(0);
 		
-		healthPotion = new  HealthPotion(20);
-		manaPotion= new ManaPotion(20);
+		healthPotion = new  HealthPotion(50);
+		manaPotion= new ManaPotion(50);
 		
 		hotbarSlots = new Button[10];
 		for (int i = 0; i < hotbarSlots.length; i++) {

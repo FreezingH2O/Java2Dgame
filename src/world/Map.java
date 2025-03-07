@@ -69,22 +69,22 @@ public class Map {
 		for (int y = 0; y < arr.length; y++) {
 			for (int x = 0; x < arr[0].length; x++) {
 				if (arr[y][x] == 99) {
-					Player.setInstant(new Player(x * tileSize, y * tileSize, 10, 200, 100, 20, 48, this));
+					Player.setInstant(new Player(x * tileSize, y * tileSize, 3, 200, 100, 20, 48, this));
 					entities.add(Player.getInstant());
 					setPlayer(Player.getInstant());
 					arr[y][x] = 1;
 
 				} else if (arr[y][x] == 91 && HighMonster.getHighBossLi().contains(MonsterType.FIRE + "")) {
-					entities.add(new HighMonster(MonsterType.FIRE, x * tileSize, y * tileSize, 6, 100, 10, 96, this));
+					entities.add(new HighMonster(MonsterType.FIRE, x * tileSize, y * tileSize, 6, 300, 10, 96, this));
 					arr[y][x] = 1;
 				} else if (arr[y][x] == 92 && HighMonster.getHighBossLi().contains(MonsterType.WATER + "")) {
-					entities.add(new HighMonster(MonsterType.WATER, x * tileSize, y * tileSize, 6, 100, 10, 96, this));
+					entities.add(new HighMonster(MonsterType.WATER, x * tileSize, y * tileSize, 6,300, 10, 96, this));
 					arr[y][x] = 1;
 				} else if (arr[y][x] == 93 && HighMonster.getHighBossLi().contains(MonsterType.WIND + "")) {
-					entities.add(new HighMonster(MonsterType.WIND, x * tileSize, y * tileSize, 6, 100, 10, 96, this));
+					entities.add(new HighMonster(MonsterType.WIND, x * tileSize, y * tileSize, 6, 300, 10, 96, this));
 					arr[y][x] = 1;
 				} else if (arr[y][x] == 94 && HighMonster.getHighBossLi().contains(MonsterType.DARK + "")) {
-					entities.add(new HighMonster(MonsterType.DARK, x * tileSize, y * tileSize, 6, 100, 10, 96, this));
+					entities.add(new HighMonster(MonsterType.DARK, x * tileSize, y * tileSize, 6, 300, 10, 96, this));
 					arr[y][x] = 1;
 				}
 			}
@@ -102,6 +102,7 @@ public class Map {
 
 	public void changeMap(MapType mapType) {
 		setMapType(mapType);
+		System.out.println(mapType);
 		setArr(mapType);
 		entitiesClear();
 		Platform.runLater(() -> {
@@ -171,6 +172,9 @@ public class Map {
 		tryLoadImage(getMapType() + "/3.png", 3);
 		tryLoadImage(getMapType() + "/4.png", 4);
 		tryLoadImage(getMapType() + "/5.png", 5);
+		tryLoadImage(getMapType() + "/6.png", 6);
+		tryLoadImage(getMapType() + "/7.png", 7);
+		tryLoadImage(getMapType() + "/9.png", 9);
 		
 		tryLoadImage(getMapType() + "/5252.png", 5252);
 		tryLoadImage(getMapType() + "/5253.png", 5253);
@@ -197,6 +201,20 @@ public class Map {
         tryLoadImage(getMapType() + "/5281.png", 5281);
         tryLoadImage(getMapType() + "/5282.png", 5282);
         tryLoadImage(getMapType() + "/5283.png", 5283);
+        
+        tryLoadImage(getMapType() + "/5300.png", 5300);
+        tryLoadImage(getMapType() + "/5301.png", 5301);
+        tryLoadImage(getMapType() + "/5302.png", 5302);
+        tryLoadImage(getMapType() + "/5303.png", 5303);
+        tryLoadImage(getMapType() + "/5304.png", 5304);
+        tryLoadImage(getMapType() + "/5305.png", 5305);
+        tryLoadImage(getMapType() + "/5306.png", 5306);
+        tryLoadImage(getMapType() + "/5307.png", 5307);
+        tryLoadImage(getMapType() + "/5308.png", 5308);
+        tryLoadImage(getMapType() + "/5309.png", 5309);
+        tryLoadImage(getMapType() + "/5310.png", 5310);
+
+        
 	}
 
 	private void tryLoadImage(String path, int key) {

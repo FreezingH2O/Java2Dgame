@@ -1,90 +1,85 @@
-// GameManager.java  
-package logic;  
+package logic;
 
-import world.Camera;
 import world.Map;  
 import world.MapType;  
 
-import java.util.ArrayList;  
+import java.util.ArrayList;
 
-import components.GameCanvas;  
-import entity.character.BaseCharacter;  
+import components.GameCanvas;
+import entity.character.BaseCharacter;
 import entity.character.Player;
-import entity.effect.EffectManager;
-import javafx.scene.canvas.GraphicsContext;  
-import javafx.scene.input.MouseEvent;  
-import javafx.scene.paint.Color;  
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import main.Main;
-import javafx.geometry.Point2D;  
+import javafx.geometry.Point2D;
 
-public class GameManager {  
+public class GameManager {
 	private Main main;
-    private Map map;  
-    private GameState gameState;  
-    private StartScreen startScreen;  
-    private PauseScreen pauseScreen;  
-    private EndScreen endScreen;  
-    private GameCanvas canvas;  
-    private static final double PAUSE_BUTTON_X = 750; // Adjust as needed  
-    private static final double PAUSE_BUTTON_Y = 20;  // Adjust as needed  
-    private static final double PAUSE_BUTTON_WIDTH = 40;  
-    private static final double PAUSE_BUTTON_HEIGHT = 30;  
+	private Map map;
+	private GameState gameState;
+	private StartScreen startScreen;
+	private PauseScreen pauseScreen;
+	private EndScreen endScreen;
+	private GameCanvas canvas;
+	private static final double PAUSE_BUTTON_X = 750; // Adjust as needed
+	private static final double PAUSE_BUTTON_Y = 20; // Adjust as needed
+	private static final double PAUSE_BUTTON_WIDTH = 40;
+	private static final double PAUSE_BUTTON_HEIGHT = 30;
 
-    public GameManager() {  
-        gameState = GameState.START_SCREEN;  
-        startScreen = new StartScreen(this);  
-        pauseScreen = new PauseScreen(this);  
-        endScreen = new EndScreen(this);  
-    }  
+	public GameManager() {
+		gameState = GameState.START_SCREEN;
+		startScreen = new StartScreen(this);
+		pauseScreen = new PauseScreen(this);
+		endScreen = new EndScreen(this);
+	}
 
-    public void startGame() {  
-        map = new Map(MapType.ISLAND);  
+	public void startGame() {
+		map = new Map(MapType.ISLAND);
 
-        if (map.getPlayer() == null) {  
-            throw new IllegalStateException("Map failed to initialize with a Player.");  
-        }  
-        this.setGameState(gameState.PLAYING);
+		if (map.getPlayer() == null) {
+			throw new IllegalStateException("Map failed to initialize with a Player.");
+		}
+		this.setGameState(gameState.PLAYING);
 //        gameState = GameState.PLAYING;  
-    }  
+	}
 
+	public void update(GraphicsContext gc) {
+//		System.out.println("GameState: " + gameState);
+		switch (gameState) {
+		case START_SCREEN:
+			startScreen.draw(gc);
+			break;
+		case PLAYING:
+			Player player = Player.getInstant();
 
-    public void update(GraphicsContext gc) {  
-    	System.out.println("GameState: "+gameState);  
-        switch (gameState) {  
-            case START_SCREEN:  
-                startScreen.draw(gc);  
-                break;  
-            case PLAYING:  
-                Player player = Player.getInstant();  
-
-                if (player.getHealth() <= 0) {  
+			if (player.getHealth() <= 0) {
 //                    gameState = GameState.END_SCREEN;
-                	this.setGameState(gameState.END_SCREEN);
-                } else {  
-                    gc.clearRect(0, 0, map.getMapWidth(), map.getMapHeight());  
-                    map.update(gc);  
-                    player.update(gc);  
-                    for(BaseCharacter entity : Map.getEntities()){  
-                        if(!(entity instanceof Player)){  
-                            entity.update(gc);  
-                        }  
-                    }
-//                    EffectManager.getInstance().render(gc);
-                } 
-                
-                break;  
-            case PAUSED:  
+				this.setGameState(gameState.END_SCREEN);
+			} else {
+				gc.clearRect(0, 0, map.getMapWidth(), map.getMapHeight());
+				map.update(gc);
+				player.update(gc);
+				for (BaseCharacter entity : Map.getEntities()) {
+					if (!(entity instanceof Player)) {
+						entity.update(gc);
+					}
+				}
+			}
+
+			break;
+		case PAUSED:
 //                pauseScreen.draw(gc);  
-                break;  
-            case END_SCREEN:  
+			break;
+		case END_SCREEN:
 //                endScreen.draw(gc);  
 //            	endScreen.show();   
-                break;  
-        }  
-    }  
+			break;
+		}
+	}
 
-    public Main getMain() {
+	public Main getMain() {
 		return main;
 	}
 
@@ -92,56 +87,55 @@ public class GameManager {
 		this.main = main;
 	}
 
-	public void restartGame() {  
-        Player player = Player.getInstant();  
-        player.setHealth(player.getMaxHealth());  
-        map = new Map(MapType.ISLAND); 
-        this.setGameState(gameState.PLAYING);
-        
-    }   
+	public void restartGame() {
+		Player player = Player.getInstant();
+		player.setHealth(player.getMaxHealth());
+		map = new Map(MapType.ISLAND);
+		this.setGameState(gameState.PLAYING);
 
-    public GameState getGameState() {  
-        return gameState;  
-    }  
+	}
 
-    public void setGameState(GameState gameState) {  
-        this.gameState = gameState;  
-        if (main != null) {  
-             Main.updateVisibility();  //THIS LINE IS IMPORTANT  
-        }  
-    }  
-    
-    public StartScreen getStartScreen() {  
-        return startScreen;  
-    }  
+	public GameState getGameState() {
+		return gameState;
+	}
 
-    public void setStartScreen(StartScreen startScreen) {  
-        this.startScreen = startScreen;  
-    }  
+	public void setGameState(GameState gameState) {
+		this.gameState = gameState;
+		if (main != null) {
+			Main.updateVisibility(); 
+		}
+	}
 
-    public PauseScreen getPauseScreen() {  
-        return pauseScreen;  
-    }  
+	public StartScreen getStartScreen() {
+		return startScreen;
+	}
 
-    public void setPauseScreen(PauseScreen pauseScreen) {  
-        this.pauseScreen = pauseScreen;  
-    }  
+	public void setStartScreen(StartScreen startScreen) {
+		this.startScreen = startScreen;
+	}
 
-    public EndScreen getEndScreen() {  
-        return endScreen;  
-    }  
+	public PauseScreen getPauseScreen() {
+		return pauseScreen;
+	}
 
-    public void setEndScreen(EndScreen endScreen) {  
-        this.endScreen = endScreen;  
-    }  
+	public void setPauseScreen(PauseScreen pauseScreen) {
+		this.pauseScreen = pauseScreen;
+	}
 
-    public GameCanvas getCanvas() {  
-        return canvas;  
-    }  
+	public EndScreen getEndScreen() {
+		return endScreen;
+	}
 
-    public void setCanvas(GameCanvas canvas) {  
-        this.canvas = canvas;  
-    }  
+	public void setEndScreen(EndScreen endScreen) {
+		this.endScreen = endScreen;
+	}
 
+	public GameCanvas getCanvas() {
+		return canvas;
+	}
 
-}  
+	public void setCanvas(GameCanvas canvas) {
+		this.canvas = canvas;
+	}
+
+}

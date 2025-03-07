@@ -3,8 +3,6 @@ package entity.weapon;
 import entity.ElementType;
 import entity.character.BaseMonster;
 import entity.character.Player;
-import entity.effect.EffectManager;
-import entity.effect.Fireball;
 
 public class Wand extends BaseWeapon {
     private int manaCost;  

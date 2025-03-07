@@ -5,8 +5,7 @@ import java.util.List;
 
 import collision.EntityCollision;
 import collision.WorldCollision;
-import entity.effect.EffectManager;
-import entity.effect.Fireball;
+import entity.effect.GameEffect;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Rectangle;
@@ -20,16 +19,16 @@ public abstract class BaseCharacter {
 	private int size;
 	private boolean death;
 	private int attack;
+	protected List<GameEffect> effectsList = new ArrayList<>();
 	protected Rectangle solidArea;
 	protected WorldCollision wCollide;
-	protected static EntityCollision eCollide;
+	protected EntityCollision eCollide;
 	protected Map map;
 	private String name;
 
 	public BaseCharacter(String name, double posX, double posY, int health, int speed, int attack, int size, Map map) {
 		this.map = map;
 		eCollide = new EntityCollision();
-
 		setName(name);
 		maxHealth = health;
 		setPosX(posX);
@@ -42,16 +41,28 @@ public abstract class BaseCharacter {
 
 	}
 
-	public abstract void update(GraphicsContext gc);
-
-	public void attackTarget(BaseCharacter target) {
-		if (target == null)
+	public void update(GraphicsContext gc) {
+		if (isDeath()) {
 			return;
-
-			target.takeDamage(getAttack());
-			System.out.println(getName() + " attack " + target.getName());
+		}
 		
+		for (GameEffect effect : effectsList) {
+			if (effect.isActive()) {
+				effect.update();
+				effect.render(gc);
+
+				if (effect.checkCollision(eCollide.getTarget())) {
+					
+					eCollide.getTarget().takeDamage(this.getAttack());
+					effect.deactivate();
+				
+				}
+			}
+		}
+
 	}
+
+	public abstract void attackTarget(BaseCharacter target) ;
 
 	public int getHealth() {
 		return health;
@@ -64,8 +75,6 @@ public abstract class BaseCharacter {
 			this.health = 0;
 			setDeath(true);
 			if (this instanceof HighMonster) {
-				System.out.println(((HighMonster) this).getMonsterType() + "");
-				System.out.println("Class of HighBossLi: " + HighMonster.getHighBossLi().getClass());
 
 				List<String> tmp = new ArrayList<>(HighMonster.getHighBossLi());
 				tmp.remove(((HighMonster) this).getMonsterType() + "");
@@ -119,6 +128,7 @@ public abstract class BaseCharacter {
 
 	public void takeDamage(int damage) {
 		setHealth(getHealth() - damage);
+		
 
 	}
 

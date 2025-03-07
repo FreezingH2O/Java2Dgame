@@ -6,8 +6,7 @@ import java.util.Random;
 import collision.WorldCollision;
 import components.Bar;
 import entity.ElementType;
-import entity.effect.EffectManager;
-import entity.effect.Fireball;
+import entity.effect.GameEffect;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
@@ -50,38 +49,28 @@ public abstract class BaseMonster extends BaseCharacter {
 	}
 
 	public void update(GraphicsContext gc) {
+
 		if (isDeath()) {
-			// System.out.println(getName() + " is death");
+
 			return;
 		}
-
+		super.update(gc);
 		gc.drawImage(pic, getPosX(), getPosY());
 		healthBar.render(gc, getPosX(), getPosY() - 10, getHealth());
 
-		// Ensure collision detection updates the target
-		boolean colliding = eCollide.isColliding(this, getPosX(), getPosY());
-		boolean playerNearby = eCollide.isPlayerCollide();
+	}
 
-		if (playerNearby) {
-			 System.out.println(getName() + " detects the player!");
-
-			BaseCharacter target = eCollide.getTarget();
-			Fireball fireball = new Fireball(getPosX(), getPosY(), target.getPosX(), target.getPosY(), 200.0, target);
-			EffectManager.getInstance().addEffect(fireball);
-			System.out.println(fireball.isCollison());
+	public void attackTarget(BaseCharacter target) {
+		if (target == null)
+			return;
+		if (this instanceof HighMonster) {
+			GameEffect fireball = new GameEffect(getElementType(), getPosX(), getPosY(), target.getPosX(),
+					target.getPosY(), 3, target);
+			effectsList.add(fireball);
 			
-			if (canAttack && map.getEntities().contains(this)) {
-			canAttack = false;
-			attackTarget(eCollide.getTarget());
-
-			Timeline delay = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> {
-				canAttack = true;
-				// System.out.println("Attack cooldown finished! You can attack again.");
-			}));
-			delay.setCycleCount(1);
-			delay.play();
-		}
-
+			//System.out.println(getElementType());
+		} else {
+			target.takeDamage(getAttack());
 		}
 	}
 
@@ -94,17 +83,18 @@ public abstract class BaseMonster extends BaseCharacter {
 			setPosY(newY);
 		}
 
-//		if (eCollide.isPlayerCollide() && canAttack && map.getEntities().contains(this)) {
-//			canAttack = false;
-//			attackTarget(eCollide.getTarget());
-//
-//			Timeline delay = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> {
-//				canAttack = true;
-//				// System.out.println("Attack cooldown finished! You can attack again.");
-//			}));
-//			delay.setCycleCount(1);
-//			delay.play();
-//		}
+		if (eCollide.isPlayerCollide() && canAttack && map.getEntities().contains(this)) {
+			canAttack = false;
+
+			attackTarget(eCollide.getTarget());
+
+			Timeline delay = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> {
+				canAttack = true;
+
+			}));
+			delay.setCycleCount(1);
+			delay.play();
+		}
 
 	}
 

@@ -3,10 +3,10 @@ package entity.weapon;
 import entity.character.BaseMonster;
 import entity.character.Player;
 
-public class Archer extends BaseWeapon {
+public class Bow extends BaseWeapon {
 
-	public Archer(String name, int attackRange, int damage, int durability) {
-		super(name, 250, 3, 15);
+	public Bow() {
+		super("bow", 250, 3, 15);
 	}
 
 	@Override
