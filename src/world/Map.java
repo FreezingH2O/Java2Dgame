@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import entity.character.BaseCharacter;
 import entity.character.HighMonster;
+import entity.character.LowMonster;
 import entity.character.MonsterType;
 import entity.character.Player;
 import javafx.application.Platform;
@@ -68,7 +69,7 @@ public class Map {
 		for (int y = 0; y < arr.length; y++) {
 			for (int x = 0; x < arr[0].length; x++) {
 				if (arr[y][x] == 99) {
-					Player.setInstant(new Player(x * tileSize, y * tileSize, 2, 200, 100, 20, 48, this));
+					Player.setInstant(new Player(x * tileSize, y * tileSize, 5, 200, 100, 20, 48, this));
 					entities.add(Player.getInstant());
 					setPlayer(Player.getInstant());
 					arr[y][x] = 1;
@@ -85,6 +86,12 @@ public class Map {
 				} else if (arr[y][x] == 94 && HighMonster.getHighBossLi().contains(MonsterType.DARK + "")) {
 					entities.add(new HighMonster(MonsterType.DARK, x * tileSize, y * tileSize, 6, 300, 10, 96, this));
 					arr[y][x] = 1;
+				}
+				else if(arr[y][x]==1) {
+					if(Math.random() < 0.05) {
+					entities.add(new LowMonster( x * tileSize, y * tileSize, 3, 100, 10, this));
+					 
+					}
 				}
 			}
 

@@ -31,13 +31,13 @@ public class arrow extends GameEffect {
 		gc.drawImage(pic, -resizedWidth / 2, 0, resizedWidth, resizedHeight);
 		gc.restore();
 	}
-	
-	 public boolean checkCollision(BaseCharacter player) {
-	    	if (player == null)return false;
-//	    	System.out.println(player.getPosX()+ " "+player.getPosY());
-//	    	System.out.println(x+" "+y);
-	        double distance = Math.sqrt(Math.pow(player.getPosX() - x, 2) + Math.pow(player.getPosY() - y, 2));
-	        return distance < 2; 
-	    }
+
+	public boolean checkCollision(BaseCharacter player) {
+		if (player == null)
+			return false;
+
+		double distance = Math.sqrt(Math.pow(player.getPosX() - x, 2) + Math.pow(player.getPosY() - y, 2));
+		return distance < 2;
+	}
 
 }
