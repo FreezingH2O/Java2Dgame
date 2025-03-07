@@ -28,6 +28,7 @@ public class Map {
 	private static ArrayList<BaseCharacter> entities;
 	private final static Image house = new Image("house.png");
 	private final static Image door = new Image("background/door.png");
+	private final static Image inHouse = new Image("background/inHouse.png");
 	private Player player;
 
 	public Map(MapType type) {
@@ -55,9 +56,13 @@ public class Map {
 					gc.drawImage(tileImage, x * tileSize, y * tileSize);
 
 				if (arr[y][x] == 55) {
-					gc.drawImage(house, (x + 1) * tileSize - 160, (y + 1) * tileSize - 224);
+					gc.drawImage(house, (x + 1) * tileSize - house.getWidth(), (y + 1) * tileSize - house.getHeight());
 				} else if (arr[y][x] == 89) {
-					gc.drawImage(door, (x + 1) * tileSize - 96, (y + 1) * tileSize - 96);
+					gc.drawImage(door, (x + 1) * tileSize - door.getWidth(), (y + 1) * tileSize - door.getHeight());
+
+				}
+				else if (arr[y][x] == 222) {
+					gc.drawImage(inHouse, (x + 1) * tileSize - door.getWidth(), (y + 1) * tileSize - door.getHeight());
 
 				}
 			}

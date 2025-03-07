@@ -215,6 +215,8 @@ public class Player extends BaseCharacter {
             } else if (tile == 83) {
                 Instruction.getInstant().updateText("Press E to enter the House");
             }
+            
+            
             if (keyboard.isActionPressed()) {
                 if (tile == 88) {
                     map.changeMap(MapType.DUNGEON);
