@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -69,7 +68,7 @@ public class Map {
 		for (int y = 0; y < arr.length; y++) {
 			for (int x = 0; x < arr[0].length; x++) {
 				if (arr[y][x] == 99) {
-					Player.setInstant(new Player(x * tileSize, y * tileSize, 10, 200, 100, 20, 48, this));
+					Player.setInstant(new Player(x * tileSize, y * tileSize, 2, 200, 100, 20, 48, this));
 					entities.add(Player.getInstant());
 					setPlayer(Player.getInstant());
 					arr[y][x] = 1;

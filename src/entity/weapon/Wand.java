@@ -8,7 +8,7 @@ public class Wand extends BaseWeapon {
     private int manaCost;  
 
     public Wand(int manaCost) {  
-        super("Wand", 4*48, 10, 5);  
+        super("wand", 4*48, 10, 5);  
         this.setManaCost(manaCost); 
     }  
     
