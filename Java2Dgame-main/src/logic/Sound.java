@@ -38,8 +38,13 @@ import javafx.scene.media.AudioClip;
 		return levelup_sound;
 	}
 	
-	private static AudioClip dooropen_sound = new AudioClip(ClassLoader.getSystemResource("sound/dooropen.wav").toString());
+	private static AudioClip dooropen_sound = new AudioClip(ClassLoader.getSystemResource("sound/opendoor.wav").toString());
 	public static AudioClip getdooropen_sound() {
 		return dooropen_sound;
+	}
+	
+	private static AudioClip gamewin_sound = new AudioClip(ClassLoader.getSystemResource("sound/gamewin.wav").toString());
+	public static AudioClip getGamewin_sound() {
+		return gamewin_sound;
 	}
 }
