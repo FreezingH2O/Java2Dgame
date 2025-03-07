@@ -3,6 +3,7 @@ package collision;
 
 import entity.character.BaseCharacter;
 import entity.character.BaseMonster;
+import entity.character.HighMonster;
 import entity.character.Player;
 import world.Map;
 
@@ -50,7 +51,12 @@ public class EntityCollision {
 
                 if (entity instanceof BaseMonster && other instanceof Player) {
                     if (distance < minDistance) {
-                        if (distance <= MONSTER_COLLISION_DISTANCE) {
+                        if (entity instanceof HighMonster && distance <= MONSTER_COLLISION_DISTANCE) {
+                            playerCollide = true;
+                            minDistance = distance;
+                            closestEnemy = other;
+                        }
+                        else if (distance <= MONSTER_COLLISION_DISTANCE/2) {
                             playerCollide = true;
                             minDistance = distance;
                             closestEnemy = other;

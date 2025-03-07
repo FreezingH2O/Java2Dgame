@@ -95,7 +95,7 @@ public class Map {
 					arr[y][x] = 1;
 				}
 				else if(arr[y][x]==1) {
-					if(Math.random() < 0.05) {
+					if(Math.random() < 0.02) {
 					entities.add(new LowMonster( x * tileSize, y * tileSize, 3, 100, 10, this));
 					 
 					}
