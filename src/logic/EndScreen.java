@@ -1,4 +1,4 @@
-package logic;
+package logic;  
 
 import javafx.geometry.Pos;  
 import javafx.scene.control.Button;  
@@ -34,42 +34,25 @@ public class EndScreen {
         restartButton = new Button("Retry");  
         restartButton.setPrefWidth(BUTTON_WIDTH);  
         restartButton.setPrefHeight(BUTTON_HEIGHT);  
+        restartButton.setOnAction(e -> { // Set action for restart button  
+            System.out.println("Restart button clicked (setOnAction)");  
+            gameManager.restartGame();  
+            gameManager.setGameState(GameState.PLAYING);  
+            Main.updateVisibility(); // Update visibility after restart  
+        });  
 
         exitButton = new Button("Quit");  
         exitButton.setPrefWidth(BUTTON_WIDTH);  
         exitButton.setPrefHeight(BUTTON_HEIGHT);  
+        exitButton.setOnAction(e -> { // Set action for exit button  
+            System.out.println("Exit button clicked (setOnAction)");  
+            System.exit(0);  
+        });  
 
         endScreenLayout.getChildren().addAll(gameOverText, restartButton, exitButton);  
     }  
 
     public VBox getEndScreenLayout() {  
         return endScreenLayout;  
-    }  
-
-    public void handleInput(double x, double y) {  
-        double windowWidth = Main.getWidth();  
-        double windowHeight = Main.getHeight();  
-
-        // Button positions - adjust these based on your layout and desired spacing  
-        double restartButtonX = (windowWidth - BUTTON_WIDTH) / 2;  
-        double restartButtonY = windowHeight * 0.4;  
-
-        double exitButtonX = (windowWidth - BUTTON_WIDTH) / 2;  
-        double exitButtonY = windowHeight * 0.6;  
-
-        if (x >= restartButtonX && x <= restartButtonX + BUTTON_WIDTH &&  
-            y >= restartButtonY && y <= restartButtonY + BUTTON_HEIGHT) {  
-            System.out.println("Restart button clicked (handleInput)");  
-            gameManager.restartGame();  
-            gameManager.setGameState(GameState.PLAYING);  // Make sure the game goes back to playing!  
-
-        } else if (x >= exitButtonX && x <= exitButtonX + BUTTON_WIDTH &&  
-                   y >= exitButtonY && y <= exitButtonY + BUTTON_HEIGHT) {  
-            System.out.println("Exit button clicked (handleInput)");  
-            System.exit(0);  
-        } else {  
-            System.out.println("Click outside buttons");  
-            System.out.println("X: " + x + ", Y: " + y);  
-        }  
     }  
 }  

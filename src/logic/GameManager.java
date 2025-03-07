@@ -1,6 +1,7 @@
 // GameManager.java  
 package logic;  
 
+import world.Camera;
 import world.Map;  
 import world.MapType;  
 

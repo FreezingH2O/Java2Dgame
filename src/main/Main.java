@@ -41,7 +41,7 @@ public class Main extends Application {
             	canvas.getGameManager().getStartScreen().handleInput(e.getX(), e.getY());   
             } else if (currentState == GameState.PAUSED) {  
             	canvas.getGameManager().getPauseScreen().handleInput(e.getX(), e.getY());  
-            }  
+            }
             updateVisibility();
         }); 
 
