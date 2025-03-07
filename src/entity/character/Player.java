@@ -1,8 +1,7 @@
 package entity.character;
 
-import java.awt.DisplayMode;
-import java.io.ObjectInputFilter.Status;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import collision.WorldCollision;
 import components.Hotbar;
@@ -11,10 +10,7 @@ import components.StatusDisplay;
 import entity.ElementType;
 import entity.effect.GameEffect;
 import entity.effect.arrow;
-import entity.item.BaseItem;
-import entity.item.HealthPotion;
 import entity.item.KeyItem;
-import entity.item.ManaPotion;
 import entity.weapon.Bow;
 import entity.weapon.BaseWeapon;
 import entity.weapon.Sword;
@@ -29,8 +25,7 @@ import world.MapType;
 
 public class Player extends BaseCharacter {
 	private Image pic;
-	private static Image up, down1, down2, left1, left2, right1, right2, still;
-	private boolean xCheck, yCheck;
+	private boolean xCheck, yCheck, toggle;
 	private KeyboardController keyboard;
 	private Camera camera;
 	private int mana, maxMana;
@@ -38,6 +33,7 @@ public class Player extends BaseCharacter {
 	private ArrayList<BaseWeapon> weaponList;
 	private BaseWeapon heldWeapon;
 	private static Player instant;
+	private static HashMap<String, Image> images;
 
 	public Player(double posX, double posY, int speed, int health, int mana, int attack, int size, Map map) {
 		super("Player", posX, posY, health, speed, attack, size, map);
@@ -52,19 +48,44 @@ public class Player extends BaseCharacter {
 		weaponList.add(new Wand(5));
 		weaponList.add(new Bow());
 		Hotbar.updateSlot(0, weaponList.get(0));
+		toggle = false;
+		images = new HashMap<>();
 
-		up = new Image("player/up.png");
-		down1 = new Image("player/down1.png");
-		down2 = new Image("player/down2.png");
-		left1 = new Image("player/left1.png");
-		left2 = new Image("player/left2.png");
-		right1 = new Image("player/right1.png");
-		right2 = new Image("player/right2.png");
-		still = new Image("player/still.png");
+		// Load images into the map
+		images.put("up", new Image(getClass().getResource("/player/up.png").toExternalForm()));
+		images.put("down1", new Image(getClass().getResource("/player/down1.png").toExternalForm()));
+		images.put("down2", new Image(getClass().getResource("/player/down2.png").toExternalForm()));
+		images.put("left1", new Image(getClass().getResource("/player/left1.png").toExternalForm()));
+		images.put("left2", new Image(getClass().getResource("/player/left2.png").toExternalForm()));
+		images.put("right1", new Image(getClass().getResource("/player/right1.png").toExternalForm()));
+		images.put("right2", new Image(getClass().getResource("/player/right2.png").toExternalForm()));
+		images.put("still", new Image(getClass().getResource("/player/still.png").toExternalForm()));
+
+		images.put("axe00", new Image("player/axe00.png"));
+
+		// Load images for Sword
+		images.put("sword00", new Image("player/sword00.png"));
+		
+//		images.put("sword21", new Image("player/sword21.png"));
+//		images.put("sword22", new Image("player/sword22.png"));
+
+		// Load images for Bow
+		images.put("bow00", new Image("player/bow1.gif"));
+		images.put("bow01", new Image("player/bow2.gif"));
+
+		// Load images for Wand
+		// images.put("wand00", new Image("player/wand00.png"));
+		images.put("wand00", new Image("player/wand00.gif"));
+		images.put("wand01", new Image("player/wand01.png"));
+//		images.put("wand21", new Image("player/wand21.png"));
+//		images.put("wand22", new Image("player/wand22.png"));
+//	
+
+		// Set default image
+		pic = images.get("still");
 
 		xCheck = true;
 		yCheck = true;
-		pic = still;
 
 		solidArea = new Rectangle(28, 28);
 		solidArea.setX(8);
@@ -75,20 +96,21 @@ public class Player extends BaseCharacter {
 		keyboard = new KeyboardController();
 	}
 
-	
 	public void attackTarget(BaseCharacter target) {
 		if (heldWeapon != null) {
-			if(heldWeapon instanceof Wand) {
-				GameEffect effect = new GameEffect(ElementType.MAGIC,getPosX(), getPosY(), target.getPosX(), target.getPosY(), 1, target);
+			if (heldWeapon instanceof Wand) {
+				GameEffect effect = new GameEffect(ElementType.MAGIC, getPosX(), getPosY(), target.getPosX(),
+						target.getPosY(), 1, target);
 				effectsList.add(effect);
-				
-				setMana(mana-((Wand) heldWeapon).getManaCost());
+
+				setMana(mana - ((Wand) heldWeapon).getManaCost());
 				StatusDisplay.getInstant().useMana(((Wand) heldWeapon).getManaCost());
-			}else if(heldWeapon instanceof Bow) {
-				GameEffect effect = new arrow(ElementType.NONE,getPosX(), getPosY(), target.getPosX(), target.getPosY(), 1, target);
+			} else if (heldWeapon instanceof Bow) {
+				GameEffect effect = new arrow(ElementType.NONE, getPosX(), getPosY(), target.getPosX(),
+						target.getPosY(), 1, target);
 				effectsList.add(effect);
 			}
-			
+
 			target.takeDamage(heldWeapon.getDamage());
 		} else {
 			target.takeDamage(getAttack());
@@ -107,34 +129,53 @@ public class Player extends BaseCharacter {
 
 		if (keyboard.isUpPressed()) {
 			y = getPosY() - speed;
-			this.pic = up;
+			setPic(images.get("up"));
 
 		} else if (keyboard.isDownPressed()) {
 			y = getPosY() + speed;
-			this.pic = (yCheck) ? down1 : down2;
+			setPic(images.get(yCheck ? "down1" : "down2"));
 
 		} else if (keyboard.isLeftPressed()) {
 			x = getPosX() - speed;
-			this.pic = (xCheck) ? left1 : left2;
+			setPic(images.get(xCheck ? "left1" : "left2"));
 
 		} else if (keyboard.isRightPressed()) {
 			x = getPosX() + speed;
-			this.pic = (xCheck) ? right1 : right2;
+			setPic(images.get(xCheck ? "right1" : "right2"));
 
 		} else {
-			this.pic = still;
+			setPic(images.get("still")); // Default idle state
 		}
-	//	System.out.println(eCollide.isColliding(this, x, y));
+
+		if (heldWeapon != null) {
+			//if (keyboard.isSpacePressed()) {
+				setPic(images.get(heldWeapon.getName() + "00"));
+//				}
+//			else {
+//				setPic(images.get(heldWeapon.getName() + "01"));
+//			}
+			solidArea = new Rectangle(45, 45);
+			solidArea.setX(20);
+			solidArea.setY(30);
+		}
+
+		else {
+			solidArea = new Rectangle(28, 28);
+			solidArea.setX(8);
+			solidArea.setY(16);
+		}
+
+		// System.out.println(eCollide.isColliding(this, x, y));
 		if (!wCollide.isCollide(x, y, solidArea) && !eCollide.isColliding(this, x, y)) {
 			setPosX(x);
 			setPosY(y);
 		}
 
 		// if (eCollide.isColliding(this, x, y)) {
-
+		// System.out.println(eCollide.getTarget());
 		if (eCollide.getTarget() instanceof BaseMonster) {
 			if (keyboard.isSpacePressed()) {
-				
+
 				attackTarget(eCollide.getTarget());
 //				if (eCollide.getTarget().isDeath()) {
 //					StatusDisplay.getInstant().gainExperience(20);
@@ -144,15 +185,39 @@ public class Player extends BaseCharacter {
 		// }
 
 		if (wCollide.isMovingArea()) {
-			Instruction.getInstant().updateText("Press E to enter");
+			if (wCollide.getMovetile() == 88) {
+				Instruction.getInstant().updateText("Press E to enter the Dungeon");
+
+			} else if (wCollide.getMovetile() == 81) {
+				Instruction.getInstant().updateText("Press E to enter to getout");
+
+			} else if (wCollide.getMovetile() == 82) {
+				if (HighMonster.getHighBossLi().size() != 0) {
+					Instruction.getInstant().updateText("You need to collect all of the lialic to open the boss room");
+
+				} else {
+					Instruction.getInstant().updateText("Press E to enter the Bossroom");
+				}
+
+			} else if (wCollide.getMovetile() == 83) {
+				// System.out.println("house");
+				Instruction.getInstant().updateText("Press E to enter the House");
+			}
 
 			if (keyboard.isActionPressed()) {
 
-				if (map.getMapType() == MapType.ISLAND) {
+				if (wCollide.getMovetile() == 88) {
 					map.changeMap(MapType.DUNGEON);
-				} else {
+				} else if (wCollide.getMovetile() == 81) {
 					map.changeMap(MapType.ISLAND);
+				} else if (wCollide.getMovetile() == 82) {
+					if (HighMonster.getHighBossLi().size() == 0) {
+						map.changeMap(MapType.BOSSROOM);
+					}
+				} else if (wCollide.getMovetile() == 83) {
+					map.changeMap(MapType.HOUSE);
 				}
+
 			}
 		} else {
 			Instruction.getInstant().updateText("");
@@ -161,7 +226,7 @@ public class Player extends BaseCharacter {
 
 		camera.cameraMove(getPosX(), getPosY());
 
-		for(int i=0;i< weaponList.size();++i) {
+		for (int i = 0; i < weaponList.size(); ++i) {
 			Hotbar.updateSlot(i, weaponList.get(i));
 		}
 		super.update(gc);
@@ -193,10 +258,12 @@ public class Player extends BaseCharacter {
 
 	public void setHeldWeapon(BaseWeapon heldWeapon) {
 		this.heldWeapon = heldWeapon;
-		if (heldWeapon == null)
+		if (heldWeapon == null) {
 			StatusDisplay.updateEquipment(new Image("player/still.png"));
-		else
+			return;
+		} else
 			StatusDisplay.updateEquipment(heldWeapon.getPic());
+
 	}
 
 	public ArrayList<KeyItem> getKeyItemList() {
@@ -210,6 +277,10 @@ public class Player extends BaseCharacter {
 	public void setPic(Image pic) {
 		this.pic = pic;
 
+	}
+
+	public Image getPic() {
+		return pic;
 	}
 
 	public int getMana() {

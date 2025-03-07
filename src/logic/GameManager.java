@@ -1,11 +1,13 @@
 package logic;
 
 import world.Map;  
-import world.MapType;  
+import world.MapType;
 
+import java.io.ObjectInputFilter.Status;
 import java.util.ArrayList;
 
 import components.GameCanvas;
+import components.StatusDisplay;
 import entity.character.BaseCharacter;
 import entity.character.Player;
 import javafx.scene.canvas.GraphicsContext;
@@ -90,6 +92,8 @@ public class GameManager {
 	public void restartGame() {
 		Player player = Player.getInstant();
 		player.setHealth(player.getMaxHealth());
+		StatusDisplay.getInstant().heal(player.getMaxHealth());
+		StatusDisplay.getInstant().heal(player.getMaxMana());
 		map = new Map(MapType.ISLAND);
 		this.setGameState(gameState.PLAYING);
 

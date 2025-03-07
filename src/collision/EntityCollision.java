@@ -19,7 +19,9 @@ public class EntityCollision {
 	}
 
 	public boolean isColliding(BaseCharacter entity, double newX, double newY) {
-		Rectangle entityBounds = new Rectangle((int) newX + 8, (int) newY, entity.getSize() - 20, entity.getSize());
+		Rectangle entityBounds = 
+				new Rectangle((int) newX +8, (int) newY, entity.getSize()-20, entity.getSize());
+				
 		BaseCharacter closestEnemy = null;
 		float minDistance = Float.MAX_VALUE;
 
