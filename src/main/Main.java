@@ -61,7 +61,7 @@ public class Main extends Application {
 	
     public static void updateVisibility() {  
     	GameState currentState = gameManager.getGameState();
-    	System.out.println("update visibility at state "+currentState);
+//    	System.out.println("update visibility at state "+currentState);
     	
     	StatusDisplay statusDisplay = StatusDisplay.getInstant();  
     	Instruction instructions = Instruction.getInstant();  
