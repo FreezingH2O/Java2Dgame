@@ -33,17 +33,16 @@ public class StartScreen {
 
         // Clear the entire canvas (important for the "viewport" effect)  
         gc.clearRect(0, 0, canvasWidth, canvasHeight);  
-
+        
+        /*
         // Background for the visible window area only  
         gc.setFill(Color.DARKBLUE);  
         gc.fillRect(offsetX, offsetY, windowWidth, windowHeight);  
-
         // Game Title (centered within the window)  
         gc.setFill(Color.GOLD);  
         gc.setFont(new Font("Arial", 40));  
         gc.setTextAlign(TextAlignment.CENTER);  
         gc.fillText("GameName", offsetX + windowWidth / 2, offsetY + windowHeight * 0.25);  
-
         // Game Information (centered within the window)  
         gc.setFill(Color.WHITE);  
         gc.setFont(new Font("Arial", 16));  
@@ -51,6 +50,9 @@ public class StartScreen {
         gc.fillText("Use WASD keys to move", offsetX + windowWidth / 2, offsetY + windowHeight * 0.4);  
         gc.fillText("Collect items to score points", offsetX + windowWidth / 2, offsetY + windowHeight * 0.45);  
         gc.fillText("Avoid enemies!", offsetX + windowWidth / 2, offsetY + windowHeight * 0.5);  
+        */
+        
+        
 
         // Start Button (centered within the window)  
         double buttonX = offsetX + (windowWidth - BUTTON_WIDTH) / 2;  
