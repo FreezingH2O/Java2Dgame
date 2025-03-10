@@ -3,7 +3,7 @@ package entity.item;
 import components.StatusDisplay;
 import entity.character.Player;
 
-public class HealthPotion extends BaseItem {
+public class HealthPotion extends BaseItem implements Consumable{
 
 	private int healthIncrease;
 	private int quntity;

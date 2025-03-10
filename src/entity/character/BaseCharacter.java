@@ -71,19 +71,19 @@ public abstract class BaseCharacter {
         }
     }
 
-    // Abstract method: subclasses must implement their own attack behavior.
+
     public abstract void attackTarget(BaseCharacter target);
 
-    // Getter for health
+
     public int getHealth() {
         return health;
     }
 
-    // Setter for health: enforces boundaries and handles character death.
+
     public void setHealth(int health) {
         if (health > maxHealth) {
             this.health = maxHealth;
-        } else if (health <= MIN_HEALTH) { // Using constant for minimum health
+        } else if (health <= MIN_HEALTH) { 
             this.health = MIN_HEALTH;
             setDeath(true);
             if (this instanceof HighMonster) {
@@ -101,17 +101,17 @@ public abstract class BaseCharacter {
         }
     }
 
-    // Getter for size
+
     public int getSize() {
         return size;
     }
 
-    // Getter for posX
+
     public double getPosX() {
         return posX;
     }
 
-    // Setter for posX: clamps value between MIN_POSITION and the map's maximum width.
+   
     public void setPosX(double d) {
         if (d < MIN_POSITION) {
             posX = MIN_POSITION;

@@ -20,8 +20,11 @@ import entity.weapon.Sword;
 import entity.weapon.Wand;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 import javafx.scene.shape.Rectangle;
+import logic.GameManager;
 import logic.KeyboardController;
+import logic.Sound;
 import world.Camera;
 import world.Map;
 import world.MapType;
@@ -37,6 +40,7 @@ public class Player extends BaseCharacter {
     private static final int WEAPON_SOLID_HEIGHT = 45;
     private static final int WEAPON_SOLID_OFFSET_X = 20;
     private static final int WEAPON_SOLID_OFFSET_Y = 30;
+    
 
     private Image pic;
     private boolean xCheck, yCheck ;
@@ -116,6 +120,8 @@ public class Player extends BaseCharacter {
         } else {
             target.takeDamage(getAttack());
         }
+        AudioClip hitMonster_sound = Sound.getHitmonster_sound();
+        hitMonster_sound.play();
         System.out.println(getName() + " attack " + target.getName());
     }
 
@@ -215,16 +221,36 @@ public class Player extends BaseCharacter {
             } else if (tile == 83) {
                 Instruction.getInstant().updateText("Press E to enter the House");
             }
-            
-            
             if (keyboard.isActionPressed()) {
+            	AudioClip dooropen_sound = Sound.getdooropen_sound();
+            	AudioClip island_sound = Sound.getIslandSound();
+                AudioClip dungeon_sound = Sound.getDungeon_sound();
+                AudioClip bossroom_sound = Sound.getBossroom_sound();
+                AudioClip door_sound = Sound.getdooropen_sound();
+                door_sound.setVolume(1.0);
+                door_sound.play();
+                
                 if (tile == 88) {
                     map.changeMap(MapType.DUNGEON);
+                    island_sound.stop();
+                    dungeon_sound.setCycleCount(AudioClip.INDEFINITE);
+                    dungeon_sound.setVolume(1.0);
+                    dungeon_sound.play();
+                    
                 } else if (tile == 81) {
                     map.changeMap(MapType.ISLAND);
+                    dungeon_sound.stop();
+                    island_sound.setCycleCount(AudioClip.INDEFINITE);
+                    island_sound.setVolume(0.3);
+                    island_sound.play();
+                   
                 } else if (tile == 82) {
                     if (HighMonster.getHighBossLi().size() == 0) {
                         map.changeMap(MapType.BOSSROOM);
+                        dungeon_sound.stop();
+                        bossroom_sound.setCycleCount(AudioClip.INDEFINITE);
+                        bossroom_sound.setVolume(0.3);
+                        bossroom_sound.play();
                     }
                 } else if (tile == 83) {
                     map.changeMap(MapType.HOUSE);
@@ -353,4 +379,3 @@ public class Player extends BaseCharacter {
                '}';
     }
 }
-

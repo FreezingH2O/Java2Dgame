@@ -3,7 +3,7 @@ package entity.item;
 import components.StatusDisplay;
 import entity.character.Player;
 
-public class ManaPotion extends BaseItem {
+public class ManaPotion extends BaseItem implements Consumable{
 
 	private int manaIncrease;
 	private int quntity;

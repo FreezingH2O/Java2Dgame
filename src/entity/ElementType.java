@@ -1,5 +1,5 @@
 package entity;
 
 public enum ElementType {
-	FIRE, WATER, WIND, DARK, NONE, MAGIC
+	FIRE, WATER, WIND, DARK, NONE, MAGIC, BOSS
 }

@@ -3,7 +3,6 @@ package main;
 import components.GameCanvas;
 import components.Hotbar;
 import components.Instruction;
-import components.PauseButton;
 import components.StatusDisplay;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -41,7 +40,7 @@ public class Main extends Application {
             if (currentState == GameState.START_SCREEN) {  
             	canvas.getGameManager().getStartScreen().handleInput(e.getX(), e.getY());   
             } else if (currentState == GameState.PAUSED) {  
-            	canvas.getGameManager().getPauseScreen().handleInput(e.getX(), e.getY());  
+//            	canvas.getGameManager().getPauseScreen().handleInput(e.getX(), e.getY());  
             }
             updateVisibility();
         }); 
@@ -78,7 +77,10 @@ public class Main extends Application {
         } else if (currentState == GameState.END_SCREEN) {  
             root.getChildren().add(gameManager.getEndScreen().getEndScreenLayout());  
         } 
-        
+    else if (currentState == GameState.WIN_SCREEN) {  
+        root.getChildren().add(gameManager.getWinScreen().getEndScreenLayout());  
+    } 
+    
 //        pauseButton.setOnMouseClicked(e -> {  
 //            pauseButton.setPaused(!pauseButton.isPaused());  
 //            if (pauseButton.isPaused()) {  
@@ -114,5 +116,7 @@ public class Main extends Application {
 	public static int getMapSize() {
 		return MAP_SIZE;
 	}
+	
+	
 
 }

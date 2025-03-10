@@ -3,50 +3,76 @@ package logic;
 import world.Map;  
 import world.MapType;
 
-import java.io.ObjectInputFilter.Status;
-import java.util.ArrayList;
-
 import components.GameCanvas;
 import components.StatusDisplay;
 import entity.character.BaseCharacter;
+import entity.character.FinalBoss;
 import entity.character.Player;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseEvent;
+
 import javafx.scene.media.AudioClip;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+
 import main.Main;
-import javafx.geometry.Point2D;
+
 
 public class GameManager {
 	private Main main;
 	private Map map;
 	private GameState gameState;
 	private StartScreen startScreen;
-	private PauseScreen pauseScreen;
 	private EndScreen endScreen;
 	private GameCanvas canvas;
+	private WinScreen winScreen;
 	private static final double PAUSE_BUTTON_X = 750; // Adjust as needed
 	private static final double PAUSE_BUTTON_Y = 20; // Adjust as needed
 	private static final double PAUSE_BUTTON_WIDTH = 40;
 	private static final double PAUSE_BUTTON_HEIGHT = 30;
+	
+	AudioClip island_sound = Sound.getIslandSound();
+    AudioClip dungeon_sound = Sound.getDungeon_sound();
+    AudioClip bossroom_sound = Sound.getBossroom_sound();
+
+	public Map getMap() {
+		return map;
+	}
+
+	public void setMap(Map map) {
+		this.map = map;
+	}
+
+	public static double getPauseButtonX() {
+		return PAUSE_BUTTON_X;
+	}
+
+	public static double getPauseButtonY() {
+		return PAUSE_BUTTON_Y;
+	}
+
+	public static double getPauseButtonWidth() {
+		return PAUSE_BUTTON_WIDTH;
+	}
+
+	public static double getPauseButtonHeight() {
+		return PAUSE_BUTTON_HEIGHT;
+	}
 
 	public GameManager() {
 		gameState = GameState.START_SCREEN;
 		startScreen = new StartScreen(this);
-		pauseScreen = new PauseScreen(this);
 		endScreen = new EndScreen(this);
 	}
 
 	public void startGame() {
 		map = new Map(MapType.ISLAND);
-//		AudioClip sound = new AudioClip(ClassLoader.getSystemResource("sound/dungeon.wav").toString());
-
+		
 		if (map.getPlayer() == null) {
 			throw new IllegalStateException("Map failed to initialize with a Player.");
 		}
 		this.setGameState(gameState.PLAYING);
-//		sound.play();
+		island_sound.setCycleCount(AudioClip.INDEFINITE);
+		island_sound.setVolume(0.3);
+        island_sound.play();
+		
 //        gameState = GameState.PLAYING;  
 	}
 
@@ -62,7 +88,8 @@ public class GameManager {
 			if (player.getHealth() <= 0) {
 //                    gameState = GameState.END_SCREEN;
 				this.setGameState(gameState.END_SCREEN);
-			} else {
+			} 
+			else if(FinalBoss.getInstant()==null) {
 				gc.clearRect(0, 0, map.getMapWidth(), map.getMapHeight());
 				map.update(gc);
 				player.update(gc);
@@ -72,6 +99,22 @@ public class GameManager {
 					}
 				}
 			}
+	
+			else if(FinalBoss.getInstant().isDead()) {
+				this.setGameState(gameState.WIN_SCREEN);
+			}
+				
+			else {
+				gc.clearRect(0, 0, map.getMapWidth(), map.getMapHeight());
+				map.update(gc);
+				player.update(gc);
+				for (BaseCharacter entity : Map.getEntities()) {
+					if (!(entity instanceof Player)) {
+						entity.update(gc);
+					}
+				}
+			}
+			
 
 			break;
 		case PAUSED:
@@ -99,6 +142,9 @@ public class GameManager {
 		StatusDisplay.getInstant().heal(player.getMaxMana());
 		map = new Map(MapType.ISLAND);
 		this.setGameState(gameState.PLAYING);
+		island_sound.setCycleCount(AudioClip.INDEFINITE);
+		island_sound.setVolume(0.3);
+        island_sound.play();
 
 	}
 
@@ -121,13 +167,6 @@ public class GameManager {
 		this.startScreen = startScreen;
 	}
 
-	public PauseScreen getPauseScreen() {
-		return pauseScreen;
-	}
-
-	public void setPauseScreen(PauseScreen pauseScreen) {
-		this.pauseScreen = pauseScreen;
-	}
 
 	public EndScreen getEndScreen() {
 		return endScreen;
@@ -144,5 +183,16 @@ public class GameManager {
 	public void setCanvas(GameCanvas canvas) {
 		this.canvas = canvas;
 	}
+
+	public WinScreen getWinScreen() {
+		return winScreen;
+	}
+
+	public void setWinScreen(WinScreen winScreen) {
+		this.winScreen = winScreen;
+	}
+	
+	
+	
 
 }

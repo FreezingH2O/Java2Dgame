@@ -14,7 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
-public class StatusDisplay extends Pane {
+public class StatusDisplay extends Pane{
 	private static Bar healthBar;
 	private static Bar manaBar;
 	private static Bar expBar;
@@ -128,6 +128,7 @@ public class StatusDisplay extends Pane {
 		manaBar.setMaxStat(manaBar.getMaxStat() + 25);
 		manaBar.setbgWidth(manaBar.getMaxStat());
 		manaBar.setCurrentStat(manaBar.getMaxStat());
+		Player.getInstant().setMaxMana(manaBar.getMaxStat());
 
 		expBar.setMaxStat(experienceToNextLevel[level]);
 		expBar.setCurrentStat(experience);
@@ -143,8 +144,35 @@ public class StatusDisplay extends Pane {
 		System.out.println("XP: " + experience + "/" + experienceToNextLevel);
 	}
 
+	
+	
+	public static Bar getHealthBar() {
+		return healthBar;
+	}
+
+	public static void setHealthBar(Bar healthBar) {
+		StatusDisplay.healthBar = healthBar;
+	}
+
+	public static Bar getManaBar() {
+		return manaBar;
+	}
+
+	public static void setManaBar(Bar manaBar) {
+		StatusDisplay.manaBar = manaBar;
+	}
+
+	public static Bar getExpBar() {
+		return expBar;
+	}
+
+	public static void setExpBar(Bar expBar) {
+		StatusDisplay.expBar = expBar;
+	}
+
 	public static StatusDisplay getInstant() {
 		return instant;
 	}
+	
 
 }

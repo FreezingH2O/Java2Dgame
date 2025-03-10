@@ -23,7 +23,7 @@ public class GameEffect {
         this.speed = 2; speed = 2;
         this.isActive = true;
         this.target = target;
-       // System.out.println("skill/" + type + ".gif");
+        System.out.println("skill/" + type + ".gif");
         this.type = type;
         if (!(this instanceof arrow)) {
             this.pic = new Image("skill/" + type + ".gif");

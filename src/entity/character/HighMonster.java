@@ -14,7 +14,10 @@ public class HighMonster extends BaseMonster {
 			Map map) {
 		super(type, posX, posY, health, 10, attack, size, map);
 
-		pic = new Image("monster/" + monsterType + "monL.png");
+		if(this instanceof FinalBoss) {
+			pic = new Image("boss/boss.png");
+		}
+		else pic = new Image("monster/" + monsterType + "monL.png");
 
 	}
 

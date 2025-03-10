@@ -27,7 +27,7 @@ public abstract class BaseMonster extends BaseCharacter {
     private boolean canAttack = true;
     private double newX;
     private double newY;
-    // New field to force movement regardless of collision
+ 
     private boolean alwaysMove = true;
 
     public BaseMonster(MonsterType type, double posX, double posY, int health, int speed, int attack, int size,
@@ -54,11 +54,11 @@ public abstract class BaseMonster extends BaseCharacter {
             return;
         }
         super.update(gc);
-        // Refactored rendering logic into a helper function.
+
         renderMonster(gc);
     }
 
-    // Helper function that renders the monster's image and health bar.
+
     private void renderMonster(GraphicsContext gc) {
         gc.drawImage(pic, getPosX(), getPosY());
         healthBar.render(gc, getPosX(), getPosY() - 10, getHealth());
@@ -68,11 +68,16 @@ public abstract class BaseMonster extends BaseCharacter {
         if (target == null)
             return;
         if (this instanceof HighMonster) {
+        	if(this instanceof FinalBoss) {
+        		 GameEffect fireball = new GameEffect(elementType.BOSS, getPosX(), getPosY(), target.getPosX(),
+                         target.getPosY(), 3, target);
+                 effectsList.add(fireball);
+        	}else {
             GameEffect fireball = new GameEffect(getElementType(), getPosX(), getPosY(), target.getPosX(),
                     target.getPosY(), 3, target);
             effectsList.add(fireball);
-            
-            //System.out.println(getElementType());
+        	}
+        
         } else {
             target.takeDamage(getAttack());
         }
@@ -87,7 +92,7 @@ public abstract class BaseMonster extends BaseCharacter {
             setPosY(newY);
         }
         
-        // New block: force movement regardless of collisions if alwaysMove is true.
+  
         if (alwaysMove) {
             setPosX(newX);
             setPosY(newY);
@@ -151,7 +156,6 @@ public abstract class BaseMonster extends BaseCharacter {
         this.frozen = frozen;
     }
     
-    // Getter and setter for alwaysMove
     public boolean isAlwaysMove() {
         return alwaysMove;
     }

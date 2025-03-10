@@ -4,5 +4,6 @@ public enum GameState {
     START_SCREEN,  
     PLAYING,  
     PAUSED,  
-    END_SCREEN  
+    END_SCREEN,
+    WIN_SCREEN
 }
